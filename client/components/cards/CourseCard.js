@@ -8,8 +8,7 @@ const CourseCard = ({ course }) => {
   const { name, instructor, price, image, slug, paid, category } = course;
   return (
     <div className="container">
-      <div className="row">
-        <Link className="col-3" href={`/course/${slug}`}>
+        <Link href={`/course/${slug}`}>
           <a>
             <Card
               className="mb-2"
@@ -17,7 +16,7 @@ const CourseCard = ({ course }) => {
                 <img
                   src={image.Location}
                   alt={name}
-                  style={{ height: "200px", objectFit: "cover", width: "100%" }}
+                  style={{ height: "90%", objectFit: "cover", width: "100%" }}
                   className="p-2"
                 />
               }
@@ -40,7 +39,6 @@ const CourseCard = ({ course }) => {
             </Card>
           </a>
         </Link>
-      </div>
     </div>
   );
 };
