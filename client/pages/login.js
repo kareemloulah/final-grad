@@ -25,7 +25,6 @@ import {
   Image,
 } from "@mantine/core";
 
-
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan("sm");
   const HIDEBLOCK = theme.fn.smallerThan("md");
@@ -84,7 +83,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   // state
   const {
     state: { user },
@@ -97,9 +95,7 @@ const Login = () => {
     if (user !== null) router.push("/");
   }, [user]);
 
-
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     // console.table({ name, email, password });
     try {
@@ -125,119 +121,121 @@ const Login = () => {
   };
 
   return (
+    <div
+      className="container"
+      style={{ marginBottom: "50px", marginTop: "50px" }}
+    >
+      <div className="row">
+        <div
+          className="col  align-items-center "
+          style={{ hight: "100px", margin: "auto" }}
+        >
+          <Box>
+            <form onSubmit={handleSubmit}>
+              <Title
+                className="text-left  justify-content-center "
+                style={{
+                  fontSize: "30px",
+                  color: "#2d5ebe",
+                  marginBottom: "20px",
+                }}
+              >
+                Login
+              </Title>
 
-    <div className="container" style={{ marginBottom:"50px", marginTop:"50px"}}>
-      <div className="row" >
-        <div className="col  align-items-center " style={{hight:"100px" , margin:"auto"}}>
-        
-        <Box>
-          <form onSubmit={handleSubmit}>
-            <Title className="text-left  justify-content-center " style={{ fontSize: "30px", color: "#2d5ebe" ,marginBottom:"20px"}}>Login
-            </Title>
-            
-            <TextInput
-             
-              mb="20px"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder=" email"
-              required
+              <TextInput
+                mb="20px"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder=" email"
+                required
+              />
+
+              <PasswordInput
+                mb="20px"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder=" password"
+                required
+              />
+
+              <p className="text-left ">
+                <Link href="/forgot-password">
+                  <a className="text-danger">Forgot password</a>
+                </Link>
+              </p>
+
+              <Button
+                type="primary"
+                block
+                style={{ width: "100%", backgroundColor: "#2d5ebe" }}
+                disabled={!email || !password || loading}
+              >
+                {loading ? <SyncOutlined spin /> : "Login"}
+              </Button>
+            </form>
+
+            <Divider
+              label="Or continue with email"
+              labelPosition="center"
+              my="lg"
             />
 
-            <PasswordInput
-            
-            mb="20px"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder=" password"
-              required
-            />
-
-            <p className="text-left ">
-              <Link href="/forgot-password">
-                <a className="text-danger">Forgot password</a>
-              </Link>
-            </p>
-
-            <Button
-              type="primary"
-              block
-              
-              style={{width:"100%" , backgroundColor:"#2d5ebe"}}
-              disabled={!email || !password || loading}
-            >
-              {loading ? <SyncOutlined spin /> : "Login"}
-            </Button>
-          </form>
-
-          <Divider
-            label="Or continue with email"
-            labelPosition="center"
-            my="lg"
-          />
-
-          <Group className=" row "
-          >
-            
+            <div className=" row align-items-center">
               <div class="col">
                 <Link href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
                   <GoogleOutlined
-                    style={{ width: "100%", color: "#f5222d",fontSize: "25px" }}
+                    style={{
+                      width: "100%",
+                      color: "#f5222d",
+                      fontSize: "25px",
+                    }}
                   />
                 </Link>
               </div>
               <div class="col">
                 <Link href="https://www.linkedin.com/login">
                   <LinkedinOutlined
-                    style={{ width: "100%", color: "#08c",fontSize: "25px" }}
+                    style={{ width: "100%", color: "#08c", fontSize: "25px" }}
                   />
                 </Link>
               </div>
 
               <div class="col">
                 <Link href="https://github.com/login">
-                  
-                  <GithubOutlined style={{ width: "100%" ,fontSize: "25px", color: "#00" }} />
+                  <GithubOutlined
+                    style={{ width: "100%", fontSize: "25px", color: "#00" }}
+                  />
                 </Link>
               </div>
-           
-          </Group>
-        </Box>
-
+            </div>
+          </Box>
         </div>
         <div className="col">
-        
-        
-        <Group className={classes.contacts}>
-        <Text
-          size="lg"
-          weight={700}
-          className={classes.title}
-          sx={{ color: "#fff" }}
-        >
-          Don't have an account?
-        </Text>
-        <Link
-          style={{
-            textDecoration: "none",
-          }}
-          href="/register"
-        >
-          <Button variant="white" size="lg" fullWidth radius={5}>
-            Join Now
-          </Button>
-        </Link>
+          <Group className={classes.contacts}>
+            <Text
+              size="lg"
+              weight={700}
+              className={classes.title}
+              sx={{ color: "#fff" }}
+            >
+              Don't have an account?
+            </Text>
+            <Link
+              style={{
+                textDecoration: "none",
+              }}
+              href="/register"
+            >
+              <Button variant="white" size="lg" fullWidth radius={5}>
+                Join Now
+              </Button>
+            </Link>
 
-        <Image src="../EducationLogin.png" />
-      </Group>
-    
-    
-        
-        
-        
+            <Image src="../EducationLogin.png" />
+          </Group>
         </div>
-
-        </div>
+      </div>
     </div>
   );
 };
