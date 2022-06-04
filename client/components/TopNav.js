@@ -42,8 +42,8 @@ const TopNav = () => {
       theme="white"
       mode="horizontal"
       selectedKeys={[current]}
-      className="sticky-top"
-      style={{ boxShadow: "0px 10px 20px rgb(0,0,0,0.5)" }}
+      className="sticky-top mb-2"
+      style={{ boxShadow: "0px 2px 20px rgb(0,0,0,0.1)" }}
     >
       <Item
         style={{

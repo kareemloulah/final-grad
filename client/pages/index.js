@@ -33,7 +33,7 @@ const Index = ({ courses }) => {
           <Row gutter={[24, 24]}>
             {Paths.map((path) => (
               <Col key={path.Id} span={8}>
-                <Link href={`/${path.Id}`}>
+                <Link href={`/${path.title}`}>
                   <div
                     className="card m-2 p-2"
                     style={{ alignItems: "center", cursor: "pointer" }}
