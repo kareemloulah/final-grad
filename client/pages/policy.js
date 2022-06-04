@@ -1,11 +1,9 @@
 
-const about = ({ courses }) => {
+const policy = ({ courses }) => {
   return (
     <>
-      <h1 className=" jumbotron text-left square container">
-        About Us
-      </h1>
-      <div className="container " style={{height:"700px"}}>
+      <h1 className=" jumbotron text-left square container">Our Policy</h1>
+      <div className="container " style={{ height: "700px" }}>
         <div>
           <h5>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
@@ -31,4 +29,4 @@ const about = ({ courses }) => {
     </>
   );
 };
-export default about;
+export default policy;
