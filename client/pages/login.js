@@ -84,28 +84,20 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 1f632176f79bf9168e65d6d2f4ced5cc8f73af41
   // state
   const {
     state: { user },
     dispatch,
   } = useContext(Context);
   // const { user } = state;
-
   // router
   const router = useRouter();
-
   useEffect(() => {
     if (user !== null) router.push("/");
   }, [user]);
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 1f632176f79bf9168e65d6d2f4ced5cc8f73af41
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -133,7 +125,6 @@ const Login = () => {
   };
 
   return (
-<<<<<<< HEAD
 
     <div className="container" style={{ marginBottom:"50px", marginTop:"50px"}}>
       <div className="row" >
@@ -248,54 +239,6 @@ const Login = () => {
 
         </div>
     </div>
-=======
-    <>
-      <h1 className="jumbotron text-center bg-primary square">Login</h1>
-
-      <div className="container col-md-4 offset-md-4 pb-5">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            className="form-control mb-4 p-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
-            required
-          />
-
-          <input
-            type="password"
-            className="form-control mb-4 p-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            required
-          />
-
-          <button
-            type="submit"
-            className="btn btn-block btn-primary"
-            disabled={!email || !password || loading}
-          >
-            {loading ? <SyncOutlined spin /> : "Submit"}
-          </button>
-        </form>
-
-        <p className="text-center pt-3">
-          Not yet registered?{" "}
-          <Link href="/register">
-            <a>Register</a>
-          </Link>
-        </p>
-
-        <p className="text-center">
-          <Link href="/forgot-password">
-            <a className="text-danger">Forgot password</a>
-          </Link>
-        </p>
-      </div>
-    </>
->>>>>>> 1f632176f79bf9168e65d6d2f4ced5cc8f73af41
   );
 };
 
