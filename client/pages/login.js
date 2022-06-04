@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { Context } from "../context";
 import { useRouter } from "next/router";
-import { Form, Input, Checkbox } from "antd";
+
 import {
   PasswordInput,
   TextInput,
@@ -24,16 +24,7 @@ import {
   createStyles,
   Image,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { At, Lock } from "tabler-icons-react";
-import { useNotifications } from "@mantine/notifications";
-import {
-  GoogleButton,
-  FacebookButton,
-  GithubButton,
-  LinkedInButton,
-} from "../components/SocialButtons/SocialButtons";
-import { CheckIcon } from "@primer/octicons-react";
+
 
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan("sm");
@@ -92,22 +83,23 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [redirect, setRedirect] = useState(false);
+
+
   // state
   const {
     state: { user },
     dispatch,
   } = useContext(Context);
   // const { user } = state;
-
   // router
   const router = useRouter();
-
   useEffect(() => {
     if (user !== null) router.push("/");
   }, [user]);
 
-  const onSubmitHanddler = async (e) => {
+
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
     // console.table({ name, email, password });
     try {
@@ -133,27 +125,28 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+
+    <div className="container" style={{ marginBottom:"50px", marginTop:"50px"}}>
       <div className="row" >
         <div className="col  align-items-center " style={{hight:"100px" , margin:"auto"}}>
         
         <Box>
-          <form onSubmit={onSubmitHanddler}>
-            <Title className="text-left  justify-content-center " style={{ fontSize: "30px", color: "#2d5ebe" ,padding: "20px",}}>Login
+          <form onSubmit={handleSubmit}>
+            <Title className="text-left  justify-content-center " style={{ fontSize: "30px", color: "#2d5ebe" ,marginBottom:"20px"}}>Login
             </Title>
             
-            <input
-              type="email"
-              className="form-control mb-4 p-4"
+            <TextInput
+             
+              mb="20px"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder=" email"
               required
             />
 
-            <input
-              type="password"
-              className="form-control mb-2 p-4"
+            <PasswordInput
+            
+            mb="20px"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder=" password"
@@ -183,7 +176,7 @@ const Login = () => {
             my="lg"
           />
 
-          <Group className=" row space-evenlly "
+          <Group className=" row "
           >
             
               <div class="col">
@@ -243,7 +236,8 @@ const Login = () => {
         
         
         </div>
-      </div>
+
+        </div>
     </div>
   );
 };
