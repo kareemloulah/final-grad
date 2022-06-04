@@ -117,4 +117,4 @@ export const instructorPayoutSettings = async (req, res) => {
   } catch (err) {
     console.log("stripe payout settings login link err => , err");
   }
-};
+}; 
