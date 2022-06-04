@@ -7,7 +7,6 @@ const { Meta } = Card;
 const CourseCard = ({ course }) => {
   const { name, instructor, price, image, slug, paid, category } = course;
   return (
-    <div className="container">
         <Link href={`/course/${slug}`}>
           <a>
             <Card
@@ -39,7 +38,6 @@ const CourseCard = ({ course }) => {
             </Card>
           </a>
         </Link>
-    </div>
   );
 };
 

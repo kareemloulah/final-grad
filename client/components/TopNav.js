@@ -53,6 +53,16 @@ const TopNav = () => {
           <a> Courseme </a>
         </Link>
       </Item>
+      <Item key="/courses" onClick={(e) => setCurrent(e.key)}>
+        <Link href="/courses">
+          <a> Courses </a>
+        </Link>
+      </Item>
+      <Item key="/about" onClick={(e) => setCurrent(e.key)}>
+        <Link href="/about">
+          <a> About me </a>
+        </Link>
+      </Item>
 
       {user && user.role && user.role.includes("Instructor") ? (
         <Item
