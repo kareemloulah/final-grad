@@ -181,6 +181,7 @@ const Register = () => {
               required
             />
             <TextInput
+            type="email"
               mb="20px"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
