@@ -160,7 +160,7 @@ const Login = () => {
 
               <p className="text-left ">
                 <Link href="/forgot-password">
-                  <a className="text-danger">Forgot password</a>
+                  <a style={{color:"#096dd9"}}>Forgot password ?</a>
                 </Link>
               </p>
 
