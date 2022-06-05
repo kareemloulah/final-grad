@@ -28,7 +28,7 @@ const Index = ({ courses }) => {
           ))}
         </div>
       </div>
-      <div style={{ backgroundColor: "#2d5ebe", padding: "30px" }}>
+      <div style={{ backgroundColor: "#2d5ebe", padding: "30px", marginBottom:'50px'}}>
         <div className="container">
           <Row gutter={[24, 24]}>
             {Paths.map((path) => (

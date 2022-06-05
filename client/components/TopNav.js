@@ -45,25 +45,27 @@ const TopNav = () => {
       className="sticky-top mb-2"
       style={{ boxShadow: "0px 2px 20px rgb(0,0,0,0.1)" }}
     >
-      <Item
+      {/* <Item
         style={{
           color: "#2d5ebe",
         }}
         key="/"
         onClick={(e) => setCurrent(e.key)}
         icon={<AppstoreOutlined />}
-      >
+      > */}
         <Link href="/">
           <a
             style={{
               color: "#2d5ebe",
+              fontSize: "25px",
+              margin: "0px 30px ",
+              fontWeight: "bold",
             }}
           >
-            {" "}
-            Courseme{" "}
+            Courseme
           </a>
         </Link>
-      </Item>
+      {/* </Item> */}
       <Item key="/courses" onClick={(e) => setCurrent(e.key)}>
         <Link href="/courses">
           <a
