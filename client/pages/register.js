@@ -215,7 +215,8 @@ const Register = () => {
           <div className=" row align-items-center"
           style={{margin: "auto"}}>
             <div class="col">
-              <Link href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
+              <a href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+              target="_blank">
                 <GoogleOutlined
                   style={{
                     width: "100%",
@@ -223,22 +224,22 @@ const Register = () => {
                     fontSize: "25px",
                   }}
                 />
-              </Link>
+              </a>
             </div>
             <div class="col">
-              <Link href="https://www.linkedin.com/login">
+              <a href="https://www.linkedin.com/login" target="_blank">
                 <LinkedinOutlined
                   style={{ width: "100%", color: "#08c", fontSize: "25px" }}
                 />
-              </Link>
+              </a>
             </div>
 
             <div class="col">
-              <Link href="https://github.com/login">
+              <a href="https://github.com/login" target="_blank">
                 <GithubOutlined
-                  style={{ width: "100%", fontSize: "25px", color: "#00" }}
+                  style={{ width: "100%", fontSize: "25px", color: "#000" }}
                 />
-              </Link>
+              </a>
             </div>
           </div>
         </Box>

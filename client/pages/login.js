@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { Context } from "../context";
 import { useRouter } from "next/router";
-
+import { Form, Input, Checkbox } from "antd";
 import {
   PasswordInput,
   TextInput,
@@ -66,7 +66,8 @@ const useStyles = createStyles((theme) => {
 
     title: {
       marginTop: theme.spacing.xl * 1.5,
-      fontSize: "30px",
+      fontFamily: `Greycliff CF, ${theme.other.fontFamilySecondary}`,
+      fontSize: "50px",
       [BREAKPOINT]: {
         marginBottom: theme.spacing.xl,
         fontSize: "25px",
@@ -81,7 +82,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [redirect, setRedirect] = useState(false);
   // state
   const {
     state: { user },
@@ -94,7 +95,7 @@ const Login = () => {
     if (user !== null) router.push("/");
   }, [user]);
 
-  const handleSubmit = async (e) => {
+  const onSubmitHanddler = async (e) => {
     e.preventDefault();
     // console.table({ name, email, password });
     try {
@@ -120,127 +121,114 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="container"
-      style={{ marginBottom: "50px", marginTop: "50px" }}
-    >
-      <div className="row">
-        <div
-          className="col  align-items-center "
-          style={{ hight: "100px", margin: "auto" }}
-        >
-          <Box>
-            <form onSubmit={handleSubmit}>
-              <Title
-                className="text-left  justify-content-center "
-                style={{
-                  fontSize: "30px",
-                  color: "#2d5ebe",
-                  marginBottom: "20px",
-                }}
-              >
-                Login
-              </Title>
-
-              <TextInput
-                mb="20px"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder=" email"
-                required
-              />
-
-              <PasswordInput
-                mb="20px"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder=" password"
-                required
-              />
-
-              <p className="text-left ">
-                <Link href="/forgot-password">
-                  <a style={{color:"#096dd9"}}>Forgot password ?</a>
-                </Link>
-              </p>
-
-              <Button
-                type="primary"
-                block
-                style={{ width: "100%", backgroundColor: "#2d5ebe" }}
-                disabled={!email || !password || loading}
-              >
-                {loading ? <SyncOutlined spin /> : "Login"}
-              </Button>
-            </form>
-
-            <Divider
-              label="Or continue with email"
-              labelPosition="center"
-              my="lg"
+    <div className="container">
+      <div className="row" >
+        <div className="col  align-items-center " style={{hight:"100px" , margin:"auto"}}>
+        
+        <Box>
+          <form onSubmit={onSubmitHanddler}>
+            <Title className="text-left  justify-content-center " style={{ fontSize: "30px", color: "#2d5ebe" ,padding: "20px",}}>Login
+            </Title>
+            
+            <input
+              type="email"
+              className="form-control mb-4 p-4"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" email"
+              required
             />
 
-            <div className=" row align-items-center"
-            style={{margin: "auto"}}>
+            <input
+              type="password"
+              className="form-control mb-2 p-4"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder=" password"
+              required
+            />
+
+            <p className="text-left ">
+              <Link href="/forgot-password">
+                <a style={{color:"#096dd9"}}>Forgot password ?</a>
+              </Link>
+            </p>
+
+            <Button
+              type="primary"
+              block
+              
+              style={{width:"100%" , backgroundColor:"#2d5ebe"}}
+              disabled={!email || !password || loading}
+            >
+              {loading ? <SyncOutlined spin /> : "Login"}
+            </Button>
+          </form>
+
+          <Divider
+            label="Or continue with email"
+            labelPosition="center"
+            my="lg"
+          />
+
+          <div className=" row space-evenlly "
+          >
+            
               <div class="col">
-                <Link href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
+                <a href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+                target="_blank">
                   <GoogleOutlined
-                    style={{
-                      width: "100%",
-                      color: "#f5222d",
-                      fontSize: "25px",
-                    }}
+                    style={{ width: "100%", color: "#f5222d",fontSize: "25px" }}
                   />
-                </Link>
+                </a>
               </div>
               <div class="col">
-                <Link href="https://www.linkedin.com/login">
+                <a href="https://www.linkedin.com/login" target="_blank">
                   <LinkedinOutlined
-                    style={{ width: "100%", color: "#08c", fontSize: "25px" }}
+                    style={{ width: "100%", color: "#08c",fontSize: "25px" }}
                   />
-                </Link>
+                </a>
               </div>
 
               <div class="col">
-                <Link href="https://github.com/login">
-                  <GithubOutlined
-                    style={{ width: "100%", fontSize: "25px", color: "#00" }}
-                  />
-                </Link>
+                <a href="https://github.com/login" target="_blank">
+                  
+                  <GithubOutlined style={{ width: "100%" ,fontSize: "25px", color: "#000" }} />
+                </a>
               </div>
-            </div>
-          </Box>
+          </div>
+        </Box>
+
         </div>
         <div className="col">
-          <Group className={classes.contacts}>
-            <Text
-              size="lg"
-              weight={500}
-              className={classes.title}
-              sx={{ color: "#fff" }}
-            >
-              Don't have an account?
-            </Text>
-            <Image src="../EducationLogin.png" />
-            <Link
-              style={{
-                textDecoration: "none",
-              }}
-              href="/register"
-            >
-              <Button
-               variant="white" 
-               size="lg" 
-               fullWidth 
-               radius={5}
-               style={{color:"#2d5ebe"}}
-              >
-                Join Now
-              </Button>
-            </Link>
-
-            
-          </Group>
+        
+        
+        <Group className={classes.contacts}>
+        <Text
+          size="lg"
+          weight={700}
+          className={classes.title}
+          sx={{ color: "#fff" }}
+        >
+          Don't have an account?
+        </Text>
+        <Image src="../EducationLogin.png" />
+        <Link
+        style={{
+          textDecoration: "none",
+        }}
+        href="/register"
+      >
+        <Button variant="white" size="lg" fullWidth radius={5}>
+          Join Now
+        </Button>
+      </Link>
+      </Group>
+    
+    
+        
+        
+        
         </div>
       </div>
     </div>
