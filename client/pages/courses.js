@@ -3,10 +3,13 @@ import CourseCard from "../components/cards/CourseCard";
 const courses = ({ courses }) => {
   return (
     <>
-      <div className="container-fluid">
-        <div className="row jumbotron bg-primary">
+      <div 
+      className="justify-content-center align-items-center"
+      style={{ backgroundColor:"#E3EDFF", height:'120px', marginBottom:'50px' }}>
+
           <h4>Filter system</h4>
-        </div>
+
+      </div>
         <div className="container">
           <div className="row">
             {courses.map((course) => (
@@ -16,7 +19,6 @@ const courses = ({ courses }) => {
             ))}
           </div>
         </div>
-      </div>
     </>
   );
 };
