@@ -123,20 +123,22 @@ const ForgotPassword = () => {
                     placeholder="New Password"
                     required
                   />
+                  <a href="https://mail.google.com/"  target="_blank">
                   <Button  
                   style={{ width: "100%", backgroundColor: "#d9d9d9",margin: "10px 0px"}}>
-                  <Link href="https://mail.google.com/" >
-                  <a target="_blank"><GoogleOutlined
+                  
+                 <GoogleOutlined
                   style={{
                     width: "100%",
                     color: "#f5222d",
                     fontSize: "25px",
                     margin:"auto"
                   }}
-                /></a>
-                </Link>
+                />
+                
                     O to gmail
                 </Button>
+                </a>
                 </div>
               )}
               <Button
