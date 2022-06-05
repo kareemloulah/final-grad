@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <footer
       class="sticky-bottom p-5 "
-      style={{ backgroundColor: "#2d5ebe" }}
+      style={{ backgroundColor: "#2d5ebe", marginTop : "50px" }}
     >
       <div class="container-fluid">
         <div className="row">

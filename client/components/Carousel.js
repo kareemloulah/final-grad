@@ -2,14 +2,14 @@ import React from "react";
 import { Carousel } from "antd";
 const contentStyle = {
   height: "300px",
-  color: "#fff",
+  color: "#2d5ebe",
   lineHeight: "300px",
   textAlign: "center",
-  background: "#2d5ebe",
+  background: "#E3EDFF",
 };
 
 const carousel = () => (
-  <Carousel>
+  <Carousel autoplay>
     <div>
       <h3 style={contentStyle}>1</h3>
     </div>
