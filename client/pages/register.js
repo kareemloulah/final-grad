@@ -176,7 +176,7 @@ const Register = () => {
             <TextInput
               mb="20px"
               value={name}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               placeholder=" Username"
               required
             />
