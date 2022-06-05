@@ -17,10 +17,10 @@ const Footer = () => {
 
   return (
     <footer
-      class="sticky-bottom p-5 "
-      style={{ backgroundColor: "#2d5ebe", marginTop : "50px" }}
+      className="sticky-bottom p-5 "
+      style={{ backgroundColor: "#2d5ebe", marginTop: "50px" }}
     >
-      <div class="container-fluid">
+      <div className="container-fluid">
         <div className="row">
           <div className="col">
             <a href="/" className="text-white">
@@ -29,34 +29,34 @@ const Footer = () => {
             <h6>@ 2022 Courseme</h6>
           </div>
           <div className="col-10 ">
-            <div class="container">
-              <div class="row row-cols-3">
-                <li class="col navbar">
+            <div className="container">
+              <div className="row row-cols-3">
+                <li className="col navbar">
                   <a className="text-white" href="/about">
                     About us
                   </a>
                 </li>
-                <li class="col navbar">
+                <li className="col navbar">
                   <a className="text-white" href="/policy">
                     Privacy Policy
                   </a>
                 </li>
-                <li class="col navbar">
+                <li className="col navbar">
                   <a className="text-white" href="#">
                     Terms
                   </a>
                 </li>
-                <li class="col navbar">
+                <li className="col navbar">
                   <a className="text-white" href="#">
                     Membership
                   </a>
                 </li>
-                <li class="col navbar">
+                <li className="col navbar">
                   <a className="text-white" href="#">
                     Contact Us
                   </a>
                 </li>
-                <li class="col navbar">
+                <li className="col navbar">
                   <a className="text-white" href="#">
                     Become a Partner
                   </a>
