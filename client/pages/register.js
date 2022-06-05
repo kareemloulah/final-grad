@@ -1,10 +1,81 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { SyncOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { Context } from "../context";
 import { useRouter } from "next/router";
+
+import {
+  PasswordInput,
+  TextInput,
+  Button,
+  Box,
+  Group,
+  Divider,
+  RadioGroup,
+  Radio,
+  Title,
+  Text,
+  Image,
+  createStyles,
+} from "@mantine/core";
+import { At, Lock } from "tabler-icons-react";
+import {
+  SyncOutlined,
+  GoogleOutlined,
+  LinkedinOutlined,
+  GithubOutlined,
+} from "@ant-design/icons";
+const useStyles = createStyles((theme) => {
+  const BREAKPOINT = theme.fn.smallerThan("sm");
+  const HIDEBLOCK = theme.fn.smallerThan("md");
+  return {
+    wrapper: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderRadius: theme.radius.lg,
+      padding: "50px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      maxWidth: "70vw",
+      columnGap: "100px",
+      [BREAKPOINT]: {
+        flexDirection: "column",
+      },
+    },
+
+    contacts: {
+      display: "flex",
+      borderRadius: theme.radius.md,
+      backgroundColor: "#2D5EBE",
+      border: "1px solid transparent",
+      padding: theme.spacing.xl,
+      justifyContent: "space-between",
+      flex: "1 0.25 200px",
+      maxWidth: "650px",
+      [HIDEBLOCK]: {
+        display: "none",
+      },
+      [BREAKPOINT]: {
+        display: "flex",
+        flex: "1 0.25 200px",
+        marginBottom: theme.spacing.sm,
+        paddingLeft: theme.spacing.md,
+      },
+    },
+
+    title: {
+      marginTop: theme.spacing.xl * 1.5,
+      fontSize: "30px",
+      [BREAKPOINT]: {
+        marginBottom: theme.spacing.xl,
+        fontSize: "25px",
+      },
+    },
+  };
+});
+
 
 
 const Register = () => {
@@ -12,7 +83,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const { classes } = useStyles();
   const {
     state: { user },
   } = useContext(Context);
@@ -46,55 +117,135 @@ const Register = () => {
   };
 
   return (
-    <>
-      <h1 className="jumbotron text-center bg-primary square">Register</h1>
-
-      <div className="container col-md-4 offset-md-4 pb-5">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            className="form-control mb-4 p-4"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter name"
-            required
-          />
-
-          <input
-            type="email"
-            className="form-control mb-4 p-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
-            required
-          />
-
-          <input
-            type="password"
-            className="form-control mb-4 p-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            required
-          />
-
-          <button
-            type="submit"
-            className="btn btn-block btn-primary"
-            disabled={!name || !email || !password || loading}
+    <div className="container"
+    style={{ marginBottom: "50px", marginTop: "50px" }}
+    >
+      <div className="row">
+      <div className="col  align-items-center "
+      style={{ hight: "100px", margin: "auto" }}
+    >
+    <Group className={classes.contacts}>
+        <Text
+          size="lg"
+          weight={300}
+          className={classes.title}
+          sx={{ color: "#fff" }}
+        >
+          Are you on Courseme?
+        </Text>
+        <Image src="../EducationSignup.png" />
+        <Link
+          style={{
+            textDecoration: "none",
+          }}
+          href="/login"
+        >
+          <Button
+            variant="white"
+            size="lg"
+            fullWidth
+            radius={5}
+            style={{color:"#2d5ebe"}}
           >
-            {loading ? <SyncOutlined spin /> : "Submit"}
-          </button>
-        </form>
+            Login now!
+          </Button>
+        </Link>
 
-        <p className="text-center p-3">
-          Already registered?{" "}
-          <Link href="/login">
-            <a>Login</a>
-          </Link>
-        </p>
+       
+      </Group>
+
+        
+        </div>
+        <div
+        className="col  align-items-center "
+        style={{ hight: "100px", margin: "auto" }}
+      >
+        <Box>
+          <form onSubmit={handleSubmit}>
+            <Title
+              className="text-left  justify-content-center "
+              style={{
+                fontSize: "30px",
+                color: "#2d5ebe",
+                marginBottom: "20px",
+              }}
+            >
+              Register
+            </Title>
+
+            <TextInput
+              mb="20px"
+              value={name}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" Username"
+              required
+            />
+            <TextInput
+              mb="20px"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" email"
+              required
+            />
+
+            <PasswordInput
+              mb="20px"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder=" password"
+              required
+            />
+            <Button
+              type="primary"
+              block
+              style={{ width: "100%", backgroundColor: "#2d5ebe" }}
+              disabled={!name || !email || !password || loading}
+            >
+            {loading ? <SyncOutlined spin /> : "Register"}
+            </Button>
+          </form>
+
+          <Divider
+            label="Or continue with email"
+            labelPosition="center"
+            my="lg"
+          />
+
+          <div className=" row align-items-center"
+          style={{margin: "auto"}}>
+            <div class="col">
+              <Link href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
+                <GoogleOutlined
+                  style={{
+                    width: "100%",
+                    color: "#f5222d",
+                    fontSize: "25px",
+                  }}
+                />
+              </Link>
+            </div>
+            <div class="col">
+              <Link href="https://www.linkedin.com/login">
+                <LinkedinOutlined
+                  style={{ width: "100%", color: "#08c", fontSize: "25px" }}
+                />
+              </Link>
+            </div>
+
+            <div class="col">
+              <Link href="https://github.com/login">
+                <GithubOutlined
+                  style={{ width: "100%", fontSize: "25px", color: "#00" }}
+                />
+              </Link>
+            </div>
+          </div>
+        </Box>
       </div>
-    </>
+      
+      
+      </div>
+    </div>
   );
 };
 

@@ -66,8 +66,7 @@ const useStyles = createStyles((theme) => {
 
     title: {
       marginTop: theme.spacing.xl * 1.5,
-      fontFamily: `Greycliff CF, ${theme.other.fontFamilySecondary}`,
-      fontSize: "50px",
+      fontSize: "30px",
       [BREAKPOINT]: {
         marginBottom: theme.spacing.xl,
         fontSize: "25px",
@@ -181,7 +180,8 @@ const Login = () => {
               my="lg"
             />
 
-            <div className=" row align-items-center">
+            <div className=" row align-items-center"
+            style={{margin: "auto"}}>
               <div class="col">
                 <Link href="https://accounts.google.com/ServiceLogin/signinchooser?elo=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin">
                   <GoogleOutlined
@@ -215,24 +215,31 @@ const Login = () => {
           <Group className={classes.contacts}>
             <Text
               size="lg"
-              weight={700}
+              weight={500}
               className={classes.title}
               sx={{ color: "#fff" }}
             >
               Don't have an account?
             </Text>
+            <Image src="../EducationLogin.png" />
             <Link
               style={{
                 textDecoration: "none",
               }}
               href="/register"
             >
-              <Button variant="white" size="lg" fullWidth radius={5}>
+              <Button
+               variant="white" 
+               size="lg" 
+               fullWidth 
+               radius={5}
+               style={{color:"#2d5ebe"}}
+              >
                 Join Now
               </Button>
             </Link>
 
-            <Image src="../EducationLogin.png" />
+            
           </Group>
         </div>
       </div>
