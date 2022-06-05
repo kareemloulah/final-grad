@@ -63,7 +63,7 @@ const courses = ({ courses }) => {
               <div className="row">
                 <Dropdown className="col">
                   <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "10px" }}
+                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
                     variant="light"
                     id="dropdown-basic"
                   >
@@ -82,7 +82,7 @@ const courses = ({ courses }) => {
                 </Dropdown>
                 <Dropdown className="col">
                   <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "10px" }}
+                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
                     variant="light"
                     id="dropdown-basic"
                   >
@@ -101,7 +101,7 @@ const courses = ({ courses }) => {
                 </Dropdown>
                 <Dropdown className="col">
                   <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "10px" }}
+                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
                     variant="light"
                     id="dropdown-basic"
                   >
@@ -120,7 +120,7 @@ const courses = ({ courses }) => {
                 </Dropdown>
                 <Dropdown className="col">
                   <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "10px" }}
+                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
                     variant="light"
                     id="dropdown-basic"
                   >
@@ -139,7 +139,7 @@ const courses = ({ courses }) => {
                 </Dropdown>
                 <Dropdown className="col">
                   <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "10px" }}
+                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
                     variant="light"
                     id="dropdown-basic"
                   >

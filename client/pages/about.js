@@ -2,7 +2,7 @@
 const about = ({ courses }) => {
   return (
     <>
-      <h1 className=" jumbotron text-left square container">
+      <h1 className=" text-left square container-fluid" style={{paddingTop:"50px", paddingBottom:"50px", backgroundColor:"#e3edff"}}>
         About Us
       </h1>
       <div className="container " style={{height:"700px"}}>
