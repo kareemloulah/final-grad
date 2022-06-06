@@ -17,10 +17,10 @@ const Footer = () => {
 
   return (
     <footer
-      className="sticky-bottom p-5 "
+      className="p-5 fixed-bottom"
       style={{ backgroundColor: "#2d5ebe", marginTop: "50px" }}
     >
-      <div className="container-fluid">
+      <div className="container-fluid ">
         <div className="row">
           <div className="col">
             <a href="/" className="text-white">
