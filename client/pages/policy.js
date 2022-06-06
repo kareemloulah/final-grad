@@ -39,7 +39,7 @@ const policy = ({ courses }) => {
         </div>
       </div>
       <div className="container">
-        <div className="row ">
+        <div className="row " style={{padding:"auto"}}>
           <IconContext.Provider
             value={{ className: "global-class-name ", size: "90%" , color:"#2D5EBE"}}
           >
