@@ -78,7 +78,6 @@ const TableComponent = (props) => {
 
   const categoryFiltersBuilder = useCallback((dataToBuildFrom) => {
     let filters = [];
-    // console.log("ARRAY", Array.isArray(dataToBuildFrom?.category));
     if (
       Array.isArray(dataToBuildFrom?.category) &&
       dataToBuildFrom?.category?.length > 0
@@ -107,21 +106,19 @@ const TableComponent = (props) => {
   }, []);
 
   const handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
     setFilteredInfo(filters);
   };
 
-  const hitEdit = async (values, record) => {
+  const hitEdit = async (values) => {
     console.table(values);
-    console.log("record:", record);
 
-    // const resp = await axios.put(`/api/admin/course/${record.slug}`, values);
-    // setReFetch((e) => !e);
-    // if (resp.status === 200) {
-    //   toast.success(`Course Updated successfully`);
-    // } else {
-    //   toast.error(`Error ${type}ing Course`);
-    // }
+    const resp = await axios.put(`/api/admin/course/${values.slug}`, values);
+    setReFetch((e) => !e);
+    if (resp.status === 200) {
+      toast.success(`Course Updated successfully`);
+    } else {
+      toast.error(`Error ${type}ing Course`);
+    }
     // toast.error(`Error in Editing Course`);
   };
 
@@ -255,12 +252,14 @@ const TableComponent = (props) => {
   ];
 
   const expandCourses = (record, index, indent, expanded) => {
-    console.log("record => ", record.name);
+    console.log("record:", record.slug);
+
     form.setFieldsValue({
       name: record.name,
       description: record.description,
       price: record.price,
       category: record.category,
+      slug: record.slug,
     });
 
     const newINIT = {
@@ -268,6 +267,7 @@ const TableComponent = (props) => {
       description: tableData[index].description,
       price: tableData[index].price,
       category: [tableData[index].category],
+      slug: tableData[index].slug,
     };
 
     return (
@@ -275,7 +275,7 @@ const TableComponent = (props) => {
         form={form}
         initialValues={newINIT}
         name={record.slug}
-        onFinish={(values, record) => hitEdit(values, record)}
+        onFinish={hitEdit}
         style={{
           display: "flex",
           justifyContent: "space-around",
@@ -287,6 +287,9 @@ const TableComponent = (props) => {
         layout="vertical"
         size="small"
       >
+        {/* Slug */}
+        <Form.Item name="slug"></Form.Item>
+
         {/* Name */}
         <Form.Item name="name" label="Course Name">
           <Input size="small" allowClear placeholder="Type Course Name" />
@@ -349,10 +352,6 @@ const TableComponent = (props) => {
     );
   };
 
-  // const onTableRowExpand = (expanded, record) => {
-  //   setExpandedRowKey([record._id]);
-  // };
-
   return (
     <>
       <Table
@@ -406,7 +405,6 @@ const TableComponent = (props) => {
             if (expanded) {
               keys.push(record._id);
             }
-            console.log(keys);
             setActiveExpRow(keys);
           },
           onExpandedRowsChange: (expandedRows) => {
