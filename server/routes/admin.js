@@ -12,7 +12,9 @@ import {
   updateCourse,
   publishCourse,
   allStudents,
+  updateStudent,
   allInstructors,
+  updateInstructor,
 } from "../controllers/admin";
 
 router.get("/current-admin", requireSignin, currentAdmin);
@@ -26,6 +28,12 @@ router.post("/admin/course/publish/:slug", requireSignin, publishCourse);
 
 router.get("/admin/all-students", requireSignin, allStudents);
 
+// Edit Student
+router.put("/admin/student/:slug", requireSignin, updateStudent);
+
 router.get("/admin/all-instructors", requireSignin, allInstructors);
+
+// Edit Instructor
+router.put("/admin/instructor/:slug", requireSignin, updateInstructor);
 
 module.exports = router;

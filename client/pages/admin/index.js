@@ -40,7 +40,7 @@ const AdminIndex = () => {
 
   return (
     <AdminRoute>
-      <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
+      <h1 className="jumbotron text-center square">Admin Dashboard</h1>
 
       <TableComponent
         tableData={courses}

@@ -71,6 +71,21 @@ export const allStudents = async (req, res) => {
   }
 };
 
+export const updateStudent = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+      new: true,
+    }).exec();
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
+  }
+};
+
 export const allInstructors = async (req, res) => {
   try {
     const users = await User.find({ role: "Instructor" }).exec();
@@ -78,5 +93,20 @@ export const allInstructors = async (req, res) => {
     res.json(users);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateInstructor = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+      new: true,
+    }).exec();
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
   }
 };
