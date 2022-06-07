@@ -8,7 +8,7 @@ import Carousel from "../components/Carousel";
 
 const Index = ({ courses }) => {
   // const [courses, setCourses] = useState([]);
-
+   
   // useEffect(() => {
   //   const fetchCourses = async () => {
   //     const { data } = await axios.get("/api/courses");
