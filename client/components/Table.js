@@ -21,7 +21,7 @@ import {
 } from "antd";
 import axios from "axios";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 const data = [
   {
@@ -51,11 +51,14 @@ const TableComponent = (props) => {
   const { tableData = data, type = "courses", setReFetch } = props;
   const [form] = Form.useForm();
 
+  const [activeExpRow, setActiveExpRow] = React.useState();
   const [cols, setCols] = useState(null);
   const [filteredInfo, setFilteredInfo] = useState({});
-  // const [expandEdit, setExpandEdit] = useState(false);
 
-  // console.log(tableData);
+  const modifiedData = tableData.map((item) => ({
+    ...item,
+    key: item._id,
+  }));
 
   useEffect(() => {
     switch (type) {
@@ -73,14 +76,15 @@ const TableComponent = (props) => {
     }
   }, [type]);
 
-  const categoryFiltersBuilder = (dataToBuildFrom) => {
+  const categoryFiltersBuilder = useCallback((dataToBuildFrom) => {
     let filters = [];
-    console.log("ARRAY", Array.isArray(dataToBuildFrom?.category));
+    // console.log("ARRAY", Array.isArray(dataToBuildFrom?.category));
     if (
       Array.isArray(dataToBuildFrom?.category) &&
       dataToBuildFrom?.category?.length > 0
     ) {
-      filters = dataToBuildFrom?.category.map((cat) => {
+      const uniqArr = [...new Set(dataToBuildFrom?.category)];
+      filters = uniqArr.map((cat) => {
         return {
           text: cat,
           value: cat,
@@ -88,7 +92,10 @@ const TableComponent = (props) => {
       });
     } else {
       dataToBuildFrom.forEach((course) => {
-        if (course?.category?.length > 0) {
+        if (
+          course?.category?.length > 0 &&
+          !filters.some((filter) => filter.value === course?.category)
+        ) {
           filters.push({
             text: course.category,
             value: course.category,
@@ -97,7 +104,7 @@ const TableComponent = (props) => {
       });
     }
     return filters;
-  };
+  }, []);
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
@@ -189,16 +196,7 @@ const TableComponent = (props) => {
       title: "Categories",
       dataIndex: "category",
       key: "category",
-      filterss: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
+
       filters: categoryFiltersBuilder(tableData),
       onFilter: (value, record) => record.category === value,
       render: (category) => (
@@ -256,96 +254,110 @@ const TableComponent = (props) => {
     },
   ];
 
-  const expandCourses = (record) => (
-    <Form
-      initialValues={{
-        name: record.name,
-        description: record.description,
-        price: record.price,
-        category: record?.category,
-      }}
-      form={form}
-      name="edit-course" 
-      onFinish={(values, record) => hitEdit(values, record)}
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        flexDirection: "row",
-        flexFlow: "nowrap",
-        gap: "10px",
-      }}
-      layout="vertical"
-      size="small"
-    >
-      <Form.Item name="name" label="Course Name">
-        <Input
-          value={record.name}
-          size="small"
-          allowClear
-          placeholder="Type Course Name"
-        />
-      </Form.Item>
-      <Form.Item name="price" label="Price">
-        <InputNumber
-          value={record.price}
-          size="small"
-          placeholder="Name a price"
-          formatter={(value) =>
-            `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }
-          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-        />
-      </Form.Item>
-      <Form.Item
-        name="category"
-        style={{
-          width: "15%",
-        }}
-        label="Categories"
-      >
-        <Select
-          mode="tags"
-          size="small"
-          placeholder="Please select"
-          value={record?.category}
-          onChange={handleChange}
-        >
-          {categoryFiltersBuilder(tableData).map((item) => (
-            <Select.Option key={item.value} value={item.value}>
-              {item.text}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item name="description" label="Description">
-        <Input.TextArea
-          value={record.description}
-          size="small"
-          allowClear
-          placeholder="Write Description"
-        />
-      </Form.Item>
+  const expandCourses = (record, index, indent, expanded) => {
+    console.log("record => ", record.name);
+    form.setFieldsValue({
+      name: record.name,
+      description: record.description,
+      price: record.price,
+      category: record.category,
+    });
 
-      <Form.Item
+    const newINIT = {
+      name: tableData[index].name,
+      description: tableData[index].description,
+      price: tableData[index].price,
+      category: [tableData[index].category],
+    };
+
+    return (
+      <Form
+        form={form}
+        initialValues={newINIT}
+        name={record.slug}
+        onFinish={(values, record) => hitEdit(values, record)}
         style={{
           display: "flex",
-          alignSelf: "flex-end",
+          justifyContent: "space-around",
+          alignItems: "center",
+          flexDirection: "row",
+          flexFlow: "nowrap",
+          gap: "10px",
         }}
+        layout="vertical"
+        size="small"
       >
-        <Button htmlType="submit" size="middle" type="primary">
-          Save
-        </Button>
-      </Form.Item>
-    </Form>
-  );
+        {/* Name */}
+        <Form.Item name="name" label="Course Name">
+          <Input size="small" allowClear placeholder="Type Course Name" />
+        </Form.Item>
+
+        {/* Price */}
+        <Form.Item name="price" label="Price">
+          <InputNumber
+            size="small"
+            placeholder="Name a price"
+            formatter={(value) =>
+              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+          />
+        </Form.Item>
+
+        {/* Categories */}
+        <Form.Item
+          name="category"
+          style={{
+            width: "15%",
+          }}
+          label="Categories"
+        >
+          <Select
+            mode="tags"
+            size="small"
+            placeholder="Please select"
+            onChange={handleChange}
+          >
+            {categoryFiltersBuilder(tableData).map((item) => (
+              <Select.Option key={item.value} value={item.value}>
+                {item.text}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        {/* Description */}
+        <Form.Item name="description" label="Description">
+          <Input.TextArea
+            size="small"
+            allowClear
+            placeholder="Write Description"
+          />
+        </Form.Item>
+
+        <Form.Item
+          style={{
+            display: "flex",
+            alignSelf: "flex-end",
+          }}
+        >
+          <Button htmlType="submit" size="middle" type="primary">
+            Save
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  };
+
+  // const onTableRowExpand = (expanded, record) => {
+  //   setExpandedRowKey([record._id]);
+  // };
 
   return (
     <>
       <Table
-        rowKey={(record) => record._id}
         columns={cols}
-        dataSource={tableData}
+        dataSource={modifiedData}
         onChange={handleChange}
         pagination={{
           position: ["bottomCenter"],
@@ -383,6 +395,26 @@ const TableComponent = (props) => {
                 />
               </Tooltip>
             );
+          },
+
+          rowExpandable: (record) => true,
+
+          expandedRowKeys: activeExpRow,
+
+          onExpand: (expanded, record) => {
+            const keys = [];
+            if (expanded) {
+              keys.push(record._id);
+            }
+            console.log(keys);
+            setActiveExpRow(keys);
+          },
+          onExpandedRowsChange: (expandedRows) => {
+            if (expandedRows.length > 0) {
+              confirm(
+                "Are you sure you want to edit this course?\nEither OK or Cancel."
+              );
+            }
           },
         }}
       />
