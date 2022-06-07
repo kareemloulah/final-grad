@@ -9,6 +9,8 @@ import { requireSignin } from "../middlewares";
 import {
   currentAdmin,
   allCourses,
+  updateCourse,
+  publishCourse,
   allStudents,
   allInstructors,
 } from "../controllers/admin";
@@ -16,6 +18,11 @@ import {
 router.get("/current-admin", requireSignin, currentAdmin);
 
 router.get("/admin/all-courses", requireSignin, allCourses);
+// Edit Course
+router.put("/admin/course/:slug", requireSignin, updateCourse);
+
+// Publish unpublish
+router.post("/admin/course/publish/:slug", requireSignin, publishCourse);
 
 router.get("/admin/all-students", requireSignin, allStudents);
 

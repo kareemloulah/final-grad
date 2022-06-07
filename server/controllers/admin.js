@@ -19,10 +19,45 @@ export const currentAdmin = async (req, res) => {
 
 export const allCourses = async (req, res) => {
   try {
-    const courses = await Course.find({}).sort({ createdAt: -1 }).exec();
+    const courses = await Course.find({})
+      .sort({ createdAt: -1 })
+      .populate("instructor", "name")
+      .exec();
     res.json(courses);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateCourse = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+      new: true,
+    }).exec();
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
+  }
+};
+
+export const publishCourse = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const toUpdate = await Course.findOne({ slug }).exec();
+
+    toUpdate.published = !toUpdate.published;
+
+    await toUpdate.save();
+
+    res.json(toUpdate);
+  } catch (err) {
+    console.log("err => ", err);
+    return res.status(400).send(err);
   }
 };
 

@@ -8,10 +8,11 @@ import TableComponent from "../../components/Table";
 
 const AdminIndex = () => {
   const [courses, setCourses] = useState([]);
+  const [reFetch, setReFetch] = useState(false);
 
   useEffect(() => {
     loadCourses();
-  }, []);
+  }, [reFetch]);
 
   const loadCourses = async () => {
     const { data } = await axios.get("/api/admin/all-courses");
@@ -41,7 +42,12 @@ const AdminIndex = () => {
     <AdminRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
 
-      <TableComponent tableData={courses} />
+      <TableComponent
+        tableData={courses}
+        type="courses"
+        reFetch={reFetch}
+        setReFetch={setReFetch}
+      />
 
       {courses &&
         courses.map((course) => (
