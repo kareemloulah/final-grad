@@ -6,11 +6,11 @@ import { Avatar } from "antd";
 import Link from "next/link";
 import { SyncOutlined, PlayCircleOutlined } from "@ant-design/icons";
 
-
 const UserIndex = () => {
   const {
     state: { user },
   } = useContext(Context);
+
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 

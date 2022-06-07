@@ -9,7 +9,6 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 
-
 const BecomeInstructor = () => {
   // state
   const [loading, setLoading] = useState(false);

@@ -53,18 +53,18 @@ const TopNav = () => {
         onClick={(e) => setCurrent(e.key)}
         icon={<AppstoreOutlined />}
       > */}
-        <Link href="/">
-          <a
-            style={{
-              color: "#2d5ebe",
-              fontSize: "25px",
-              margin: "0px 30px ",
-              fontWeight: "bold",
-            }}
-          >
-            Courseme
-          </a>
-        </Link>
+      <Link href="/">
+        <a
+          style={{
+            color: "#2d5ebe",
+            fontSize: "25px",
+            margin: "0px 30px ",
+            fontWeight: "bold",
+          }}
+        >
+          Courseme
+        </a>
+      </Link>
       {/* </Item> */}
       <Item key="/courses" onClick={(e) => setCurrent(e.key)}>
         <Link href="/courses">
@@ -91,42 +91,45 @@ const TopNav = () => {
         </Link>
       </Item>
 
-      {user && user.role && user.role.includes("Instructor") ? (
-        <Item
-          style={{
-            color: "#2d5ebe",
-          }}
-          key="/instructor/course/create"
-          onClick={(e) => setCurrent(e.key)}
-          icon={<CarryOutOutlined />}
-        >
-          <Link href="/instructor/course/create">
-            <a
-              style={{
-                color: "#2d5ebe",
-              }}
-            >
-              Create Course
-            </a>
-          </Link>
-        </Item>
-      ) : (
-        <Item
-          key="/user/become-instructor"
-          onClick={(e) => setCurrent(e.key)}
-          icon={<TeamOutlined />}
-        >
-          <Link href="/user/become-instructor">
-            <a
-              style={{
-                color: "#2d5ebe",
-              }}
-            >
-              Become Instructor
-            </a>
-          </Link>
-        </Item>
-      )}
+      {!user?.role.includes("Admin") &&
+        (user && user.role && user.role.includes("Instructor") ? (
+          <Item
+            style={{
+              color: "#2d5ebe",
+            }}
+            key="/instructor/course/create"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<CarryOutOutlined />}
+          >
+            <Link href="/instructor/course/create">
+              <a
+                style={{
+                  color: "#2d5ebe",
+                }}
+              >
+                Create Course
+              </a>
+            </Link>
+          </Item>
+        ) : (
+          <Item
+            key="/user/become-instructor"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<TeamOutlined />}
+          >
+            <Link href="/user/become-instructor">
+              <a
+                style={{
+                  color: "#2d5ebe",
+                }}
+              >
+                Become Instructor
+              </a>
+            </Link>
+          </Item>
+        ))}
+
+      {}
 
       {user === null && (
         <>
