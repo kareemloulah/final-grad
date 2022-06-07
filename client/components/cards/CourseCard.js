@@ -11,7 +11,7 @@ const CourseCard = ({ course }) => {
       <a>
         <Card
           className="mb-3"
-          hoverable 
+          hoverable
           cover={
             <img
               src={image?.Location}

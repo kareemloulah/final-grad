@@ -1,4 +1,6 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Space, Table, Tag } from "antd";
+import Link from "next/link";
 import React, { useState } from "react";
 const data = [
   {
@@ -24,7 +26,12 @@ const data = [
   },
 ];
 
-const TableComponent = () => {
+const TableComponent = (props) => {
+  const { tableData = data } = props;
+
+  console.log("tableData => ", tableData);
+  console.log("data => ", data);
+
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
 
@@ -34,7 +41,6 @@ const TableComponent = () => {
     setSortedInfo(sorter);
   };
 
-
   const hitEdit = () => {
     alert("hit edit");
   };
@@ -42,40 +48,35 @@ const TableComponent = () => {
   const hitDelete = () => {
     alert("hitDelete");
   };
+  const coursesaa = ["name", "category", "price", "lessons"];
 
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-        },
-        {
-          text: "Jim",
-          value: "Jim",
-        },
-      ],
-      filteredValue: filteredInfo.name || null,
-      onFilter: (value, record) => record.name.includes(value),
+      render: (text, record) => (
+        <Link href={`/course/${record.slug}`}>
+          <a>{text}</a>
+        </Link>
+      ),
+
       sorter: (a, b) => a.name.length - b.name.length,
       sortOrder: sortedInfo.columnKey === "name" ? sortedInfo.order : null,
       ellipsis: true,
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      sorter: (a, b) => a.age - b.age,
-      sortOrder: sortedInfo.columnKey === "age" ? sortedInfo.order : null,
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      sorter: (a, b) => a.price - b.price,
+      sortOrder: sortedInfo.columnKey === "price" ? sortedInfo.order : null,
       ellipsis: true,
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Categories",
+      dataIndex: "category",
+      key: "category",
       filters: [
         {
           text: "London",
@@ -86,41 +87,51 @@ const TableComponent = () => {
           value: "New York",
         },
       ],
-      filteredValue: filteredInfo.address || null,
-      onFilter: (value, record) => record.address.includes(value),
-      sorter: (a, b) => a.address.length - b.address.length,
-      sortOrder: sortedInfo.columnKey === "address" ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (tags) => (
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+      render: (category) => (
         <span>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-
-            if (tag === "loser") {
-              color = "volcano";
-            }
-
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
+          {Array.isArray(category) &&
+            category?.map((cat) => (
+              <Tag key={category}>{cat.toUpperCase()}</Tag>
+            ))}
+          <Tag key={category}>{category?.toUpperCase()}</Tag>
         </span>
       ),
     },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      ellipsis: true,
+    },
+
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <button onClick={hitDelete}>Delete</button>
-          <button onClick={hitEdit}>Edit</button>
+          <Button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            type="primary"
+            shape="circle"
+            icon={<EditOutlined />}
+            onClick={hitEdit}
+          />
+          <Button
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            type="danger"
+            shape="circle"
+            icon={<DeleteOutlined />}
+            onClick={hitDelete}
+          />
         </Space>
       ),
     },
@@ -130,7 +141,7 @@ const TableComponent = () => {
     <>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={tableData}
         onChange={handleChange}
         pagination={{
           position: ["bottomCenter"],
