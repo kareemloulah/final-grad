@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import InstructorRoute from "../../components/routes/InstructorRoute";
+import AdminRoute from "../../components/routes/AdminRoute";
 import { Avatar, Tooltip } from "antd";
 import Link from "next/link";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import TableComponent from "../../components/Table";
 
-const InstructorIndex = () => {
+const AdminIndex = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -13,16 +14,17 @@ const InstructorIndex = () => {
   }, []);
 
   const loadCourses = async () => {
-    const { data } = await axios.get("/api/instructor-courses");
+    const { data } = await axios.get("/api/admin/all-courses");
     setCourses(data);
   };
 
   const myStyle = { marginTop: "-15px", fontSize: "10px" };
 
   return (
-    <InstructorRoute>
+    <AdminRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
-      {/* <pre>{JSON.stringify(courses, null, 4)}</pre> */}
+
+      <TableComponent />
 
       {courses &&
         courses.map((course) => (
@@ -79,8 +81,8 @@ const InstructorIndex = () => {
             </div>
           </>
         ))}
-    </InstructorRoute>
+    </AdminRoute>
   );
 };
 
-export default InstructorIndex;
+export default AdminIndex;

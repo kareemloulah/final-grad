@@ -9,6 +9,7 @@ import {
   UserAddOutlined,
   CarryOutOutlined,
   TeamOutlined,
+  CrownOutlined,
 } from "@ant-design/icons";
 import { Context } from "../context";
 import axios from "axios";
@@ -140,12 +141,16 @@ const TopNav = () => {
             icon={<UserAddOutlined />}
             style={{
               color: "#2d5ebe",
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <Link href="/register">
               <a
                 style={{
                   color: "#2d5ebe",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 Register
@@ -218,6 +223,8 @@ const TopNav = () => {
         <Item
           style={{
             color: "#2d5ebe",
+            display: "flex",
+            alignItems: "center",
           }}
           key="/instructor"
           onClick={(e) => setCurrent(e.key)}
@@ -231,6 +238,30 @@ const TopNav = () => {
               }}
             >
               Instructor
+            </a>
+          </Link>
+        </Item>
+      )}
+
+      {user && user.role && user.role.includes("Admin") && (
+        <Item
+          style={{
+            color: "#2d5ebe",
+            display: "flex",
+            alignItems: "center",
+          }}
+          key="/admin"
+          onClick={(e) => setCurrent(e.key)}
+          icon={<CrownOutlined />}
+          className="float-right"
+        >
+          <Link href="/admin">
+            <a
+              style={{
+                color: "#2d5ebe",
+              }}
+            >
+              Admin
             </a>
           </Link>
         </Item>
