@@ -17,8 +17,8 @@ const Footer = () => {
 
   return (
     <footer
-      className=" fixed-bottom"
-      style={{ backgroundColor: "#2d5ebe",padding:"1.5%"}}
+      className="sticky-bottom p-5 "
+      style={{ backgroundColor: "#2d5ebe", padding: "1.5%" }}
     >
       <div className="container-fluid ">
         <div className="row">
