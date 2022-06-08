@@ -26,7 +26,7 @@ const Index = ({ courses }) => {
       <div className="container">
         <div className="row p-4">
           {courses.map((course) => (
-            <div key={course._id} className="col-lg-3 col-md-6 col-sm-12">
+            <div key={course._id} className="col-lg-3 col-md-6 col-sm-12 p-2">
               <CourseCard course={course} />
             </div>
           ))}
@@ -34,9 +34,9 @@ const Index = ({ courses }) => {
         </div>
       </div>
         {/* paths Section */}
-      <div style={{ backgroundColor: "#2d5ebe", padding: "30px", marginBottom:'50px'}}>
+      <div style={{ backgroundColor: "#2d5ebe", marginBottom:'50px', padding: '30px' }}>
 
-          <PathsSection Id={Paths.id} Title= {Paths.title} />
+          <PathsSection />
           {/* <div className="container">
             <Row gutter={[16, 16]}>
               {Paths.map((path) => (
@@ -56,6 +56,8 @@ const Index = ({ courses }) => {
               ))}
             </Row>
           </div> */}
+
+
 
       </div>
 
