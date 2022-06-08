@@ -33,7 +33,7 @@ const lessonSchema = new mongoose.Schema(
     title: {
       type: String,
       trim: true,
-      minlength: 3,
+      // minlength: 3,
       maxlength: 320,
       required: true,
     },

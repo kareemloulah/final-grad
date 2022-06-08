@@ -5,6 +5,21 @@ import { SyncOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { Context } from "../context";
 import { useRouter } from "next/router";
+import {
+  PasswordInput,
+  TextInput,
+  Button,
+  Box,
+  Group,
+  Title,
+  Input
+} from "@mantine/core";
+
+import {  GoogleOutlined,} from "@ant-design/icons";
+
+
+
+
 
 const ForgotPassword = () => {
   // state
@@ -63,62 +78,81 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <h1 className="jumbotron text-center bg-primary square">
-        Forgot Password
-      </h1>
-
-      <div className="container col-md-4 offset-md-4 pb-5">
-        <form onSubmit={success ? handleResetPassword : handleSubmit}>
-          <input
-            type="email"
-            className="form-control mb-4 p-4"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
-            required
-          />
-          {success && (
-            <>
-              <input
-                type="text"
-                className="form-control mb-4 p-4"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Enter secret code"
-                required
-              />
-
-              <input
-                type="password"
-                className="form-control mb-4 p-4"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="New Password"
-                required
-              />
-
-              <button
-              type="button"
-              className="btn btn-secondary btn-block p-2"
-              onClick={() =>window.open("https://mail.google.com/", "_blank")}
+    <div className="container-md">
+      <div className="row">
+        <div
+          className="col-6 postion-absolute top-50 start-50 translate-middle align-items-center "
+          style={{ hight: "100px", margin: "auto" ,width:"100px"}} >
+          <Box>
+            <form onSubmit={success ? handleResetPassword : handleSubmit}>
+              <Title
+                className="text-left  justify-content-center "
+                style={{
+                  fontSize: "1.5rem",
+                  color: "#2d5ebe",
+                  marginBottom: "20px",
+                  marginTop: "50px",
+                }}
               >
-              Gmail
-            </button>
-            </>
-          )}
+                Forgot passsword
+              </Title>
 
-          <button
-            type="submit"
-            className="btn btn-primary btn-block p-2"
-            disabled={loading || !email}
-          >
-            {loading ? <SyncOutlined spin /> : "Submit"}
-          </button>
-          
-        </form>
+              <TextInput
+                mb="20px"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder=" email"
+                required
+              />
+
+              {success && (
+                <div>
+                  <input
+                    type="text"
+                    className="form-control mb-4 "
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="Enter secret code"
+                    required
+                  />
+
+                  <PasswordInput
+                  
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="New Password"
+                    required
+                  />
+                  <a href="https://mail.google.com/"  target="_blank">
+                  <Button  
+                  style={{ width: "100%", backgroundColor: "#d9d9d9",margin: "10px 0px"}}>
+                  
+                  <GoogleOutlined
+                  style={{
+                    width: "100%",
+                    color: "#f5222d",
+                    fontSize: "25px",
+                    margin:"auto"
+                  }}
+                />
+                    O to gmail
+                </Button>
+                </a>
+                </div>
+              )}
+              <Button
+                type="primary"
+                block
+                style={{ width: "100%", backgroundColor: "#2d5ebe", marginBottom: "50px",}}
+                disabled={loading || !email}
+              >
+                {loading ? <SyncOutlined spin /> : "Submit"}
+              </Button>
+            </form>
+          </Box>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

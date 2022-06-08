@@ -39,7 +39,7 @@ export const getAccountStatus = async (req, res) => {
     const account = await stripe.accounts.retrieve(user.stripe_account_id);
     // console.log("ACCOUNT => ", account);
     if (!account.charges_enabled) {
-      return res.staus(401).send("Unauthorized");
+      return res.status(401).send("Unauthorized");
     } else {
       const statusUpdated = await User.findByIdAndUpdate(
         user._id,
@@ -117,4 +117,4 @@ export const instructorPayoutSettings = async (req, res) => {
   } catch (err) {
     console.log("stripe payout settings login link err => , err");
   }
-};
+}; 

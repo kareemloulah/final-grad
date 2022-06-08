@@ -10,13 +10,19 @@ const CourseCard = ({ course }) => {
     <Link href={`/course/${slug}`}>
       <a>
         <Card
-          className="mb-2"
+          className="mb-3"
+          style={{ borderRadius: "10px" }}
+          hoverable
           cover={
             <img
               src={image?.Location}
               alt={name}
-              style={{ height: "90%", objectFit: "cover", width: "100%" }}
-              className="p-2"
+              style={{ 
+                height: "200px", 
+                objectFit: "cover", 
+                width: "100%", 
+                borderStartStartRadius : "10px", 
+                borderStartEndRadius : "10px" }}
             />
           }
         >

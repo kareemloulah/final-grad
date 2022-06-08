@@ -9,6 +9,7 @@ import {
   UserAddOutlined,
   CarryOutOutlined,
   TeamOutlined,
+  CrownOutlined,
 } from "@ant-design/icons";
 import { Context } from "../context";
 import axios from "axios";
@@ -39,52 +40,97 @@ const TopNav = () => {
 
   return (
     <Menu
-      theme="dark"
+      theme="white"
       mode="horizontal"
       selectedKeys={[current]}
-      className="mb-2"
+      className="sticky-top mb-2"
+      style={{ boxShadow: "0px 2px 20px rgb(0,0,0,0.1)" }}
     >
-      <Item
+      {/* <Item
+        style={{
+          color: "#2d5ebe",
+        }}
         key="/"
         onClick={(e) => setCurrent(e.key)}
         icon={<AppstoreOutlined />}
-      >
-        <Link href="/">
-          <a> Courseme </a>
-        </Link>
-      </Item>
+      > */}
+      <Link href="/">
+        <a
+          style={{
+            color: "#2d5ebe",
+            fontSize: "25px",
+            margin: "0px 30px ",
+            fontWeight: "bold",
+          }}
+        >
+          Courseme
+        </a>
+      </Link>
+      {/* </Item> */}
       <Item key="/courses" onClick={(e) => setCurrent(e.key)}>
         <Link href="/courses">
-          <a> Courses </a>
+          <a
+            style={{
+              color: "#2d5ebe",
+            }}
+          >
+            {" "}
+            Courses{" "}
+          </a>
         </Link>
       </Item>
       <Item key="/about" onClick={(e) => setCurrent(e.key)}>
         <Link href="/about">
-          <a> About me </a>
+          <a
+            style={{
+              color: "#2d5ebe",
+            }}
+          >
+            {" "}
+            About{" "}
+          </a>
         </Link>
       </Item>
 
-      {user && user.role && user.role.includes("Instructor") ? (
-        <Item
-          key="/instructor/course/create"
-          onClick={(e) => setCurrent(e.key)}
-          icon={<CarryOutOutlined />}
-        >
-          <Link href="/instructor/course/create">
-            <a>Create Course</a>
-          </Link>
-        </Item>
-      ) : (
-        <Item
-          key="/user/become-instructor"
-          onClick={(e) => setCurrent(e.key)}
-          icon={<TeamOutlined />}
-        >
-          <Link href="/user/become-instructor">
-            <a>Become Instructor</a>
-          </Link>
-        </Item>
-      )}
+      {!user?.role.includes("Admin") &&
+        (user && user.role && user.role.includes("Instructor") ? (
+          <Item
+            style={{
+              color: "#2d5ebe",
+            }}
+            key="/instructor/course/create"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<CarryOutOutlined />}
+          >
+            <Link href="/instructor/course/create">
+              <a
+                style={{
+                  color: "#2d5ebe",
+                }}
+              >
+                Create Course
+              </a>
+            </Link>
+          </Item>
+        ) : (
+          <Item
+            key="/user/become-instructor"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<TeamOutlined />}
+          >
+            <Link href="/user/become-instructor">
+              <a
+                style={{
+                  color: "#2d5ebe",
+                }}
+              >
+                Become Instructor
+              </a>
+            </Link>
+          </Item>
+        ))}
+
+      {}
 
       {user === null && (
         <>
@@ -93,9 +139,22 @@ const TopNav = () => {
             key="/register"
             onClick={(e) => setCurrent(e.key)}
             icon={<UserAddOutlined />}
+            style={{
+              color: "#2d5ebe",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             <Link href="/register">
-              <a>Register</a>
+              <a
+                style={{
+                  color: "#2d5ebe",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                Register
+              </a>
             </Link>
           </Item>
 
@@ -106,7 +165,13 @@ const TopNav = () => {
             icon={<LoginOutlined />}
           >
             <Link href="/login">
-              <a>Login</a>
+              <a
+                style={{
+                  color: "#2d5ebe",
+                }}
+              >
+                Login
+              </a>
             </Link>
           </Item>
         </>
@@ -114,30 +179,90 @@ const TopNav = () => {
 
       {user !== null && (
         <SubMenu
+          style={{
+            color: "#2d5ebe",
+          }}
           icon={<CoffeeOutlined />}
           title={user && user.name}
           className="float-right"
         >
-          <ItemGroup>
-            <Item key="/user">
+          <ItemGroup
+            style={{
+              color: "#2d5ebe",
+            }}
+          >
+            <Item
+              style={{
+                color: "#2d5ebe",
+              }}
+              key="/user"
+            >
               <Link href="/user">
-                <a>Dashboard</a>
+                <a
+                  style={{
+                    color: "#2d5ebe",
+                  }}
+                >
+                  Dashboard
+                </a>
               </Link>
             </Item>
-            <Item onClick={logout}>Logout</Item>
+            <Item
+              style={{
+                color: "red",
+              }}
+              onClick={logout}
+            >
+              Logout
+            </Item>
           </ItemGroup>
         </SubMenu>
       )}
 
       {user && user.role && user.role.includes("Instructor") && (
         <Item
+          style={{
+            color: "#2d5ebe",
+            display: "flex",
+            alignItems: "center",
+          }}
           key="/instructor"
           onClick={(e) => setCurrent(e.key)}
           icon={<TeamOutlined />}
           className="float-right"
         >
           <Link href="/instructor">
-            <a>Instructor</a>
+            <a
+              style={{
+                color: "#2d5ebe",
+              }}
+            >
+              Instructor
+            </a>
+          </Link>
+        </Item>
+      )}
+
+      {user && user.role && user.role.includes("Admin") && (
+        <Item
+          style={{
+            color: "#2d5ebe",
+            display: "flex",
+            alignItems: "center",
+          }}
+          key="/admin"
+          onClick={(e) => setCurrent(e.key)}
+          icon={<CrownOutlined />}
+          className="float-right"
+        >
+          <Link href="/admin">
+            <a
+              style={{
+                color: "#2d5ebe",
+              }}
+            >
+              Admin
+            </a>
           </Link>
         </Item>
       )}
