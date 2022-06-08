@@ -6,7 +6,7 @@ import { Paths } from "../utils/dummyData";
 import Link from "next/link";
 import Carousel from "../components/Carousel";
 import PathsSection  from "../components/PathsSection";
-import Path  from "./Paths/[Pathid]";
+
 
 
 
@@ -35,8 +35,9 @@ const Index = ({ courses }) => {
       </div>
         {/* paths Section */}
       <div style={{ backgroundColor: "#2d5ebe", padding: "30px", marginBottom:'50px'}}>
-          
-          <div className="container">
+
+          <PathsSection Id={Paths.id} Title= {Paths.title} />
+          {/* <div className="container">
             <Row gutter={[16, 16]}>
               {Paths.map((path) => (
                 <div 
@@ -54,8 +55,8 @@ const Index = ({ courses }) => {
                 </div>
               ))}
             </Row>
-          </div>
-        
+          </div> */}
+
       </div>
 
     </>
@@ -71,14 +72,15 @@ export async function getServerSideProps() {
   };
 }
 
-export function getAllPathIds() {
-  return  Paths.map(path => {
-    const id = path.Id;
-    return {
-      params: { id }
-    }
-  })
-}
+// export function getAllPathIds() {
+//   return  Paths.map(path => {
+//     const pathId = path.id;
+//     return {
+//       params: { id }
+//     }
+//   })
+// }
+
 
 // export function getAllData(pathId, { params }) {
 //   return {
