@@ -11,12 +11,18 @@ const CourseCard = ({ course }) => {
       <a>
         <Card
           className="mb-3"
+          style={{ borderRadius: "10px" }}
           hoverable
           cover={
             <img
               src={image?.Location}
               alt={name}
-              style={{ height: "200px", objectFit: "cover", width: "100%" }}
+              style={{ 
+                height: "200px", 
+                objectFit: "cover", 
+                width: "100%", 
+                borderStartStartRadius : "10px", 
+                borderStartEndRadius : "10px" }}
             />
           }
         >
