@@ -116,6 +116,13 @@ export default function StudentsTable(props) {
     return coursesToPrint;
   }, []);
 
+  function localDay(time) {
+    const minutesOffset = time.getTimezoneOffset();
+    const millisecondsOffset = minutesOffset * 60 * 1000;
+    const local = new Date(time - millisecondsOffset);
+    return local.toISOString().substr(0, 10);
+  }
+
   const CourseTag = ({ course }) => {
     return (
       <Tag
@@ -177,7 +184,11 @@ export default function StudentsTable(props) {
           }}
         >
           <Tooltip title="Student name">
-            {record?.blocked ? <StopOutlined type="danger" /> : <UserOutlined />}{" "}
+            {record?.blocked ? (
+              <StopOutlined type="danger" />
+            ) : (
+              <UserOutlined />
+            )}{" "}
             <a>{text}</a>
           </Tooltip>
         </span>
@@ -248,6 +259,18 @@ export default function StudentsTable(props) {
       )
     },
 
+    // Joined Date
+    {
+      title: "Joined Date",
+      dataIndex: "createdAt",
+      key: "joinedDate",
+      render: (text, record) => (
+        <Tooltip title="Joined Date">
+          <span>{localDay(new Date(text))}</span>
+        </Tooltip>
+      ),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    },
     // Actions = block
     {
       title: "Action",

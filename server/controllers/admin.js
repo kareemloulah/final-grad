@@ -90,9 +90,9 @@ export const allStudents = async (req, res) => {
       .exec();
 
     // Filter out the users which has role of instructor
-    const students = users.filter((user) => !user.role.includes("Instructor"));
+    // const students = users.filter((user) => !user.role.includes("Instructor"));
 
-    res.json(students);
+    res.json(users);
   } catch (err) {
     console.log(err);
   }
