@@ -15,7 +15,7 @@ export default function AdminStudentsIndex() {
 
   const loadStudents = async () => {
     const { data } = await axios.get("/api/admin/all-students");
-    console.log(data);
+    // console.log(data);
     setStudents(data);
   };
   const myStyle = { marginTop: "-15px", fontSize: "10px" };

@@ -7,6 +7,7 @@ import {
   EditOutlined,
   LockOutlined,
   MinusCircleTwoTone,
+  StarOutlined,
   StopOutlined,
   UnlockOutlined,
   UserOutlined
@@ -78,6 +79,31 @@ export default function StudentsTable(props) {
 
   const [filteredInfo, setFilteredInfo] = useState({});
 
+  const coursesFiltersBuilder = useCallback(
+    (dataToBuildFrom) => {
+      let filters = [];
+      dataToBuildFrom.forEach((user) => {
+        if (user?.courses?.length > 0) {
+          user.courses.forEach((course) => {
+            if (!filters.some((filter) => filter.value === course?.name)) {
+              filters.push({
+                text: course.name,
+                value: course.name
+              });
+            }
+          });
+        }
+      });
+      return [...new Set(filters)];
+      // return filters;
+    },
+    [filteredInfo]
+  );
+
+  const isInstructor = (user) => {
+    return user?.role.includes("Instructor");
+  };
+
   const modifiedData = tableData.map((item) => ({
     ...item,
     key: item._id
@@ -136,7 +162,7 @@ export default function StudentsTable(props) {
               <DollarCircleFilled
                 style={{
                   fontSize: "20px",
-                  color: course?.paid ? "green" : "red"
+                  color: course?.paid ? "green" : "gray"
                 }}
               />
             </Tooltip>
@@ -155,20 +181,47 @@ export default function StudentsTable(props) {
       render: (text, record) => (
         <span
           style={{
-            fontSize: "16px",
+            fontSize: "14px",
             fontWeight: "500",
             display: "flex",
             alignItems: "center"
           }}
         >
-          <Tooltip title="Student name">
-            {record?.blocked ? (
-              <StopOutlined type="danger" />
-            ) : (
-              <UserOutlined />
-            )}{" "}
-            <a>{text}</a>
-          </Tooltip>
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px"
+            }}
+          >
+            <Tooltip title="Student name">
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px"
+                }}
+              >
+                {record?.blocked ? (
+                  <StopOutlined type="danger" />
+                ) : (
+                  <UserOutlined />
+                )}{" "}
+                <a>{text}</a>
+              </span>
+            </Tooltip>
+            {isInstructor(record) && (
+              <Tooltip title="This user is instructor!">
+                <StarOutlined
+                  style={{
+                    fontSize: "10px",
+                    color: "#1890ff",
+                    marginBottom: "7px"
+                  }}
+                />
+              </Tooltip>
+            )}
+          </span>
         </span>
       ),
 
@@ -189,13 +242,13 @@ export default function StudentsTable(props) {
       sorter: (a, b) => a.name.length - b.name.length
     },
 
-    // Course = Tag + modal + badge coursesLimit, setCoursesLimit
+    // Course = Tag + badge coursesLimit, setCoursesLimit
     {
       title: "Courses",
       dataIndex: "courses",
       key: "courses",
 
-      filters: ["d"],
+      filters: coursesFiltersBuilder(tableData),
       onFilter: (value, record) =>
         record.courses?.some((course) => course?.name === value),
       render: (courses) => (
@@ -294,20 +347,21 @@ export default function StudentsTable(props) {
   };
 
   const hitEdit = async (values) => {
-    console.table(values);
+    console.log("ID: ", values._id);
 
-    const resp = await axios.put(`/api/admin/course/${values.slug}`, values);
+    const resp = await axios.put(`/api/admin/user/${values.id}`, values);
     setReFetch((e) => !e);
     if (resp.status === 200) {
-      toast.success(`Course Updated successfully`);
+      toast.success(`Stundent Updated successfully`);
       setActiveExpRow("0");
+      setReFetch((e) => !e);
     } else {
       toast.error(`Error in Editing Course`);
     }
   };
 
   const toggleBlock = async (record, type) => {
-    const resp = await axios.post(`/api//admin/block/${record._id}`);
+    const resp = await axios.post(`/api/admin/block/${record._id}`);
     setReFetch((e) => !e);
     if (resp.status === 200) {
       toast.success(`User ${type}ed successfully 😁`);
@@ -317,29 +371,23 @@ export default function StudentsTable(props) {
   };
 
   const expandStudents = (record, index, indent, expanded) => {
-    console.log("record:", record.slug);
-
     form.setFieldsValue({
+      id: record._id,
       name: record.name,
-      description: record.description,
-      price: record.price,
-      category: record.category,
-      slug: record.slug
+      email: record.email
     });
 
     const newINIT = {
+      id: tableData[index]._id,
       name: tableData[index].name,
-      description: tableData[index].description,
-      price: tableData[index].price,
-      category: [tableData[index].category],
-      slug: tableData[index].slug
+      email: tableData[index].email
     };
 
     return (
       <Form
         form={form}
         initialValues={newINIT}
-        name={record.slug}
+        name={record.name}
         onFinish={hitEdit}
         style={{
           display: "flex",
@@ -353,62 +401,16 @@ export default function StudentsTable(props) {
         size="small"
       >
         {/* Slug */}
-        <Form.Item name="slug"></Form.Item>
+        <Form.Item name="id"></Form.Item>
 
         {/* Name */}
-        <Form.Item name="name" label="Course Name">
-          <Input size="small" allowClear placeholder="Type Course Name" />
+        <Form.Item name="name" label="Student Name">
+          <Input size="small" allowClear placeholder="Type Student Name" />
         </Form.Item>
 
-        {/* Price */}
-        <Form.Item name="price" label="Price">
-          <InputNumber
-            size="small"
-            placeholder="Name a price"
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-          />
-        </Form.Item>
-
-        {/* Categories */}
-        <Form.Item
-          name="category"
-          style={{
-            width: "15%"
-          }}
-          label="Categories"
-        >
-          <Select
-            showSearch
-            size="small"
-            placeholder="Please select category"
-            optionFilterProp="children"
-            filterOption={(input, option) => {
-              return option.children
-                .toLowerCase()
-                .includes(input.toLowerCase());
-            }}
-            filterSort={(optionA, optionB) =>
-              optionA.children.toLowerCase() > optionB.children.toLowerCase()
-                ? 1
-                : -1
-            }
-          >
-            <Select.Option key={"item.value"} value={"item.value"}>
-              {"item.text"}
-            </Select.Option>
-          </Select>
-        </Form.Item>
-
-        {/* Description */}
-        <Form.Item name="description" label="Description">
-          <Input.TextArea
-            size="small"
-            allowClear
-            placeholder="Write Description"
-          />
+        {/* Email */}
+        <Form.Item name="email" label="Student email">
+          <Input size="small" allowClear placeholder="Type student email" />
         </Form.Item>
 
         <Form.Item

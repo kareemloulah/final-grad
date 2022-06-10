@@ -1,10 +1,16 @@
 import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
   CloseOutlined,
   DeleteOutlined,
+  DollarCircleFilled,
   EditOutlined,
   LockOutlined,
   MinusCircleTwoTone,
-  UnlockOutlined
+  StarOutlined,
+  StopOutlined,
+  UnlockOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -17,199 +23,240 @@ import {
   Input,
   Radio,
   InputNumber,
-  Select
+  Select,
+  Badge
 } from "antd";
 import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
 
 export default function InstructorsTable(props) {
-  const { tableData = data, setReFetch } = props;
+  const { tableData, setReFetch, courses } = props;
   const [form] = Form.useForm();
+
+  const [coursesLimit, setCoursesLimit] = useState(2);
 
   const [activeExpRow, setActiveExpRow] = useState();
 
   const [filteredInfo, setFilteredInfo] = useState({});
 
-  const [tempCatInput, setTempCatInput] = useState("");
-  const [tempCat, setTempCat] = useState([]);
+  const coursesFiltersBuilder = useCallback(
+    (dataToBuildFrom) => {
+      let filters = [];
+      dataToBuildFrom.forEach((user) => {
+        if (user?.courses?.length > 0) {
+          user.courses.forEach((course) => {
+            if (!filters.some((filter) => filter.value === course?.name)) {
+              filters.push({
+                text: course.name,
+                value: course.name
+              });
+            }
+          });
+        }
+      });
+      return [...new Set(filters)];
+      // return filters;
+    },
+    [filteredInfo]
+  );
 
-  const modifiedData = tableData.map((item) => ({
+  const modifiedData = tableData?.map((item) => ({
     ...item,
     key: item._id
   }));
 
-  const categoryFiltersBuilder = useCallback(
-    (dataToBuildFrom) => {
-      let filters = tempCat?.length > 0 ? [...tempCat] : [];
-      dataToBuildFrom.forEach((course) => {
-        if (
-          course?.category?.length > 0 &&
-          !filters.some((filter) => filter.value === course?.category)
-        ) {
-          filters.unshift({
-            text: course.category,
-            value: course.category
-          });
-        }
+  const printCoursesWithLimit = useCallback((courses, limit) => {
+    let coursesToPrint = courses.slice(0, limit);
+    if (coursesToPrint?.length < courses?.length) {
+      coursesToPrint.push({
+        text: `+${courses?.length - coursesToPrint?.length} more`,
+        value: "more"
       });
-      return filters;
-    },
-    [tempCat]
-  );
-
-  const handleChange = (pagination, filters, sorter) => {
-    setFilteredInfo(filters);
-  };
-
-  const hitEdit = async (values) => {
-    console.table(values);
-
-    const resp = await axios.put(`/api/admin/course/${values.slug}`, values);
-    setReFetch((e) => !e);
-    if (resp.status === 200) {
-      toast.success(`Course Updated successfully`);
-      setActiveExpRow("0");
-    } else {
-      toast.error(`Error in Editing Course`);
     }
-  };
+    return coursesToPrint;
+  }, []);
 
-  const togglePublish = async (record, type) => {
-    const resp = await axios.post(`/api/admin/course/publish/${record.slug}`);
-    setReFetch((e) => !e);
-    if (resp.status === 200) {
-      toast.success(`Course ${type}ed successfully`);
-    } else {
-      toast.error(`Error ${type}ing Course`);
-    }
+  function localDay(time) {
+    const minutesOffset = time.getTimezoneOffset();
+    const millisecondsOffset = minutesOffset * 60 * 1000;
+    const local = new Date(time - millisecondsOffset);
+    return local.toISOString().substr(0, 10);
+  }
+
+  const CourseTag = ({ course }) => {
+    return (
+      <Tag
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          marginRight: "5px",
+          padding: "5px"
+        }}
+        color={course?.published ? "success" : "error"}
+        key={course?._id}
+      >
+        <Link href={`/course/${course.slug}`}>
+          <a>
+            <Avatar
+              style={{
+                marginRight: "5px"
+              }}
+              src={course?.image?.Location}
+            />
+            <span
+              style={{
+                marginRight: "5px",
+                fontSize: "14px",
+                fontWeight: "bold"
+              }}
+            >
+              {course?.name}
+            </span>
+            <Tooltip
+              title={course?.paid ? "Course is paid 🤑" : "Course is FREE"}
+            >
+              <DollarCircleFilled
+                style={{
+                  fontSize: "20px",
+                  color: course?.paid ? "green" : "gray"
+                }}
+              />
+            </Tooltip>
+          </a>
+        </Link>
+      </Tag>
+    );
   };
 
   const coursesColumns = [
+    // name
     {
-      title: "Cover",
-      dataIndex: "image",
-      key: "image",
-      render: (text, record) => (
-        <Tooltip title="Course Cover">
-          <Avatar size={45} src={text.Location} />
-        </Tooltip>
-      ),
-      sorter: (a, b) => a.name.length - b.name.length
-    },
-    {
-      title: "Course Name",
+      title: "Instructor Name",
       dataIndex: "name",
       key: "name",
       render: (text, record) => (
-        <Link href={`/course/${record.slug}`}>
-          <Tooltip title="View Course">
-            <a>{text}</a>
-          </Tooltip>
-        </Link>
+        <span
+          style={{
+            fontSize: "14px",
+            fontWeight: "500",
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px"
+            }}
+          >
+            <Tooltip title="Instructor name">
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px"
+                }}
+              >
+                {record?.blocked ? (
+                  <StopOutlined type="danger" />
+                ) : (
+                  <UserOutlined />
+                )}{" "}
+                <a>{text}</a>
+              </span>
+            </Tooltip>
+          </span>
+        </span>
       ),
 
       sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // email
     {
-      title: "Instructor Name",
-      dataIndex: ["instructor", "name"],
-      key: "instructor",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       render: (text, record) => (
-        // <Link href={`/course/${record.slug}`}>
-        // <a>{text}</a>
-        // </Link>
-        <Tooltip title="Course Owner Name">
+        <Tooltip title="Instructor e-mail">
           <span>{text}</span>
         </Tooltip>
       ),
 
       sorter: (a, b) => a.name.length - b.name.length
     },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (text, record) =>
-        text === 0 ? (
-          <Tooltip title="This course is totaly FREE">
-            <Tag>Free</Tag>
-          </Tooltip>
-        ) : (
-          <Tooltip title={`This course price is ${text} LE`}>
-            <Tag>{text}</Tag>
-          </Tooltip>
-        ),
-      sorter: (a, b) => a.price - b.price
-    },
-    {
-      title: "Categories",
-      dataIndex: "category",
-      key: "category",
 
-      filters: categoryFiltersBuilder(tableData),
-      onFilter: (value, record) => record.category === value,
-      render: (category) => (
+    // Course = Tag + badge coursesLimit, setCoursesLimit
+    {
+      title: "Courses",
+      dataIndex: "courses",
+      key: "courses",
+
+      filters: coursesFiltersBuilder(tableData),
+      onFilter: (value, record) =>
+        record.courses?.some((course) => course?.name === value),
+      render: (courses) => (
         <span>
-          {Array.isArray(category) &&
-            category?.map((cat) => (
-              <Tag key={category}>{cat.toUpperCase()}</Tag>
-            ))}
-          <Tag key={category}>{category?.toUpperCase()}</Tag>
+          {courses?.length > 0 ? (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center"
+              }}
+            >
+              {printCoursesWithLimit(courses, coursesLimit)?.map(
+                (course, index) =>
+                  index < coursesLimit ? (
+                    <CourseTag course={course} key={course?._id} />
+                  ) : (
+                    <Tooltip title="View 3 more">
+                      <Button
+                        style={{
+                          height: "40px",
+                          borderRadius: "35px"
+                        }}
+                        type="primary"
+                        onClick={() => setCoursesLimit(coursesLimit + 3)}
+                      >
+                        More
+                      </Button>
+                    </Tooltip>
+                  )
+              )}
+            </div>
+          ) : (
+            <>
+              <Tag color="warning">No Courses</Tag>
+            </>
+          )}
         </span>
       )
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description"
-    },
 
+    // Joined Date
+    {
+      title: "Joined Date",
+      dataIndex: "createdAt",
+      key: "joinedDate",
+      render: (text, record) => (
+        <Tooltip title="Joined Date">
+          <span>{localDay(new Date(text))}</span>
+        </Tooltip>
+      ),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+    },
+    // Actions = block
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          {record.published ? (
-            <Tooltip title="Unpublish this course">
-              <Button
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                type="danger"
-                shape="circle"
-                icon={<UnlockOutlined />}
-                onClick={() => togglePublish(record, "Unpublish")}
-              />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Publish this course">
+          {record?.blocked ? (
+            <Tooltip title="Unblock this Instructor">
               <Button
                 style={{
                   display: "flex",
@@ -218,8 +265,22 @@ export default function InstructorsTable(props) {
                 }}
                 type="primary"
                 shape="circle"
-                icon={<LockOutlined />}
-                onClick={() => togglePublish(record, "Publish")}
+                icon={<CheckCircleOutlined />}
+                onClick={() => toggleBlock(record, "Unblock")}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Block this Instructor">
+              <Button
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                type="danger"
+                shape="circle"
+                icon={<StopOutlined />}
+                onClick={() => toggleBlock(record, "Block")}
               />
             </Tooltip>
           )}
@@ -228,53 +289,52 @@ export default function InstructorsTable(props) {
     }
   ];
 
-  const handleNewCategory = (e) => {
-    e.preventDefault();
-
-    !tempCat.some((cats) => cats.value === tempCatInput) &&
-      tempCatInput?.length > 0 &&
-      setTempCat([
-        ...tempCat,
-        {
-          value: tempCatInput,
-          text: tempCatInput
-        }
-      ]);
-
-    setTempCatInput("");
+  const handleChange = (pagination, filters, sorter) => {
+    setFilteredInfo(filters);
   };
 
-  const onCategoryChange = (value) => {
-    console.log(value);
-    form.setFieldsValue({
-      category: value
-    });
+  const hitEdit = async (values) => {
+    console.log("ID: ", values._id);
+
+    const resp = await axios.put(`/api/admin/instructor/${values.id}`, values);
+    setReFetch((e) => !e);
+    if (resp.status === 200) {
+      toast.success(`Stundent Updated successfully`);
+      setActiveExpRow("0");
+      setReFetch((e) => !e);
+    } else {
+      toast.error(`Error in Editing Course`);
+    }
   };
 
-  const expandCourses = (record, index, indent, expanded) => {
-    console.log("record:", record.slug);
+  const toggleBlock = async (record, type) => {
+    const resp = await axios.post(`/api/admin/block/${record._id}`);
+    setReFetch((e) => !e);
+    if (resp.status === 200) {
+      toast.success(`User ${type}ed successfully 😁`);
+    } else {
+      toast.error(`Error ${type}ing User! ❌`);
+    }
+  };
 
+  const expandInstructors = (record, index, indent, expanded) => {
     form.setFieldsValue({
+      id: record._id,
       name: record.name,
-      description: record.description,
-      price: record.price,
-      category: record.category,
-      slug: record.slug
+      email: record.email
     });
 
     const newINIT = {
+      id: tableData[index]._id,
       name: tableData[index].name,
-      description: tableData[index].description,
-      price: tableData[index].price,
-      category: [tableData[index].category],
-      slug: tableData[index].slug
+      email: tableData[index].email
     };
 
     return (
       <Form
         form={form}
         initialValues={newINIT}
-        name={record.slug}
+        name={record.name}
         onFinish={hitEdit}
         style={{
           display: "flex",
@@ -288,94 +348,16 @@ export default function InstructorsTable(props) {
         size="small"
       >
         {/* Slug */}
-        <Form.Item name="slug"></Form.Item>
+        <Form.Item name="id"></Form.Item>
 
         {/* Name */}
-        <Form.Item name="name" label="Course Name">
-          <Input size="small" allowClear placeholder="Type Course Name" />
+        <Form.Item name="name" label="Instructor Name">
+          <Input size="small" allowClear placeholder="Type Instructor Name" />
         </Form.Item>
 
-        {/* Price */}
-        <Form.Item name="price" label="Price">
-          <InputNumber
-            size="small"
-            placeholder="Name a price"
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-          />
-        </Form.Item>
-
-        {/* Categories */}
-        <Form.Item
-          name="category"
-          style={{
-            width: "15%"
-          }}
-          label="Categories"
-        >
-          <Select
-            showSearch
-            size="small"
-            placeholder="Please select category"
-            optionFilterProp="children"
-            onChange={onCategoryChange}
-            filterOption={(input, option) => {
-              return option.children
-                .toLowerCase()
-                .includes(input.toLowerCase());
-            }}
-            filterSort={(optionA, optionB) =>
-              optionA.children.toLowerCase() > optionB.children.toLowerCase()
-                ? 1
-                : -1
-            }
-          >
-            {categoryFiltersBuilder(tableData).map((item) => (
-              <Select.Option key={item.value} value={item.value}>
-                {item.text}
-              </Select.Option>
-            ))}
-          </Select>
-          {/* New Category */}
-          <Input.Group
-            style={{
-              marginTop: "5px",
-              width: "104%"
-            }}
-            compact
-          >
-            <Input
-              style={{
-                width: "70%"
-              }}
-              placeholder="New Category"
-              onChange={(event) => {
-                setTempCatInput(event.target.value);
-              }}
-              value={tempCatInput}
-            />
-            <Button
-              disabled={
-                tempCat.some((cats) => cats.value === tempCatInput) ||
-                tempCatInput === ""
-              }
-              onClick={handleNewCategory}
-              type="primary"
-            >
-              Add
-            </Button>
-          </Input.Group>
-        </Form.Item>
-
-        {/* Description */}
-        <Form.Item name="description" label="Description">
-          <Input.TextArea
-            size="small"
-            allowClear
-            placeholder="Write Description"
-          />
+        {/* Email */}
+        <Form.Item name="email" label="Instructor email">
+          <Input size="small" allowClear placeholder="Type instructor email" />
         </Form.Item>
 
         <Form.Item
@@ -395,6 +377,7 @@ export default function InstructorsTable(props) {
   return (
     <>
       <Table
+        tableLayout="auto "
         columns={coursesColumns}
         dataSource={modifiedData}
         onChange={handleChange}
@@ -402,7 +385,7 @@ export default function InstructorsTable(props) {
           position: ["bottomCenter"]
         }}
         expandable={{
-          expandedRowRender: expandCourses,
+          expandedRowRender: expandInstructors,
 
           expandIcon: ({ expanded, onExpand, record }) => {
             return expanded ? (
