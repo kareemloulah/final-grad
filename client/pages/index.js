@@ -56,9 +56,7 @@ const Index = ({ courses }) => {
               ))}
             </Row>
           </div> */}
-
-
-
+          
       </div>
 
     </>
