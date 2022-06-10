@@ -5,10 +5,7 @@ import { Row, Col } from "antd";
 import { Paths } from "../utils/dummyData";
 import Link from "next/link";
 import Carousel from "../components/Carousel";
-import PathsSection  from "../components/PathsSection";
-
-
-
+import PathsSection from "../components/PathsSection";
 
 const Index = ({ courses }) => {
   // const [courses, setCourses] = useState([]);
@@ -21,7 +18,7 @@ const Index = ({ courses }) => {
   // }, []);
   return (
     <>
-      <Carousel/>
+      <Carousel />
       {/* Course Section */}
       <div className="container">
         <div className="row p-4">
@@ -30,35 +27,38 @@ const Index = ({ courses }) => {
               <CourseCard course={course} />
             </div>
           ))}
-
         </div>
       </div>
-        {/* paths Section */}
-      <div style={{ backgroundColor: "#2d5ebe", marginBottom:'50px', padding: '30px' }}>
-
-          <PathsSection />
-          {/* <div className="container">
-            <Row gutter={[16, 16]}>
-              {Paths.map((path) => (
-                <div 
-                  key={path.Id} 
-                  className="col-lg-4 col-md-6 col-sm-12"
+      {/* paths Section */}
+      <div
+        style={{
+          backgroundColor: "#2d5ebe",
+          marginBottom: "50px",
+          padding: "30px"
+        }}
+      >
+        {/* <PathsSection /> */}
+        <div className="container">
+          <Row gutter={[16, 16]}>
+            {Paths.map((path, index) => (
+              <div key={path.id} className="col-lg-4 col-md-6 col-sm-12">
+                <Link href={`/paths/${index}`}>
+                  <div
+                    className="card m-2 p-2"
+                    style={{
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius: "10px"
+                    }}
                   >
-                  <Link href="/Paths/Path">
-                    <div
-                      className="card m-2 p-2"
-                      style={{ alignItems: "center", cursor: "pointer", borderRadius: "10px" }}
-                    >
-                      <h6 className="card-title m-2"> {path.title} </h6>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </Row>
-          </div> */}
-          
+                    <h6 className="card-title m-2"> {path.title} </h6>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </Row>
+        </div>
       </div>
-
     </>
   );
 };
@@ -67,8 +67,8 @@ export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
   return {
     props: {
-      courses: data,
-    },
+      courses: data
+    }
   };
 }
 
@@ -81,14 +81,11 @@ export async function getServerSideProps() {
 //   })
 // }
 
-
 // export function getAllData(pathId, { params }) {
 //   return {
 //     page: pathId,
 //     query: params,
 //   }
 // }
-
-
 
 export default Index;
