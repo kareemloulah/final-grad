@@ -8,7 +8,7 @@ const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
-  apiVersion: process.env.AWS_API_VERSION,
+  apiVersion: process.env.AWS_API_VERSION
 };
 
 const SES = new AWS.SES(awsConfig);
@@ -34,7 +34,7 @@ export const register = async (req, res) => {
     const user = new User({
       name,
       email,
-      password: hashedPassword,
+      password: hashedPassword
     });
     await user.save();
     // console.log("saved user", user);
@@ -49,24 +49,35 @@ export const login = async (req, res) => {
   try {
     // console.log(req.body);
     const { email, password } = req.body;
+
     // check if our db has user with that email
     const user = await User.findOne({ email }).exec();
     if (!user) return res.status(400).send("No user found");
+
     // check password
     const match = await comparePassword(password, user.password);
     if (!match) return res.status(400).send("Wrong password");
 
+    // If user is blocked
+    if (user.blocked)
+      return res
+        .status(400)
+        .send("You are blocked contact admin at +201025209526");
+
     // create signed jwt
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "7d"
     });
+
     // return user and token to client, exclude hashed password
     user.password = undefined;
+
     // send token in cookie
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: true
       // secure: true, // only works on https
     });
+
     // send user as json response
     res.json(user);
   } catch (err) {
@@ -109,7 +120,7 @@ export const forgotPassword = async (req, res) => {
     const params = {
       Source: process.env.EMAIL_FROM,
       Destination: {
-        ToAddresses: [email],
+        ToAddresses: [email]
       },
       Message: {
         Body: {
@@ -122,14 +133,14 @@ export const forgotPassword = async (req, res) => {
                   <h2 style="color:red;">${shortCode}</h2>
                   <i>Courseme.com</i>
                 </html>
-              `,
-          },
+              `
+          }
         },
         Subject: {
           Charset: "UTF-8",
-          Data: "Reset Password",
-        },
-      },
+          Data: "Reset Password"
+        }
+      }
     };
 
     const emailSent = SES.sendEmail(params).promise();
@@ -149,17 +160,17 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { email, code, newPassword } = req.body;
-    
+
     const hashedPassword = await hashPassword(newPassword);
 
     const user = User.findOneAndUpdate(
       {
         email,
-        passwordResetCode: code,
+        passwordResetCode: code
       },
       {
         password: hashedPassword,
-        passwordResetCode: "",
+        passwordResetCode: ""
       }
     ).exec();
     res.json({ ok: true });

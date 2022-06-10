@@ -78,32 +78,10 @@ export default function StudentsTable(props) {
 
   const [filteredInfo, setFilteredInfo] = useState({});
 
-  const [tempCatInput, setTempCatInput] = useState("");
-  const [tempCat, setTempCat] = useState([]);
-
   const modifiedData = tableData.map((item) => ({
     ...item,
     key: item._id
   }));
-
-  const coursesFiltersBuilder = useCallback(
-    (dataToBuildFrom) => {
-      let filters = tempCat?.length > 0 ? [...tempCat] : [];
-      dataToBuildFrom.forEach((course) => {
-        if (
-          course?.category?.length > 0 &&
-          !filters.some((filter) => filter.value === course?.category)
-        ) {
-          filters.unshift({
-            text: course.category,
-            value: course.category
-          });
-        }
-      });
-      return filters;
-    },
-    [tempCat]
-  );
 
   const printCoursesWithLimit = useCallback((courses, limit) => {
     let coursesToPrint = courses.slice(0, limit);
@@ -217,7 +195,7 @@ export default function StudentsTable(props) {
       dataIndex: "courses",
       key: "courses",
 
-      filters: coursesFiltersBuilder(tableData),
+      filters: ["d"],
       onFilter: (value, record) =>
         record.courses?.some((course) => course?.name === value),
       render: (courses) => (
@@ -288,7 +266,7 @@ export default function StudentsTable(props) {
                 type="primary"
                 shape="circle"
                 icon={<CheckCircleOutlined />}
-                onClick={() => togglePublish(record, "Unpublish")}
+                onClick={() => toggleBlock(record, "Unblock")}
               />
             </Tooltip>
           ) : (
@@ -302,7 +280,7 @@ export default function StudentsTable(props) {
                 type="danger"
                 shape="circle"
                 icon={<StopOutlined />}
-                onClick={() => togglePublish(record, "Publish")}
+                onClick={() => toggleBlock(record, "Block")}
               />
             </Tooltip>
           )}
@@ -328,40 +306,17 @@ export default function StudentsTable(props) {
     }
   };
 
-  const togglePublish = async (record, type) => {
-    const resp = await axios.post(`/api/admin/course/publish/${record.slug}`);
+  const toggleBlock = async (record, type) => {
+    const resp = await axios.post(`/api//admin/block/${record._id}`);
     setReFetch((e) => !e);
     if (resp.status === 200) {
-      toast.success(`Course ${type}ed successfully`);
+      toast.success(`User ${type}ed successfully 😁`);
     } else {
-      toast.error(`Error ${type}ing Course`);
+      toast.error(`Error ${type}ing User! ❌`);
     }
   };
 
-  const handleNewCategory = (e) => {
-    e.preventDefault();
-
-    !tempCat.some((cats) => cats.value === tempCatInput) &&
-      tempCatInput?.length > 0 &&
-      setTempCat([
-        ...tempCat,
-        {
-          value: tempCatInput,
-          text: tempCatInput
-        }
-      ]);
-
-    setTempCatInput("");
-  };
-
-  const onCategoryChange = (value) => {
-    console.log(value);
-    form.setFieldsValue({
-      category: value
-    });
-  };
-
-  const expandCourses = (record, index, indent, expanded) => {
+  const expandStudents = (record, index, indent, expanded) => {
     console.log("record:", record.slug);
 
     form.setFieldsValue({
@@ -430,7 +385,6 @@ export default function StudentsTable(props) {
             size="small"
             placeholder="Please select category"
             optionFilterProp="children"
-            onChange={onCategoryChange}
             filterOption={(input, option) => {
               return option.children
                 .toLowerCase()
@@ -442,41 +396,10 @@ export default function StudentsTable(props) {
                 : -1
             }
           >
-            {coursesFiltersBuilder(tableData).map((item) => (
-              <Select.Option key={item.value} value={item.value}>
-                {item.text}
-              </Select.Option>
-            ))}
+            <Select.Option key={"item.value"} value={"item.value"}>
+              {"item.text"}
+            </Select.Option>
           </Select>
-          {/* New Category */}
-          <Input.Group
-            style={{
-              marginTop: "5px",
-              width: "104%"
-            }}
-            compact
-          >
-            <Input
-              style={{
-                width: "70%"
-              }}
-              placeholder="New Category"
-              onChange={(event) => {
-                setTempCatInput(event.target.value);
-              }}
-              value={tempCatInput}
-            />
-            <Button
-              disabled={
-                tempCat.some((cats) => cats.value === tempCatInput) ||
-                tempCatInput === ""
-              }
-              onClick={handleNewCategory}
-              type="primary"
-            >
-              Add
-            </Button>
-          </Input.Group>
         </Form.Item>
 
         {/* Description */}
@@ -513,7 +436,7 @@ export default function StudentsTable(props) {
           position: ["bottomCenter"]
         }}
         expandable={{
-          expandedRowRender: expandCourses,
+          expandedRowRender: expandStudents,
 
           expandIcon: ({ expanded, onExpand, record }) => {
             return expanded ? (
