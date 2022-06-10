@@ -33,8 +33,10 @@ export const updateCourse = async (req, res) => {
   try {
     const { slug } = req.params;
 
+    console.log("req.body => ", req.body);
+    
     const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true,
+      new: true
     }).exec();
 
     res.json(updated);
@@ -76,7 +78,7 @@ export const updateStudent = async (req, res) => {
     const { slug } = req.params;
 
     const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true,
+      new: true
     }).exec();
 
     res.json(updated);
@@ -101,7 +103,7 @@ export const updateInstructor = async (req, res) => {
     const { slug } = req.params;
 
     const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true,
+      new: true
     }).exec();
 
     res.json(updated);
