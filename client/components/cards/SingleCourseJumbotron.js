@@ -56,7 +56,7 @@ const SingleCourseJumbotron = ({
               {paid
                 ? currencyFormatter({
                     amount: price,
-                    currency: "usd",
+                    currency: "EGP",
                   })
                 : "Free"}
             </h4>
