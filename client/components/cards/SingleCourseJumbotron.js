@@ -64,7 +64,7 @@ const SingleCourseJumbotron = ({
           <div className="col-md-4" style={{marginTop:'50px'}}>
             {/* {JSON.stringify(lessons[0])} */}
             {/* show video preview or course image */}
-            {lessons[0].video && lessons[0].video.Location ? (
+            {lessons[0]?.video && lessons[0]?.video.Location ? (
               <div
                 onClick={() => {
                   setPreview(lessons[0].video.Location);

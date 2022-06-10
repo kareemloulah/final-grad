@@ -33,8 +33,10 @@ export const updateCourse = async (req, res) => {
   try {
     const { slug } = req.params;
 
+    console.log("req.body => ", req.body);
+
     const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true,
+      new: true
     }).exec();
 
     res.json(updated);
@@ -61,13 +63,53 @@ export const publishCourse = async (req, res) => {
   }
 };
 
+export const blockUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const toUpdate = await User.findById(id).exec();
+    toUpdate.blocked = !toUpdate.blocked;
+    await toUpdate.save();
+    res.json(toUpdate);
+  } catch (err) {
+    console.log("err => ", err);
+    return res.status(400).send(err);
+  }
+};
+
 export const allStudents = async (req, res) => {
   try {
-    const users = await User.find({ role: "Subscriber" }).exec();
+    const users = await User.find({ role: "Subscriber" })
+      .populate({
+        path: "courses",
+        select: "name image paid slug published",
+        populate: {
+          path: "instructor",
+          select: "name"
+        }
+      })
+      .exec();
+
+    // Filter out the users which has role of instructor
+    // const students = users.filter((user) => !user.role.includes("Instructor"));
 
     res.json(users);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateStudent = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+      new: true
+    }).exec();
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
   }
 };
 
@@ -78,5 +120,20 @@ export const allInstructors = async (req, res) => {
     res.json(users);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const updateInstructor = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+      new: true
+    }).exec();
+
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err.message);
   }
 };

@@ -127,7 +127,7 @@ const ForgotPassword = () => {
                   <Button  
                   style={{ width: "100%", backgroundColor: "#d9d9d9",margin: "10px 0px"}}>
                   
-                 <GoogleOutlined
+                  <GoogleOutlined
                   style={{
                     width: "100%",
                     color: "#f5222d",
@@ -135,7 +135,6 @@ const ForgotPassword = () => {
                     margin:"auto"
                   }}
                 />
-                
                     O to gmail
                 </Button>
                 </a>

@@ -2,9 +2,11 @@ import React, { useState, useEffect, createElement } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import StudentRoute from "../../../components/routes/StudentRoute";
-import { Button, Menu, Avatar } from "antd";
+import {  Menu, Avatar } from "antd";
 import ReactPlayer from "react-player";
 import ReactMarkdown from "react-markdown";
+import { Button } from "react-bootstrap";
+
 import {
   PlayCircleOutlined,
   MenuFoldOutlined,
@@ -124,16 +126,23 @@ const SingleCourse = () => {
               <div className="col alert alert-primary square">
                 <b>{course.lessons[clicked].title.substring(0, 30)}</b>
                 {completedLessons.includes(course.lessons[clicked]._id) ? (
-                  <span
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     className="float-right pointer"
                     onClick={markIncompleted}
                   >
                     Mark as incomplete
-                  </span>
+                  </Button>
                 ) : (
-                  <span className="float-right pointer" onClick={markCompleted}>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="float-right pointer"
+                    onClick={markCompleted}
+                  >
                     Mark as completed
-                  </span>
+                  </Button>
                 )}
               </div>
 

@@ -4,7 +4,7 @@ import {
   EditOutlined,
   LockOutlined,
   MinusCircleTwoTone,
-  UnlockOutlined,
+  UnlockOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -17,7 +17,7 @@ import {
   Input,
   Radio,
   InputNumber,
-  Select,
+  Select
 } from "antd";
 import axios from "axios";
 import Link from "next/link";
@@ -29,81 +29,58 @@ const data = [
     name: "John Brown",
     age: 32,
     address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
+    tags: ["nice", "developer"]
   },
   {
     key: "2",
     name: "Jim Green",
     age: 42,
     address: "London No. 1 Lake Park",
-    tags: ["loser"],
+    tags: ["loser"]
   },
   {
     key: "3",
     name: "Joe Black",
     age: 32,
     address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
+    tags: ["cool", "teacher"]
+  }
 ];
 
-const TableComponent = (props) => {
-  const { tableData = data, type = "courses", setReFetch } = props;
+export default function TableComponent(props) {
+  const { tableData = data, setReFetch } = props;
   const [form] = Form.useForm();
 
-  const [activeExpRow, setActiveExpRow] = React.useState();
-  const [cols, setCols] = useState(null);
+  const [activeExpRow, setActiveExpRow] = useState();
+
   const [filteredInfo, setFilteredInfo] = useState({});
+
+  const [tempCatInput, setTempCatInput] = useState("");
+  const [tempCat, setTempCat] = useState([]);
 
   const modifiedData = tableData.map((item) => ({
     ...item,
-    key: item._id,
+    key: item._id
   }));
 
-  useEffect(() => {
-    switch (type) {
-      case "courses":
-        setCols(coursesColumns);
-        break;
-      case "students":
-        setCols(studentsColumns);
-        break;
-      case "instructors":
-        setCols(coursesColumns);
-        break;
-      default:
-        break;
-    }
-  }, [type]);
-
-  const categoryFiltersBuilder = useCallback((dataToBuildFrom) => {
-    let filters = [];
-    if (
-      Array.isArray(dataToBuildFrom?.category) &&
-      dataToBuildFrom?.category?.length > 0
-    ) {
-      const uniqArr = [...new Set(dataToBuildFrom?.category)];
-      filters = uniqArr.map((cat) => {
-        return {
-          text: cat,
-          value: cat,
-        };
-      });
-    } else {
+  const categoryFiltersBuilder = useCallback(
+    (dataToBuildFrom) => {
+      let filters = tempCat?.length > 0 ? [...tempCat] : [];
       dataToBuildFrom.forEach((course) => {
         if (
           course?.category?.length > 0 &&
           !filters.some((filter) => filter.value === course?.category)
         ) {
-          filters.push({
+          filters.unshift({
             text: course.category,
-            value: course.category,
+            value: course.category
           });
         }
       });
-    }
-    return filters;
-  }, []);
+      return filters;
+    },
+    [tempCat]
+  );
 
   const handleChange = (pagination, filters, sorter) => {
     setFilteredInfo(filters);
@@ -116,10 +93,10 @@ const TableComponent = (props) => {
     setReFetch((e) => !e);
     if (resp.status === 200) {
       toast.success(`Course Updated successfully`);
+      setActiveExpRow("0");
     } else {
-      toast.error(`Error ${type}ing Course`);
+      toast.error(`Error in Editing Course`);
     }
-    // toast.error(`Error in Editing Course`);
   };
 
   const togglePublish = async (record, type) => {
@@ -133,6 +110,7 @@ const TableComponent = (props) => {
   };
 
   const coursesColumns = [
+    // Cover
     {
       title: "Cover",
       dataIndex: "image",
@@ -142,8 +120,10 @@ const TableComponent = (props) => {
           <Avatar size={45} src={text.Location} />
         </Tooltip>
       ),
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Name
     {
       title: "Course Name",
       dataIndex: "name",
@@ -156,8 +136,10 @@ const TableComponent = (props) => {
         </Link>
       ),
 
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Instructor
     {
       title: "Instructor Name",
       dataIndex: ["instructor", "name"],
@@ -171,8 +153,10 @@ const TableComponent = (props) => {
         </Tooltip>
       ),
 
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Price
     {
       title: "Price",
       dataIndex: "price",
@@ -187,8 +171,10 @@ const TableComponent = (props) => {
             <Tag>{text}</Tag>
           </Tooltip>
         ),
-      sorter: (a, b) => a.price - b.price,
+      sorter: (a, b) => a.price - b.price
     },
+
+    // Category
     {
       title: "Categories",
       dataIndex: "category",
@@ -204,14 +190,17 @@ const TableComponent = (props) => {
             ))}
           <Tag key={category}>{category?.toUpperCase()}</Tag>
         </span>
-      ),
+      )
     },
+
+    // Description
     {
       title: "Description",
       dataIndex: "description",
-      key: "description",
+      key: "description"
     },
 
+    // Actions - Publish/Unpublish
     {
       title: "Action",
       key: "action",
@@ -223,7 +212,7 @@ const TableComponent = (props) => {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
                 type="danger"
                 shape="circle"
@@ -237,7 +226,7 @@ const TableComponent = (props) => {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
                 type="primary"
                 shape="circle"
@@ -247,9 +236,32 @@ const TableComponent = (props) => {
             </Tooltip>
           )}
         </Space>
-      ),
-    },
+      )
+    }
   ];
+
+  const handleNewCategory = (e) => {
+    e.preventDefault();
+
+    !tempCat.some((cats) => cats.value === tempCatInput) &&
+      tempCatInput?.length > 0 &&
+      setTempCat([
+        ...tempCat,
+        {
+          value: tempCatInput,
+          text: tempCatInput
+        }
+      ]);
+
+    setTempCatInput("");
+  };
+
+  const onCategoryChange = (value) => {
+    console.log(value);
+    form.setFieldsValue({
+      category: value
+    });
+  };
 
   const expandCourses = (record, index, indent, expanded) => {
     console.log("record:", record.slug);
@@ -259,7 +271,7 @@ const TableComponent = (props) => {
       description: record.description,
       price: record.price,
       category: record.category,
-      slug: record.slug,
+      slug: record.slug
     });
 
     const newINIT = {
@@ -267,7 +279,7 @@ const TableComponent = (props) => {
       description: tableData[index].description,
       price: tableData[index].price,
       category: [tableData[index].category],
-      slug: tableData[index].slug,
+      slug: tableData[index].slug
     };
 
     return (
@@ -282,7 +294,7 @@ const TableComponent = (props) => {
           alignItems: "center",
           flexDirection: "row",
           flexFlow: "nowrap",
-          gap: "10px",
+          gap: "10px"
         }}
         layout="vertical"
         size="small"
@@ -311,15 +323,26 @@ const TableComponent = (props) => {
         <Form.Item
           name="category"
           style={{
-            width: "15%",
+            width: "15%"
           }}
           label="Categories"
         >
           <Select
-            mode="tags"
+            showSearch
             size="small"
-            placeholder="Please select"
-            onChange={handleChange}
+            placeholder="Please select category"
+            optionFilterProp="children"
+            onChange={onCategoryChange}
+            filterOption={(input, option) => {
+              return option.children
+                .toLowerCase()
+                .includes(input.toLowerCase());
+            }}
+            filterSort={(optionA, optionB) =>
+              optionA.children.toLowerCase() > optionB.children.toLowerCase()
+                ? 1
+                : -1
+            }
           >
             {categoryFiltersBuilder(tableData).map((item) => (
               <Select.Option key={item.value} value={item.value}>
@@ -327,6 +350,35 @@ const TableComponent = (props) => {
               </Select.Option>
             ))}
           </Select>
+          {/* New Category */}
+          <Input.Group
+            style={{
+              marginTop: "5px",
+              width: "104%"
+            }}
+            compact
+          >
+            <Input
+              style={{
+                width: "70%"
+              }}
+              placeholder="New Category"
+              onChange={(event) => {
+                setTempCatInput(event.target.value);
+              }}
+              value={tempCatInput}
+            />
+            <Button
+              disabled={
+                tempCat.some((cats) => cats.value === tempCatInput) ||
+                tempCatInput === ""
+              }
+              onClick={handleNewCategory}
+              type="primary"
+            >
+              Add
+            </Button>
+          </Input.Group>
         </Form.Item>
 
         {/* Description */}
@@ -341,7 +393,7 @@ const TableComponent = (props) => {
         <Form.Item
           style={{
             display: "flex",
-            alignSelf: "flex-end",
+            alignSelf: "flex-end"
           }}
         >
           <Button htmlType="submit" size="middle" type="primary">
@@ -355,11 +407,11 @@ const TableComponent = (props) => {
   return (
     <>
       <Table
-        columns={cols}
+        columns={coursesColumns}
         dataSource={modifiedData}
         onChange={handleChange}
         pagination={{
-          position: ["bottomCenter"],
+          position: ["bottomCenter"]
         }}
         expandable={{
           expandedRowRender: expandCourses,
@@ -371,7 +423,7 @@ const TableComponent = (props) => {
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   type="danger"
                   shape="circle"
@@ -385,7 +437,7 @@ const TableComponent = (props) => {
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   type="primary"
                   shape="circle"
@@ -407,17 +459,16 @@ const TableComponent = (props) => {
             }
             setActiveExpRow(keys);
           },
+
           onExpandedRowsChange: (expandedRows) => {
             if (expandedRows.length > 0) {
               confirm(
                 "Are you sure you want to edit this course?\nEither OK or Cancel."
               );
             }
-          },
+          }
         }}
       />
     </>
   );
-};
-
-export default TableComponent;
+}

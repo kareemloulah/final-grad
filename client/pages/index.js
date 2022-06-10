@@ -5,10 +5,10 @@ import { Row, Col } from "antd";
 import { Paths } from "../utils/dummyData";
 import Link from "next/link";
 import Carousel from "../components/Carousel";
+import PathsSection from "../components/PathsSection";
 
 const Index = ({ courses }) => {
   // const [courses, setCourses] = useState([]);
-   
   // useEffect(() => {
   //   const fetchCourses = async () => {
   //     const { data } = await axios.get("/api/courses");
@@ -18,34 +18,43 @@ const Index = ({ courses }) => {
   // }, []);
   return (
     <>
-      <Carousel/>
-
+      <Carousel />
+      {/* Course Section */}
       <div className="container">
-        <div className="row">
-
+        <div className="row p-4">
           {courses.map((course) => (
-            <div key={course._id} className="col-md-3">
+            <div key={course._id} className="col-lg-3 col-md-6 col-sm-12 p-2">
               <CourseCard course={course} />
             </div>
           ))}
-
         </div>
       </div>
-
-      <div style={{ backgroundColor: "#2d5ebe", padding: "30px", marginBottom:'50px'}}>
+      {/* paths Section */}
+      <div
+        style={{
+          backgroundColor: "#2d5ebe",
+          marginBottom: "50px",
+          padding: "30px"
+        }}
+      >
+        {/* <PathsSection /> */}
         <div className="container">
-          <Row gutter= {[24, 24]}>
-            {Paths.map((path) => (
-              <Col key={path.Id} className="col-lg-4">
-                <Link href={`/${path.title}`}>
+          <Row gutter={[16, 16]}>
+            {Paths.map((path, index) => (
+              <div key={path.id} className="col-lg-4 col-md-6 col-sm-12">
+                <Link href={`/paths/${index}`}>
                   <div
                     className="card m-2 p-2"
-                    style={{ alignItems: "center", cursor: "pointer" }}
+                    style={{
+                      alignItems: "center",
+                      cursor: "pointer",
+                      borderRadius: "10px"
+                    }}
                   >
                     <h6 className="card-title m-2"> {path.title} </h6>
                   </div>
                 </Link>
-              </Col>
+              </div>
             ))}
           </Row>
         </div>
@@ -58,9 +67,25 @@ export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
   return {
     props: {
-      courses: data,
-    },
+      courses: data
+    }
   };
 }
+
+// export function getAllPathIds() {
+//   return  Paths.map(path => {
+//     const pathId = path.id;
+//     return {
+//       params: { id }
+//     }
+//   })
+// }
+
+// export function getAllData(pathId, { params }) {
+//   return {
+//     page: pathId,
+//     query: params,
+//   }
+// }
 
 export default Index;

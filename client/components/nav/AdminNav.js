@@ -12,22 +12,20 @@ const AdminNav = () => {
     <div className="nav flex-column nav-pills">
       <Link href="/admin">
         <a className={`nav-link ${current === "/admin" && "active"}`}>
-          Dashboard
+          Courses Manager
         </a>
       </Link>
-      <Link href="/admin/course/create">
-        <a
-          className={`nav-link ${
-            current === "/admin/course/create" && "active"
-          }`}
-        >
-          Course Create
+      <Link href="/admin/students">
+        <a className={`nav-link ${current === "/admin/students" && "active"}`}>
+          Students Manager
         </a>
       </Link>
 
-      <Link href="/admin/revenue">
-        <a className={`nav-link ${current === "/admin/revenue" && "active"}`}>
-          Revenue
+      <Link href="/admin/instructors">
+        <a
+          className={`nav-link ${current === "/admin/instructors" && "active"}`}
+        >
+          Instructors Manager
         </a>
       </Link>
     </div>
