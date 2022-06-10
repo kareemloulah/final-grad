@@ -1,5 +1,7 @@
-import { Button, Progress, Tooltip } from "antd";
-import { CloseCircleFilled, CloseCircleOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Progress, Tooltip } from "antd";
+import { CloseCircleFilled } from "@ant-design/icons";
+import { useState } from "react";
+import { AiFillCloseCircle } from 'react-icons/ai';
 
 const AddLessonForm = ({
   values,
@@ -11,6 +13,35 @@ const AddLessonForm = ({
   progress,
   handleVideoRemove,
 }) => {
+  const [showFormQuestion, setShowFormQuestion ] = useState(false);
+  const [answers, setAnswers] = useState([{Answer:''}]);
+  const [questions, setQuestions] = useState([{Question:''}]);
+
+  const showFormQuestionHandler = () => {
+    setShowFormQuestion(true);
+  }
+  const hideFormQuestionHandler = () => {
+    setShowFormQuestion(false);
+  }
+
+  const handleAddAnswer = () => {
+    setAnswers([...answers, {Answer:''}]);
+  }
+  const handleRemoveAnswer = (index) => {
+    setAnswers(answers.filter((_, i) => i !== index));
+  }
+  const handleAnswerChange = (index, value) => {
+    setAnswers(answers.map((answer, i) => (i === index ? {Answer:value} : answer)));
+  }
+  const checked = (e) => {
+    checked = e.target.checked;
+  }
+
+  
+
+
+  console.log("answers", answers);
+
   return (
     <div className="container pt-3">
       <form onSubmit={handleAddLesson}>
@@ -31,8 +62,96 @@ const AddLessonForm = ({
           onChange={(e) => setValues({ ...values, content: e.target.value })}
           value={values.content}
           placeholder="Content"
-        ></textarea>
+        />
 
+        {showFormQuestion && ( 
+        <> 
+        <h7 className="mt-3 font-weight-bold">Add Question</h7>
+
+        <input
+          type="text"
+          className="form-control square mt-3"
+          onChange={(e) => setValues({ ...values, title: e.target.value })}
+          value={values.title}
+          placeholder="Question"
+          autoFocus
+        />
+
+        {answers.map((answer, index) => (
+          <>
+            <div className="row">
+              <div className="col-md-10">
+                <input
+                value={answer.Answer}
+                key={index}
+                type="text"
+                className="form-control square mt-3"
+                onChange={(e) => handleAnswerChange(index, e.target.value)}
+                placeholder="Answer"
+                autoFocus
+                /> 
+                <Checkbox className="mt-2" onChange={checked}> Right Answer </Checkbox>
+              </div>
+              
+              {answers.length > 1 && 
+                ( 
+                  <AiFillCloseCircle 
+                  className="mt-3 text-danger  " 
+                  onClick={() => handleRemoveAnswer(index)}
+                  style={{cursor:'pointer', fontSize:'2rem'}}
+                  />
+                )
+              }
+              </div>
+              {answers.length - 1 === index && answers.length < 4 && 
+                (
+                  <button 
+                  type="button" 
+                  className="btn btn-primary mt-3 mb-3 "
+                  onClick={handleAddAnswer}
+                  >
+                    Add Answers
+                  </button>
+                )
+              }
+              
+          </> 
+        ))}
+          <div className="row">
+            <div className="col-md-10">
+            <button 
+            type="button" 
+            className="btn btn-primary mt-3 mb-3 "
+            style={{width:'100%'}} 
+            >
+                Add another question
+            </button>
+            </div>
+            <div className="col-md-2">
+            <AiFillCloseCircle 
+            className="mt-3 text-danger  " 
+            onClick={hideFormQuestionHandler}
+            style={{cursor:'pointer', fontSize:'2.5rem'}}
+            />
+            </div>
+          </div>
+          
+        </> 
+        )}
+        
+        {showFormQuestion === false && (
+          <button 
+            type="button" 
+            className="btn btn-primary mt-3 mb-3 "
+            onClick={showFormQuestionHandler}
+            style={{width:'100%'}} 
+            >
+              Add Question !
+          </button>
+        )}
+        
+
+        {/* uploading video */}
         <div className="d-flex justify-content-center">
           <label className="btn btn-dark btn-block text-left mt-3">
             {uploadButtonText}
@@ -56,6 +175,7 @@ const AddLessonForm = ({
           />
         )}
 
+        {/* submit button */}
         <Button
           onClick={handleAddLesson}
           className="col mt-3"
@@ -63,6 +183,7 @@ const AddLessonForm = ({
           type="primary"
           loading={uploading}
           shape="round"
+          style={{backgroundColor:'#2d5ebe'}}
         >
           Save
         </Button>
