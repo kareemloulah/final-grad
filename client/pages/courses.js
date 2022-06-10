@@ -15,7 +15,7 @@ const menu = (
           >
             1st menu item
           </a>
-        ),
+        )
       },
       {
         key: "2",
@@ -27,7 +27,7 @@ const menu = (
           >
             2nd menu item
           </a>
-        ),
+        )
       },
       {
         key: "3",
@@ -39,8 +39,8 @@ const menu = (
           >
             3rd menu item
           </a>
-        ),
-      },
+        )
+      }
     ]}
   />
 );
@@ -51,7 +51,7 @@ const courses = ({ courses }) => {
       <div
         style={{
           backgroundColor: "#E3EDFF",
-          marginBottom: "50px",
+          marginBottom: "50px"
         }}
       >
         <div className="container-fluid pt-5 pb-5">
@@ -177,8 +177,8 @@ export async function getServerSideProps() {
   const { data } = await axios.get(`${process.env.API}/courses`);
   return {
     props: {
-      courses: data,
-    },
+      courses: data
+    }
   };
 }
 export default courses;
