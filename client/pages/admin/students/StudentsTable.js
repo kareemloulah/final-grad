@@ -47,7 +47,7 @@ const data = [
   }
 ];
 
-const TableComponent = (props) => {
+export default function StudentsTable(props) {
   const { tableData = data, setReFetch } = props;
   const [form] = Form.useForm();
 
@@ -459,6 +459,4 @@ const TableComponent = (props) => {
       />
     </>
   );
-};
-
-export default TableComponent;
+}

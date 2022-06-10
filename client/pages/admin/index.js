@@ -6,7 +6,7 @@ import Link from "next/link";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import CoursesTable from "./courses/CoursesTable";
 
-const AdminIndex = () => {
+export default function AdminIndex() {
   const [courses, setCourses] = useState([]);
   const [reFetch, setReFetch] = useState(false);
 
@@ -40,7 +40,12 @@ const AdminIndex = () => {
 
   return (
     <AdminRoute>
-      <h1 className="jumbotron text-center square">
+      <h1
+        style={{
+          backgroundImage: "linear-gradient(to right, #f6d365 0%, #fda085 100%)"
+        }}
+        className=" jumbotron text-center square"
+      >
         Admin Dashboard | Courses Manager 📚
       </h1>
 
@@ -51,6 +56,4 @@ const AdminIndex = () => {
       />
     </AdminRoute>
   );
-};
-
-export default AdminIndex;
+}

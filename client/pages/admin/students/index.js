@@ -1,26 +1,22 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import AdminRoute from "../../components/routes/AdminRoute";
-import { Avatar, Tooltip } from "antd";
 import Link from "next/link";
+import { Avatar, Tooltip } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import axios from "axios";
+import AdminRoute from "../../../components/routes/AdminRoute";
 import StudentsTable from "./StudentsTable";
 
-const AdminIndex = () => {
+export default function AdminStudentsIndex() {
   const [courses, setCourses] = useState([]);
   const [reFetch, setReFetch] = useState(false);
-
   useEffect(() => {
     loadCourses();
   }, [reFetch]);
-
   const loadCourses = async () => {
     const { data } = await axios.get("/api/admin/all-courses");
     setCourses(data);
   };
-
   const myStyle = { marginTop: "-15px", fontSize: "10px" };
-
   /*
     name: "Test course 2"
     category: "machine"
@@ -37,19 +33,16 @@ const AdminIndex = () => {
     __v: 0
     _id: "629bfe1f4c41f2484c36e656"
   */
-
   return (
     <AdminRoute>
-      <h1 className="jumbotron text-center square">
-        Admin Dashboard | Courses Manager 📚
+      <h1 style={{
+          backgroundImage: "linear-gradient(to right, #dae2f8 0%, #d6a4a4 100%)"
+        }}
+        className="jumbotron text-center square ">
+        Admin Dashboard | Students Manager 🙎‍♂️
       </h1>
 
-      <StudentsTable
-        tableData={courses}
-        setReFetch={setReFetch}
-      />
+      <StudentsTable tableData={courses} setReFetch={setReFetch} />
     </AdminRoute>
   );
-};
-
-export default AdminIndex;
+}
