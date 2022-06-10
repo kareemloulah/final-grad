@@ -48,12 +48,11 @@ const data = [
 ];
 
 const TableComponent = (props) => {
-  const { tableData = data, type = "courses", setReFetch } = props;
+  const { tableData = data, setReFetch } = props;
   const [form] = Form.useForm();
 
   const [activeExpRow, setActiveExpRow] = useState();
 
-  const [cols, setCols] = useState(null);
   const [filteredInfo, setFilteredInfo] = useState({});
 
   const [tempCatInput, setTempCatInput] = useState("");
@@ -63,22 +62,6 @@ const TableComponent = (props) => {
     ...item,
     key: item._id
   }));
-
-  useEffect(() => {
-    switch (type) {
-      case "courses":
-        setCols(coursesColumns);
-        break;
-      case "students":
-        setCols(studentsColumns);
-        break;
-      case "instructors":
-        setCols(coursesColumns);
-        break;
-      default:
-        break;
-    }
-  }, [type]);
 
   const categoryFiltersBuilder = useCallback(
     (dataToBuildFrom) => {
@@ -112,9 +95,8 @@ const TableComponent = (props) => {
       toast.success(`Course Updated successfully`);
       setActiveExpRow("0");
     } else {
-      toast.error(`Error ${type}ing Course`);
+      toast.error(`Error in Editing Course`);
     }
-    // toast.error(`Error in Editing Course`);
   };
 
   const togglePublish = async (record, type) => {
@@ -413,7 +395,7 @@ const TableComponent = (props) => {
   return (
     <>
       <Table
-        columns={cols}
+        columns={coursesColumns}
         dataSource={modifiedData}
         onChange={handleChange}
         pagination={{

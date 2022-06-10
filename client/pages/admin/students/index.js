@@ -4,7 +4,7 @@ import AdminRoute from "../../components/routes/AdminRoute";
 import { Avatar, Tooltip } from "antd";
 import Link from "next/link";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import CoursesTable from "./courses/CoursesTable";
+import StudentsTable from "./StudentsTable";
 
 const AdminIndex = () => {
   const [courses, setCourses] = useState([]);
@@ -44,9 +44,8 @@ const AdminIndex = () => {
         Admin Dashboard | Courses Manager 📚
       </h1>
 
-      <CoursesTable
+      <StudentsTable
         tableData={courses}
-        type="courses"
         setReFetch={setReFetch}
       />
     </AdminRoute>
