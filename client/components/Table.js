@@ -52,6 +52,7 @@ const TableComponent = (props) => {
   const [form] = Form.useForm();
 
   const [activeExpRow, setActiveExpRow] = useState();
+
   const [cols, setCols] = useState(null);
   const [filteredInfo, setFilteredInfo] = useState({});
 
@@ -109,6 +110,7 @@ const TableComponent = (props) => {
     setReFetch((e) => !e);
     if (resp.status === 200) {
       toast.success(`Course Updated successfully`);
+      setActiveExpRow("0");
     } else {
       toast.error(`Error ${type}ing Course`);
     }
@@ -463,6 +465,7 @@ const TableComponent = (props) => {
             }
             setActiveExpRow(keys);
           },
+
           onExpandedRowsChange: (expandedRows) => {
             if (expandedRows.length > 0) {
               confirm(
