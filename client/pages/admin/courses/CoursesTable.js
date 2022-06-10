@@ -110,6 +110,7 @@ export default function TableComponent(props) {
   };
 
   const coursesColumns = [
+    // Cover
     {
       title: "Cover",
       dataIndex: "image",
@@ -121,6 +122,8 @@ export default function TableComponent(props) {
       ),
       sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Name
     {
       title: "Course Name",
       dataIndex: "name",
@@ -135,6 +138,8 @@ export default function TableComponent(props) {
 
       sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Instructor
     {
       title: "Instructor Name",
       dataIndex: ["instructor", "name"],
@@ -150,6 +155,8 @@ export default function TableComponent(props) {
 
       sorter: (a, b) => a.name.length - b.name.length
     },
+
+    // Price
     {
       title: "Price",
       dataIndex: "price",
@@ -166,6 +173,8 @@ export default function TableComponent(props) {
         ),
       sorter: (a, b) => a.price - b.price
     },
+
+    // Category
     {
       title: "Categories",
       dataIndex: "category",
@@ -183,12 +192,15 @@ export default function TableComponent(props) {
         </span>
       )
     },
+
+    // Description
     {
       title: "Description",
       dataIndex: "description",
       key: "description"
     },
 
+    // Actions - Publish/Unpublish
     {
       title: "Action",
       key: "action",

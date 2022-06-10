@@ -1,10 +1,15 @@
 import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
   CloseOutlined,
   DeleteOutlined,
+  DollarCircleFilled,
   EditOutlined,
   LockOutlined,
   MinusCircleTwoTone,
-  UnlockOutlined
+  StopOutlined,
+  UnlockOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -17,12 +22,28 @@ import {
   Input,
   Radio,
   InputNumber,
-  Select
+  Select,
+  Badge
 } from "antd";
 import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+
+/*  
+    Input                              | name: "esam"
+    Input email                        | email: "esamrezk4@gmail.com"
+    Select                             | role: ['Subscriber']
+    Course Tag + Modal Of tags + badge | courses: []
+    _id: "629a1bded338a737ecaa6caa"
+    createdAt: "2022-06-03T14:34:06.194Z"
+    Avatar                             | picture: "/avatar.png"
+    password: "$2b$12$rMwkhBaLVjlCB5T8kA63iehMFtvNkmyV4NET5tA97hvyJDRAqDEDm"
+    passwordResetCode: "SSVI_L"
+    updatedAt: "2022-06-03T19:55:14.866Z"
+    __v: 0
+*/
+
 const data = [
   {
     key: "1",
@@ -51,6 +72,8 @@ export default function StudentsTable(props) {
   const { tableData = data, setReFetch } = props;
   const [form] = Form.useForm();
 
+  const [coursesLimit, setCoursesLimit] = useState(2);
+
   const [activeExpRow, setActiveExpRow] = useState();
 
   const [filteredInfo, setFilteredInfo] = useState({});
@@ -63,7 +86,7 @@ export default function StudentsTable(props) {
     key: item._id
   }));
 
-  const categoryFiltersBuilder = useCallback(
+  const coursesFiltersBuilder = useCallback(
     (dataToBuildFrom) => {
       let filters = tempCat?.length > 0 ? [...tempCat] : [];
       dataToBuildFrom.forEach((course) => {
@@ -81,6 +104,189 @@ export default function StudentsTable(props) {
     },
     [tempCat]
   );
+
+  const printCoursesWithLimit = useCallback((courses, limit) => {
+    let coursesToPrint = courses.slice(0, limit);
+    if (coursesToPrint.length < courses.length) {
+      coursesToPrint.push({
+        text: `+${courses.length - coursesToPrint.length} more`,
+        value: "more"
+      });
+    }
+    return coursesToPrint;
+  }, []);
+
+  const CourseTag = ({ course }) => {
+    return (
+      <Tag
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          marginRight: "5px",
+          padding: "5px"
+        }}
+        color={course?.published ? "success" : "error"}
+        key={course?._id}
+      >
+        <Link href={`/course/${course.slug}`}>
+          <a>
+            <Avatar
+              style={{
+                marginRight: "5px"
+              }}
+              src={course?.image?.Location}
+            />
+            <span
+              style={{
+                marginRight: "5px",
+                fontSize: "14px",
+                fontWeight: "bold"
+              }}
+            >
+              {course?.name}
+            </span>
+            <Tooltip
+              title={course?.paid ? "Course is paid 🤑" : "Course is FREE"}
+            >
+              <DollarCircleFilled
+                style={{
+                  fontSize: "20px",
+                  color: course?.paid ? "green" : "red"
+                }}
+              />
+            </Tooltip>
+          </a>
+        </Link>
+      </Tag>
+    );
+  };
+
+  const coursesColumns = [
+    // name
+    {
+      title: "Student Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => (
+        <span
+          style={{
+            fontSize: "16px",
+            fontWeight: "500",
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <Tooltip title="Student name">
+            {record?.blocked ? <StopOutlined type="danger" /> : <UserOutlined />}{" "}
+            <a>{text}</a>
+          </Tooltip>
+        </span>
+      ),
+
+      sorter: (a, b) => a.name.length - b.name.length
+    },
+
+    // email
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      render: (text, record) => (
+        <Tooltip title="Student e-mail">
+          <span>{text}</span>
+        </Tooltip>
+      ),
+
+      sorter: (a, b) => a.name.length - b.name.length
+    },
+
+    // Course = Tag + modal + badge coursesLimit, setCoursesLimit
+    {
+      title: "Courses",
+      dataIndex: "courses",
+      key: "courses",
+
+      filters: coursesFiltersBuilder(tableData),
+      onFilter: (value, record) =>
+        record.courses?.some((course) => course?.name === value),
+      render: (courses) => (
+        <span>
+          {courses.length > 0 ? (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center"
+              }}
+            >
+              {printCoursesWithLimit(courses, coursesLimit)?.map(
+                (course, index) =>
+                  index < coursesLimit ? (
+                    <CourseTag course={course} key={course?._id} />
+                  ) : (
+                    <Tooltip title="View 3 more">
+                      <Button
+                        style={{
+                          height: "40px",
+                          borderRadius: "35px"
+                        }}
+                        type="primary"
+                        onClick={() => setCoursesLimit(coursesLimit + 3)}
+                      >
+                        More
+                      </Button>
+                    </Tooltip>
+                  )
+              )}
+            </div>
+          ) : (
+            <>
+              <Tag color="warning">No Courses</Tag>
+            </>
+          )}
+        </span>
+      )
+    },
+
+    // Actions = block
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          {record?.blocked ? (
+            <Tooltip title="Unblock this student">
+              <Button
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                type="primary"
+                shape="circle"
+                icon={<CheckCircleOutlined />}
+                onClick={() => togglePublish(record, "Unpublish")}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Block this student">
+              <Button
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                type="danger"
+                shape="circle"
+                icon={<StopOutlined />}
+                onClick={() => togglePublish(record, "Publish")}
+              />
+            </Tooltip>
+          )}
+        </Space>
+      )
+    }
+  ];
 
   const handleChange = (pagination, filters, sorter) => {
     setFilteredInfo(filters);
@@ -108,125 +314,6 @@ export default function StudentsTable(props) {
       toast.error(`Error ${type}ing Course`);
     }
   };
-
-  const coursesColumns = [
-    {
-      title: "Cover",
-      dataIndex: "image",
-      key: "image",
-      render: (text, record) => (
-        <Tooltip title="Course Cover">
-          <Avatar size={45} src={text.Location} />
-        </Tooltip>
-      ),
-      sorter: (a, b) => a.name.length - b.name.length
-    },
-    {
-      title: "Course Name",
-      dataIndex: "name",
-      key: "name",
-      render: (text, record) => (
-        <Link href={`/course/${record.slug}`}>
-          <Tooltip title="View Course">
-            <a>{text}</a>
-          </Tooltip>
-        </Link>
-      ),
-
-      sorter: (a, b) => a.name.length - b.name.length
-    },
-    {
-      title: "Instructor Name",
-      dataIndex: ["instructor", "name"],
-      key: "instructor",
-      render: (text, record) => (
-        // <Link href={`/course/${record.slug}`}>
-        // <a>{text}</a>
-        // </Link>
-        <Tooltip title="Course Owner Name">
-          <span>{text}</span>
-        </Tooltip>
-      ),
-
-      sorter: (a, b) => a.name.length - b.name.length
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (text, record) =>
-        text === 0 ? (
-          <Tooltip title="This course is totaly FREE">
-            <Tag>Free</Tag>
-          </Tooltip>
-        ) : (
-          <Tooltip title={`This course price is ${text} LE`}>
-            <Tag>{text}</Tag>
-          </Tooltip>
-        ),
-      sorter: (a, b) => a.price - b.price
-    },
-    {
-      title: "Categories",
-      dataIndex: "category",
-      key: "category",
-
-      filters: categoryFiltersBuilder(tableData),
-      onFilter: (value, record) => record.category === value,
-      render: (category) => (
-        <span>
-          {Array.isArray(category) &&
-            category?.map((cat) => (
-              <Tag key={category}>{cat.toUpperCase()}</Tag>
-            ))}
-          <Tag key={category}>{category?.toUpperCase()}</Tag>
-        </span>
-      )
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description"
-    },
-
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          {record.published ? (
-            <Tooltip title="Unpublish this course">
-              <Button
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                type="danger"
-                shape="circle"
-                icon={<UnlockOutlined />}
-                onClick={() => togglePublish(record, "Unpublish")}
-              />
-            </Tooltip>
-          ) : (
-            <Tooltip title="Publish this course">
-              <Button
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                type="primary"
-                shape="circle"
-                icon={<LockOutlined />}
-                onClick={() => togglePublish(record, "Publish")}
-              />
-            </Tooltip>
-          )}
-        </Space>
-      )
-    }
-  ];
 
   const handleNewCategory = (e) => {
     e.preventDefault();
@@ -332,7 +419,7 @@ export default function StudentsTable(props) {
                 : -1
             }
           >
-            {categoryFiltersBuilder(tableData).map((item) => (
+            {coursesFiltersBuilder(tableData).map((item) => (
               <Select.Option key={item.value} value={item.value}>
                 {item.text}
               </Select.Option>
@@ -395,6 +482,7 @@ export default function StudentsTable(props) {
   return (
     <>
       <Table
+        tableLayout="auto "
         columns={coursesColumns}
         dataSource={modifiedData}
         onChange={handleChange}
