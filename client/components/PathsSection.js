@@ -13,7 +13,7 @@ const PathsSection = () => {
           <Row gutter={[16, 16]}>
             {Paths.map((path) => (
               <div key={path.id} className="col-lg-4 col-md-6 col-sm-12">
-                <Link href={`/Paths/${path.id}`}>
+                <Link href='/path'>
                   <div
                     className="card p-4 m-2"
                     style={{ alignItems: "center", cursor: "pointer", borderRadius: "10px" }}
