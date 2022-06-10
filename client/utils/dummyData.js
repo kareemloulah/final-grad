@@ -115,6 +115,27 @@ export const categories = [
         description: "Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.",
     },
 ]
-
+export const stepsCourse = [
+    {
+        id: 's1',
+        title: 'First Course',
+        content: 'First-content',
+    },
+    {
+        id: 's2',
+        title: 'Second Course',
+        content: 'Second-content',
+    },
+    {
+        id: 's3',
+        title: 'Third Course',
+        content: 'Last-content',
+    },
+    {
+        id: 's4',
+        title: 'Last Course',
+        content: 'Last-content',
+    }
+];
 
 
