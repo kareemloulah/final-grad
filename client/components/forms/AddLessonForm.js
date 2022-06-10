@@ -14,18 +14,25 @@ const AddLessonForm = ({
   handleVideoRemove,
 }) => {
   const [showFormQuestion, setShowFormQuestion ] = useState(false);
-  const [answers, setAnswers] = useState([{Answer:''}]);
-  const [questions, setQuestions] = useState([{Question:''}]);
+  const [answers, setAnswers] = useState([{Answer:'', isCorrect:false }]);
+  const [questions, setQuestions] = useState([{Question:'', answers:[] }]);
 
+  const handelAddQuestion = () => {
+    setQuestions([...questions, {Question:'', answers:[] }]);
+  }
+ console.log(questions);
+  //form question
   const showFormQuestionHandler = () => {
     setShowFormQuestion(true);
   }
   const hideFormQuestionHandler = () => {
     setShowFormQuestion(false);
+    //remove last Answer
+    setAnswers([{Answer:'', isCorrect:false }]);
   }
 
   const handleAddAnswer = () => {
-    setAnswers([...answers, {Answer:''}]);
+    setAnswers([...answers, {Answer:'', isCorrect:false }]);
   }
   const handleRemoveAnswer = (index) => {
     setAnswers(answers.filter((_, i) => i !== index));
@@ -33,11 +40,9 @@ const AddLessonForm = ({
   const handleAnswerChange = (index, value) => {
     setAnswers(answers.map((answer, i) => (i === index ? {Answer:value} : answer)));
   }
-  const checked = (e) => {
-    checked = e.target.checked;
+  const handleAnswerCorrect = (index) => {
+    setAnswers(answers.map((answer, i) => (i === index ? {...answer, isCorrect:!answer.isCorrect} : answer)));
   }
-
-  
 
 
   console.log("answers", answers);
@@ -66,13 +71,13 @@ const AddLessonForm = ({
 
         {showFormQuestion && ( 
         <> 
-        <h7 className="mt-3 font-weight-bold">Add Question</h7>
+        <h6 className="mt-3 font-weight-bold"> Add Question </h6>
 
         <input
           type="text"
           className="form-control square mt-3"
-          onChange={(e) => setValues({ ...values, title: e.target.value })}
-          value={values.title}
+          
+          onChange={handelAddQuestion}
           placeholder="Question"
           autoFocus
         />
@@ -90,7 +95,13 @@ const AddLessonForm = ({
                 placeholder="Answer"
                 autoFocus
                 /> 
-                <Checkbox className="mt-2" onChange={checked}> Right Answer </Checkbox>
+                <Checkbox 
+                className="mt-2" 
+                onChange={() => handleAnswerCorrect(index)}
+                checked={answer.isCorrect} 
+                >
+                  Correct
+                </Checkbox>
               </div>
               
               {answers.length > 1 && 
