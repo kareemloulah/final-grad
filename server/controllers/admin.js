@@ -98,13 +98,18 @@ export const allStudents = async (req, res) => {
   }
 };
 
-export const updateStudent = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
-    const { slug } = req.params;
+    const { id } = req.params;
 
-    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
+    console.log("id: ", id);
+    console.table(req.body);
+
+    const updated = await User.findByIdAndUpdate(id, req.body, {
       new: true
     }).exec();
+
+    console.table(updated);
 
     res.json(updated);
   } catch (err) {
@@ -115,25 +120,23 @@ export const updateStudent = async (req, res) => {
 
 export const allInstructors = async (req, res) => {
   try {
-    const users = await User.find({ role: "Instructor" }).exec();
-
-    res.json(users);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const updateInstructor = async (req, res) => {
-  try {
-    const { slug } = req.params;
-
-    const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true
+    const users = await User.find({ role: "Instructor" });
+    populate({
+      path: "courses",
+      select: "name image paid slug published",
+      populate: {
+        path: "instructor",
+        select: "name"
+      }
     }).exec();
 
-    res.json(updated);
+    const courses = await Course.find({})
+      .sort({ createdAt: -1 })
+      .populate("instructor", "name")
+      .exec();
+
+    res.json({ users, courses });
   } catch (err) {
     console.log(err);
-    return res.status(400).send(err.message);
   }
 };

@@ -2,7 +2,8 @@ import React, { useState, useEffect, createElement } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import StudentRoute from "../../../components/routes/StudentRoute";
-import {  Menu, Avatar } from "antd";
+import CourseInfo from "../../../components/courseInfo";
+import { Menu, Avatar } from "antd";
 import ReactPlayer from "react-player";
 import ReactMarkdown from "react-markdown";
 import { Button } from "react-bootstrap";
@@ -13,6 +14,8 @@ import {
   MenuUnfoldOutlined,
   CheckCircleFilled,
   MinusCircleFilled,
+  InfoCircleOutlined,
+  InfoCircleFilled
 } from "@ant-design/icons";
 
 const { Item } = Menu;
@@ -45,7 +48,7 @@ const SingleCourse = () => {
 
   const loadCompletedLessons = async () => {
     const { data } = await axios.post(`/api/list-completed`, {
-      courseId: course._id,
+      courseId: course._id
     });
     console.log("COMPLETED LESSONS => ", data);
     setCompletedLessons(data);
@@ -54,7 +57,7 @@ const SingleCourse = () => {
   const markCompleted = async () => {
     const { data } = await axios.post(`/api/mark-completed`, {
       courseId: course._id,
-      lessonId: course.lessons[clicked]._id,
+      lessonId: course.lessons[clicked]._id
     });
     console.log(data);
     setCompletedLessons([...completedLessons, course.lessons[clicked]._id]);
@@ -64,7 +67,7 @@ const SingleCourse = () => {
     try {
       const { data } = await axios.post(`/api/mark-incomplete`, {
         courseId: course._id,
-        lessonId: course.lessons[clicked]._id,
+        lessonId: course.lessons[clicked]._id
       });
       console.log(data);
       const all = completedLessons;
@@ -84,10 +87,17 @@ const SingleCourse = () => {
   return (
     <StudentRoute>
       <div className="row">
+        {/* Side Bar */}
         <div style={{ maWidth: 320 }}>
           <Button
             onClick={() => setCollapsed(!collapsed)}
-            className="text-primary mt-1 btn-block mb-2"
+            className=" mt-1 btn-block mb-2"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "5px"
+            }}
           >
             {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}{" "}
             {!collapsed && "Lessons"}
@@ -95,8 +105,19 @@ const SingleCourse = () => {
           <Menu
             defaultSelectedKeys={[clicked]}
             inlineCollapsed={collapsed}
-            style={{ height: "80vh", overflow: "scroll" }}
+            style={{ height: "80vh", overflowY: "auto" }}
           >
+            <Item
+              key={-1}
+              onClick={() => setClicked(-1)}
+              icon={<Avatar>{0}</Avatar>}
+            >
+              Info
+              <InfoCircleFilled
+                className="float-right text-primary ml-2"
+                style={{ marginTop: "13px" }}
+              />
+            </Item>
             {course.lessons.map((lesson, index) => (
               <Item
                 onClick={() => setClicked(index)}
@@ -120,6 +141,7 @@ const SingleCourse = () => {
           </Menu>
         </div>
 
+        {/* Course Content */}
         <div className="col">
           {clicked !== -1 ? (
             <>
@@ -149,12 +171,19 @@ const SingleCourse = () => {
               {course.lessons[clicked].video &&
                 course.lessons[clicked].video.Location && (
                   <>
-                    <div className="wrapper">
+                    <div
+                      className="wrapper"
+                      style={{
+                        display: "flex",
+                        maxWidth: "100%",
+                        justifyContent: "center"
+                      }}
+                    >
                       <ReactPlayer
                         className="player"
                         url={course.lessons[clicked].video.Location}
-                        width="100%"
-                        height="100%"
+                        width="90%"
+                        maxHeight="1200px"
                         controls
                         onEnded={() => markCompleted()}
                       />
@@ -168,12 +197,7 @@ const SingleCourse = () => {
               />
             </>
           ) : (
-            <div className="d-flex justify-content-center p-5">
-              <div className="text-center p-5">
-                <PlayCircleOutlined className="text-primary display-1 p-5" />
-                <p className="lead">Clcik on the lessons to start learning</p>
-              </div>
-            </div>
+            <CourseInfo />
           )}
         </div>
       </div>
