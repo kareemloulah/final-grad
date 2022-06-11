@@ -169,8 +169,13 @@ class QuizForm extends Component {
         </li>
         
       ))}
-      <li>
-        <button className="btn btn-primary mt-3 mr-2 " type="button" onClick={() => fields.push({})}>
+      <li >
+        <button 
+          className="btn btn-primary mt-3 mr-2 " 
+          type="button" 
+          onClick={() => fields.push({})} 
+          style={{width:'100%'}}
+        >
           Add Question
         </button>
         {(touched || submitFailed) && error && <span className="text-danger">{error}*</span>}
