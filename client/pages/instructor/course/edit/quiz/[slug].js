@@ -95,7 +95,8 @@ export default function AddQuez() {
 
   return (
     <>
-      {/* <QuizBuilde r result={result} setResult={setResult} /> */}
+      {/* QuizBuilder Form Here 👇👇 */}
+      <QuizBuilder result={result} setResult={setResult} />
       <Quiz quiz={quiz} />
     </>
   );

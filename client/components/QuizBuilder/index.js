@@ -10,10 +10,12 @@ export default function QuizBuilder(props) {
 
   const handleSubmit = (values) => {
     setResult(JSON.stringify(values, null, 2));
+    setResult(values);
   };
 
   return (
     <Provider store={store}>
+      {/* QuizBuilder Form Here 👇👇 */}
       <QuizForm onSubmit={handleSubmit} />
       {/* <QuizFormResult result={result} /> */}
     </Provider>
