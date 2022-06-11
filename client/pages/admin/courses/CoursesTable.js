@@ -59,6 +59,13 @@ export default function TableComponent(props) {
     [tempCat]
   );
 
+  function localDay(time) {
+    const minutesOffset = time.getTimezoneOffset();
+    const millisecondsOffset = minutesOffset * 60 * 1000;
+    const local = new Date(time - millisecondsOffset);
+    return local.toISOString().substr(0, 10);
+  }
+
   const handleChange = (pagination, filters, sorter) => {
     setFilteredInfo(filters);
   };
@@ -175,6 +182,18 @@ export default function TableComponent(props) {
       title: "Description",
       dataIndex: "description",
       key: "description"
+    },
+    // Joined Date
+    {
+      title: "Joined Date",
+      dataIndex: "createdAt",
+      key: "joinedDate",
+      render: (text, record) => (
+        <Tooltip title="Joined Date">
+          <span>{localDay(new Date(text))}</span>
+        </Tooltip>
+      ),
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
     },
 
     // Actions - Publish/Unpublish

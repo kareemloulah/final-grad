@@ -251,43 +251,48 @@ export default function StudentsTable(props) {
       filters: coursesFiltersBuilder(tableData),
       onFilter: (value, record) =>
         record.courses?.some((course) => course?.name === value),
-      render: (courses) => (
-        <span>
-          {courses.length > 0 ? (
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center"
-              }}
-            >
-              {printCoursesWithLimit(courses, coursesLimit)?.map(
-                (course, index) =>
-                  index < coursesLimit ? (
-                    <CourseTag course={course} key={course?._id} />
-                  ) : (
-                    <Tooltip title="View 3 more">
-                      <Button
-                        style={{
-                          height: "40px",
-                          borderRadius: "35px"
-                        }}
-                        type="primary"
-                        onClick={() => setCoursesLimit(coursesLimit + 3)}
-                      >
-                        More
-                      </Button>
-                    </Tooltip>
-                  )
-              )}
-            </div>
-          ) : (
-            <>
-              <Tag color="warning">No Courses</Tag>
-            </>
-          )}
-        </span>
-      )
+      render: (courses) => {
+        return (
+          <span>
+            {courses.length > 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center"
+                }}
+              >
+                {printCoursesWithLimit(courses, coursesLimit)?.map(
+                  (course, index) => {
+                    return index < coursesLimit ? (
+                      <CourseTag course={course} key={course?._id} />
+                    ) : (
+                      <Tooltip title="View 3 more">
+                        <Button
+                          style={{
+                            height: "40px",
+                            borderRadius: "35px"
+                          }}
+                          type="primary"
+                          onClick={() => {
+                            setCoursesLimit(coursesLimit + 3);
+                          }}
+                        >
+                          More
+                        </Button>
+                      </Tooltip>
+                    );
+                  }
+                )}
+              </div>
+            ) : (
+              <>
+                <Tag color="warning">No Courses</Tag>
+              </>
+            )}
+          </span>
+        );
+      }
     },
 
     // Joined Date
