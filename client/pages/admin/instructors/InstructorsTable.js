@@ -203,7 +203,7 @@ export default function InstructorsTable(props) {
 
     // Course = Tag + badge coursesLimit, setCoursesLimit
     {
-      title: "Courses",
+      title: "This Instructor Courses",
       dataIndex: "courses",
       key: "courses",
 
