@@ -23,32 +23,9 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
 
 export default function TableComponent(props) {
-  const { tableData = data, setReFetch } = props;
+  const { tableData, setReFetch } = props;
   const [form] = Form.useForm();
 
   const [activeExpRow, setActiveExpRow] = useState();
@@ -263,146 +240,159 @@ export default function TableComponent(props) {
     });
   };
 
-  const expandCourses = (record, index, indent, expanded) => {
-    console.log("record:", record.slug);
+  const expandCourses = useCallback(
+    (record, index, indent, expanded) => {
+      console.log("record:", record.slug);
 
-    form.setFieldsValue({
-      name: record.name,
-      description: record.description,
-      price: record.price,
-      category: record.category,
-      slug: record.slug
-    });
+      // form.setFieldsValue({
+      //   name: record.name,
+      //   description: record.description,
+      //   price: record.price,
+      //   category: record.category,
+      //   slug: record.slug
+      // });
 
-    const newINIT = {
-      name: tableData[index].name,
-      description: tableData[index].description,
-      price: tableData[index].price,
-      category: [tableData[index].category],
-      slug: tableData[index].slug
-    };
+      const newINIT = {
+        name: tableData[index]?.name,
+        description: tableData[index]?.description,
+        price: tableData[index]?.price,
+        category: [tableData[index]?.category],
+        slug: tableData[index]?.slug
+      };
 
-    return (
-      <Form
-        form={form}
-        initialValues={newINIT}
-        name={record.slug}
-        onFinish={hitEdit}
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          flexDirection: "row",
-          flexFlow: "nowrap",
-          gap: "10px"
-        }}
-        layout="vertical"
-        size="small"
-      >
-        {/* Slug */}
-        <Form.Item name="slug"></Form.Item>
-
-        {/* Name */}
-        <Form.Item name="name" label="Course Name">
-          <Input size="small" allowClear placeholder="Type Course Name" />
-        </Form.Item>
-
-        {/* Price */}
-        <Form.Item name="price" label="Price">
-          <InputNumber
-            size="small"
-            placeholder="Name a price"
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-          />
-        </Form.Item>
-
-        {/* Categories */}
-        <Form.Item
-          name="category"
-          style={{
-            width: "15%"
-          }}
-          label="Categories"
-        >
-          <Select
-            showSearch
-            size="small"
-            placeholder="Please select category"
-            optionFilterProp="children"
-            onChange={onCategoryChange}
-            filterOption={(input, option) => {
-              return option.children
-                .toLowerCase()
-                .includes(input.toLowerCase());
-            }}
-            filterSort={(optionA, optionB) =>
-              optionA.children.toLowerCase() > optionB.children.toLowerCase()
-                ? 1
-                : -1
-            }
-          >
-            {categoryFiltersBuilder(tableData).map((item) => (
-              <Select.Option key={item.value} value={item.value}>
-                {item.text}
-              </Select.Option>
-            ))}
-          </Select>
-          {/* New Category */}
-          <Input.Group
-            style={{
-              marginTop: "5px",
-              width: "104%"
-            }}
-            compact
-          >
-            <Input
-              style={{
-                width: "70%"
-              }}
-              placeholder="New Category"
-              onChange={(event) => {
-                setTempCatInput(event.target.value);
-              }}
-              value={tempCatInput}
-            />
-            <Button
-              disabled={
-                tempCat.some((cats) => cats.value === tempCatInput) ||
-                tempCatInput === ""
-              }
-              onClick={handleNewCategory}
-              type="primary"
-            >
-              Add
-            </Button>
-          </Input.Group>
-        </Form.Item>
-
-        {/* Description */}
-        <Form.Item name="description" label="Description">
-          <Input.TextArea
-            size="small"
-            allowClear
-            placeholder="Write Description"
-          />
-        </Form.Item>
-
-        <Form.Item
+      return (
+        <Form
+          form={form}
+          initialValues={newINIT}
+          name={record.slug}
+          onFinish={hitEdit}
           style={{
             display: "flex",
-            alignSelf: "flex-end"
+            justifyContent: "space-around",
+            alignItems: "center",
+            flexDirection: "row",
+            flexFlow: "nowrap",
+            gap: "10px"
           }}
+          layout="vertical"
+          size="small"
         >
-          <Button htmlType="submit" size="middle" type="primary">
-            Save
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  };
+          {/* Slug */}
+          <Form.Item hidden={true} name="slug"></Form.Item>
+
+          {/* Name */}
+          <Form.Item name="name" label="Course Name">
+            <Input size="small" allowClear placeholder="Type Course Name" />
+          </Form.Item>
+
+          {/* Price */}
+          <Form.Item name="price" label="Price">
+            <InputNumber
+              size="small"
+              placeholder="Name a price"
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            />
+          </Form.Item>
+
+          {/* Categories */}
+          <Form.Item
+            name="category"
+            style={{
+              width: "15%"
+            }}
+            label="Categories"
+          >
+            <Select
+              showSearch
+              size="small"
+              placeholder="Please select category"
+              optionFilterProp="children"
+              onChange={onCategoryChange}
+              filterOption={(input, option) => {
+                return option.children
+                  .toLowerCase()
+                  .includes(input.toLowerCase());
+              }}
+              filterSort={(optionA, optionB) =>
+                optionA.children.toLowerCase() > optionB.children.toLowerCase()
+                  ? 1
+                  : -1
+              }
+            >
+              {categoryFiltersBuilder(tableData).map((item) => (
+                <Select.Option key={item.value} value={item.value}>
+                  {item.text}
+                </Select.Option>
+              ))}
+            </Select>
+            {/* New Category */}
+            <Input.Group
+              style={{
+                marginTop: "5px",
+                width: "104%"
+              }}
+              compact
+            >
+              <Input
+                style={{
+                  width: "70%"
+                }}
+                placeholder="New Category"
+                onChange={(event) => {
+                  setTempCatInput(event.target.value);
+                }}
+                value={tempCatInput}
+              />
+              <Button
+                disabled={
+                  tempCat.some((cats) => cats.value === tempCatInput) ||
+                  tempCatInput === ""
+                }
+                onClick={handleNewCategory}
+                type="primary"
+              >
+                Add
+              </Button>
+            </Input.Group>
+          </Form.Item>
+
+          {/* Description */}
+          <Form.Item name="description" label="Description">
+            <Input.TextArea
+              size="small"
+              allowClear
+              placeholder="Write Description"
+            />
+          </Form.Item>
+
+          <Form.Item
+            style={{
+              display: "flex",
+              alignSelf: "flex-end"
+            }}
+          >
+            <Button htmlType="submit" size="middle" type="primary">
+              Save
+            </Button>
+          </Form.Item>
+        </Form>
+      );
+    },
+
+    [
+      tableData,
+      categoryFiltersBuilder,
+      form,
+      hitEdit,
+      tempCat,
+      tempCatInput,
+      handleNewCategory,
+      onCategoryChange
+    ]
+  );
 
   return (
     <>
