@@ -6,8 +6,9 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { List, Avatar, Modal } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import UpdateLessonForm from "../../../../components/forms/UpdateLessonForm";
+import Link from "next/link";
 
 const { Item } = List;
 
@@ -15,13 +16,14 @@ const CourseEdit = () => {
   // state
   const [values, setValues] = useState({
     name: "",
+    slug: "",
     description: "",
     price: "9.99",
     uploading: false,
     paid: true,
     category: "",
     loading: false,
-    lessons: [],
+    lessons: []
   });
   const [image, setImage] = useState({});
   const [preview, setPreview] = useState("");
@@ -30,9 +32,8 @@ const CourseEdit = () => {
   // state for lessons update
   const [visible, setVisible] = useState(false);
   const [current, setCurrent] = useState({});
-  const [uploadVideoButtonText, setUploadVideoButtonText] = useState(
-    "Upload Video"
-  );
+  const [uploadVideoButtonText, setUploadVideoButtonText] =
+    useState("Upload Video");
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
 
@@ -64,7 +65,7 @@ const CourseEdit = () => {
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       try {
         let { data } = await axios.post("/api/course/upload-image", {
-          image: uri,
+          image: uri
         });
         console.log("IMAGE UPLOADED", data);
         // set image in the state
@@ -100,7 +101,7 @@ const CourseEdit = () => {
       // console.log(values);
       const { data } = await axios.put(`/api/course/${slug}`, {
         ...values,
-        image,
+        image
       });
       toast("Course updated!");
       // router.push("/instructor");
@@ -129,7 +130,7 @@ const CourseEdit = () => {
     // save the new lessons order in db
     const { data } = await axios.put(`/api/course/${slug}`, {
       ...values,
-      image,
+      image
     });
     // console.log("LESSONS REARRANGED RES => ", data);
     toast("Lessons rearranged successfully");
@@ -174,7 +175,7 @@ const CourseEdit = () => {
       videoData,
       {
         onUploadProgress: (e) =>
-          setProgress(Math.round((100 * e.loaded) / e.total)),
+          setProgress(Math.round((100 * e.loaded) / e.total))
       }
     );
     console.log(data);
@@ -237,6 +238,22 @@ const CourseEdit = () => {
                 onDragStart={(e) => handleDrag(e, index)}
                 onDrop={(e) => handleDrop(e, index)}
               >
+                <Link
+                  href={{
+                    pathname: `/instructor/course/edit/quiz/${values.slug}`,
+                    query: { lessonId: item._id }
+                  }}
+                >
+                  <FileAddOutlined
+                    style={{
+                      fontSize: "30px"
+                    }}
+                    className="text-primary float-right"
+                    onClick={() => {
+                      console.log(item);
+                    }}
+                  />
+                </Link>
                 <Item.Meta
                   onClick={() => {
                     setVisible(true);
@@ -247,6 +264,9 @@ const CourseEdit = () => {
                 ></Item.Meta>
 
                 <DeleteOutlined
+                  style={{
+                    fontSize: "30px"
+                  }}
                   onClick={() => handleDelete(index)}
                   className="text-danger float-right"
                 />

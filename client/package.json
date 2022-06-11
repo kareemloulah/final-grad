@@ -27,13 +27,18 @@
     "next": "^12.1.6",
     "react": "^17.0.1",
     "react-bootstrap": "^2.4.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.1",
     "react-icons": "^4.4.0",
     "react-image-file-resizer": "^0.4.2",
     "react-markdown": "^5.0.3",
     "react-player": "^2.9.0",
+    "react-quizzes": "^0.3.1",
+    "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "react-toastify": "^7.0.3",
+    "redux": "^4.2.0",
+    "redux-form": "^8.3.8",
     "tabler-icons-react": "^1.48.1"
   }
 }
