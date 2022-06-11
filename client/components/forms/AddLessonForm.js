@@ -171,8 +171,8 @@ const AddLessonForm = ({
 
   return (
     <div className="container pt-3">
-      {/* <form onSubmit={handleAddLesson}> */}
-      <form onSubmit={handler}>
+      <form onSubmit={handleAddLesson}>
+      {/* <form onSubmit={handler}> */}
         <input
           type="text"
           className="form-control square"
@@ -222,8 +222,8 @@ const AddLessonForm = ({
 
         {/* submit button */}
         <Button
-          // onClick={handleAddLesson}
-          onClick={handler}
+          onClick={handleAddLesson}
+          // onClick={handler}
           className="col mt-3"
           size="large"
           type="primary"

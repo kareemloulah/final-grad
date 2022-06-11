@@ -181,6 +181,8 @@ const TopNav = () => {
         <SubMenu
           style={{
             color: "#2d5ebe",
+            display: "flex",
+            alignItems: "center",
           }}
           icon={<CoffeeOutlined />}
           title={user && user.name}

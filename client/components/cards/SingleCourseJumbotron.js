@@ -93,6 +93,11 @@ const SingleCourseJumbotron = ({
               <Button
                 className="mb-3 mt-3"
                 type="danger"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 block
                 shape="round"
                 icon={<SafetyOutlined />}
