@@ -11,7 +11,9 @@ const contentStyle = {
 const carousel = () => (
   <Carousel autoplay>
     <div>
-      <h3 style={contentStyle}>1</h3>
+      <h3 style={contentStyle}>
+        Ant Design is a design language for HTML, CSS, and JS.
+      </h3>
     </div>
     <div>
       <h3 style={contentStyle}>2</h3>
