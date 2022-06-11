@@ -116,7 +116,7 @@ const Login = () => {
       // setLoading(false);
     } catch (err) {
       
-      toast(err.response.data);
+      toast.error(err.response.data);
         setLoading(false);
     }
   };

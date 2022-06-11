@@ -6,24 +6,24 @@ const questionSchema = new mongoose.Schema(
   {
     question: {
       type: String,
-      required: true,
+      required: true
     },
     answers: [
       {
         type: String,
         required: true,
-        isRight: { type: Boolean },
-      },
+        isRight: { type: Boolean }
+      }
     ],
     mark: {
       type: Number,
-      required: true,
+      required: true
     },
     type: {
       type: String,
       required: true,
-      default: "single",
-    },
+      default: "single"
+    }
   },
   { timestamps: true }
 );
@@ -35,21 +35,22 @@ const lessonSchema = new mongoose.Schema(
       trim: true,
       // minlength: 3,
       maxlength: 320,
-      required: true,
+      required: true
     },
     slug: {
       type: String,
-      lowercase: true,
+      lowercase: true
     },
     content: {
       type: {},
-      minlength: 200,
+      minlength: 200
     },
     video: {},
     free_preview: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    questions: [questionSchema]
   },
   { timestamps: true }
 );
@@ -61,37 +62,37 @@ const courseSchema = new mongoose.Schema(
       trim: true,
       minlength: 3,
       maxlength: 320,
-      required: true,
+      required: true
     },
     slug: {
       type: String,
-      lowercase: true,
+      lowercase: true
     },
     description: {
       type: {},
       minlength: 200,
-      required: true,
+      required: true
     },
     price: {
       type: Number,
-      default: 9.99,
+      default: 9.99
     },
     image: {},
     category: String,
     published: {
       type: Boolean,
-      default: false,
+      default: false
     },
     paid: {
       type: Boolean,
-      default: true,
+      default: true
     },
     instructor: {
       type: ObjectId,
       ref: "User",
-      required: true,
+      required: true
     },
-    lessons: [lessonSchema],
+    lessons: [lessonSchema]
   },
   { timestamps: true }
 );

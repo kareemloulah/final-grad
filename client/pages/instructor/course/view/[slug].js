@@ -24,6 +24,7 @@ const CourseView = () => {
     title: "",
     content: "",
     video: {},
+    questions: [],
   });
   const [uploading, setUploading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload Video");
