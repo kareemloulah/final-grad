@@ -102,14 +102,9 @@ export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log("id: ", id);
-    console.table(req.body);
-
     const updated = await User.findByIdAndUpdate(id, req.body, {
       new: true
     }).exec();
-
-    console.table(updated);
 
     res.json(updated);
   } catch (err) {
@@ -120,19 +115,23 @@ export const updateUser = async (req, res) => {
 
 export const allInstructors = async (req, res) => {
   try {
-    const users = await User.find({ role: "Instructor" });
-    populate({
-      path: "courses",
-      select: "name image paid slug published",
-      populate: {
-        path: "instructor",
-        select: "name"
-      }
-    }).exec();
+    const users = await User.find({ role: "Instructor" })
+      .populate({
+        path: "courses",
+        select: "name image paid slug published",
+        populate: {
+          path: "instructor",
+          select: "name"
+        }
+      })
+      .exec();
 
     const courses = await Course.find({})
       .sort({ createdAt: -1 })
-      .populate("instructor", "name")
+      .populate({
+        path: "instructor",
+        select: "name _id"
+      })
       .exec();
 
     res.json({ users, courses });

@@ -16,13 +16,10 @@ export default function AdminInstructorsIndex() {
   }, [reFetch]);
 
   const loadCourses = async () => {
-    const { data } = await axios.get("/api/admin/all-courses");
-    setCourses(data.courses);
-    setInstructors(data.users);
+    const { data } = await axios.get("/api/admin/all-instructors");
+    await setInstructors(data?.users);
+    await setCourses(data?.courses);
   };
-
-  console.log("courses", courses);
-  console.log("instructors", instructors);
 
   const myStyle = { marginTop: "-15px", fontSize: "10px" };
 

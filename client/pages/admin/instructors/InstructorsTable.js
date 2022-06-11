@@ -78,6 +78,18 @@ export default function InstructorsTable(props) {
     return coursesToPrint;
   }, []);
 
+  const getThisInstructorsCourses = useCallback(
+    (instructor) => {
+      console.log("🚀 ~ instructor", courses);
+
+      const filteredCourses = courses.filter(
+        (course) => course?.instructor?._id === instructor._id
+      );
+      return filteredCourses;
+    },
+    [tableData, courses]
+  );
+
   function localDay(time) {
     const minutesOffset = time.getTimezoneOffset();
     const millisecondsOffset = minutesOffset * 60 * 1000;
@@ -198,9 +210,9 @@ export default function InstructorsTable(props) {
       filters: coursesFiltersBuilder(tableData),
       onFilter: (value, record) =>
         record.courses?.some((course) => course?.name === value),
-      render: (courses) => (
+      render: (text, record) => (
         <span>
-          {courses?.length > 0 ? (
+          {getThisInstructorsCourses(record)?.length > 0 ? (
             <div
               style={{
                 display: "flex",
@@ -208,24 +220,26 @@ export default function InstructorsTable(props) {
                 alignItems: "center"
               }}
             >
-              {printCoursesWithLimit(courses, coursesLimit)?.map(
-                (course, index) =>
-                  index < coursesLimit ? (
-                    <CourseTag course={course} key={course?._id} />
-                  ) : (
-                    <Tooltip title="View 3 more">
-                      <Button
-                        style={{
-                          height: "40px",
-                          borderRadius: "35px"
-                        }}
-                        type="primary"
-                        onClick={() => setCoursesLimit(coursesLimit + 3)}
-                      >
-                        More
-                      </Button>
-                    </Tooltip>
-                  )
+              {printCoursesWithLimit(
+                getThisInstructorsCourses(record),
+                coursesLimit
+              )?.map((course, index) =>
+                index < coursesLimit ? (
+                  <CourseTag course={course} key={course?._id} />
+                ) : (
+                  <Tooltip title="View 3 more">
+                    <Button
+                      style={{
+                        height: "40px",
+                        borderRadius: "35px"
+                      }}
+                      type="primary"
+                      onClick={() => setCoursesLimit(coursesLimit + 3)}
+                    >
+                      More
+                    </Button>
+                  </Tooltip>
+                )
               )}
             </div>
           ) : (
@@ -296,7 +310,7 @@ export default function InstructorsTable(props) {
   const hitEdit = async (values) => {
     console.log("ID: ", values._id);
 
-    const resp = await axios.put(`/api/admin/instructor/${values.id}`, values);
+    const resp = await axios.put(`/api/admin/user/${values.id}`, values);
     setReFetch((e) => !e);
     if (resp.status === 200) {
       toast.success(`Stundent Updated successfully`);
