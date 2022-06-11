@@ -106,7 +106,7 @@ class QuizForm extends Component {
         </Field>
       </li>
 
-      {error && <li className="error">{error}</li>}
+      {error && <li className="error">{error}</li>} 
     </ul>
   );
 
