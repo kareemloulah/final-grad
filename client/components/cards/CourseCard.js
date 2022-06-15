@@ -26,21 +26,21 @@ const CourseCard = ({ course }) => {
             />
           }
         >
-          <h2 className="font-weight-bold">{name}</h2>
+          <h4 className="font-weight-bold">{name}</h4>
           <p>by {instructor.name}</p>
           <Badge
             count={category}
             style={{ backgroundColor: "#03a9f4" }}
             className="pb-2 mr-2"
           />
-          <h4 className="pt-2">
+          <h6 className="pt-2">
             {paid
               ? currencyFormatter({
                   amount: price,
                   currency: "usd",
                 })
               : "Free"}
-          </h4>
+          </h6>
         </Card>
       </a>
     </Link>
