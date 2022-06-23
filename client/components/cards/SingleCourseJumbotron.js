@@ -39,7 +39,7 @@ const SingleCourseJumbotron = ({
             <h1 className="font-weight-bold">{name}</h1>
             {/* description */}
             <p className="lead">
-              {description && description.substring(0, 160)}...
+              {description && description.substring(0, 300)}...
             </p>
             {/* category */}
             <Badge

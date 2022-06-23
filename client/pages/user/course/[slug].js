@@ -200,7 +200,12 @@ const SingleCourse = () => {
                   source={course.lessons[clicked].content}
                   className="single-post"
                 />
-                <Quiz quiz={quiz} />
+                <div 
+                  className="container mt-5 mb-2"
+                  style={{display:'flex', justifyContent:'center'}}
+                >
+                  <Quiz  quiz={quiz} />
+                </div>
               </div>
 
             </>

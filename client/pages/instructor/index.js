@@ -16,14 +16,14 @@ const InstructorIndex = () => {
     const { data } = await axios.get("/api/instructor-courses");
     setCourses(data);
   };
-
+  
   const myStyle = { marginTop: "-15px", fontSize: "10px" };
 
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
       {/* <pre>{JSON.stringify(courses, null, 4)}</pre> */}
-
+      <p>Number of courses : {courses.length}</p>
       {courses &&
         courses.map((course) => (
           <>
