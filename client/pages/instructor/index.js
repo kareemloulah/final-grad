@@ -23,7 +23,13 @@ const InstructorIndex = () => {
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
       {/* <pre>{JSON.stringify(courses, null, 4)}</pre> */}
-      <p>Number of courses : {courses.length}</p>
+
+      {courses.length == 0 ? 
+        <h6 className="text-warning"> No courses Added </h6> 
+        : 
+        <h6> Number of courses : {courses.length} </h6>
+      }
+
       {courses &&
         courses.map((course) => (
           <>

@@ -19,7 +19,7 @@ import {
   Image,
   createStyles,
 } from "@mantine/core";
-import { At, Lock } from "tabler-icons-react";
+import { At, Lock, Router } from "tabler-icons-react";
 import {
   SyncOutlined,
   GoogleOutlined,
@@ -110,6 +110,7 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setLoading(false);
+      router.push("/login")
     } catch (err) {
       toast(err.response.data);
       setLoading(false);
@@ -151,7 +152,7 @@ const Register = () => {
           </Button>
         </Link>
 
-       
+      
       </Group>
 
         
