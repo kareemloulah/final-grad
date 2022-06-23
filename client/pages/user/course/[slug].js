@@ -7,6 +7,8 @@ import { Menu, Avatar } from "antd";
 import ReactPlayer from "react-player";
 import ReactMarkdown from "react-markdown";
 import { Button } from "react-bootstrap";
+import Quiz from "../../../../client/components/QuizComponent/Quiz";
+import quiz from "../../../../client/utils/dummyData"
 
 import {
   PlayCircleOutlined,
@@ -145,7 +147,10 @@ const SingleCourse = () => {
         <div className="col">
           {clicked !== -1 ? (
             <>
-              <div className="col alert alert-primary square">
+              <div 
+                className="col alert alert-primary square" 
+                style = {{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} 
+                >
                 <b>{course.lessons[clicked].title.substring(0, 30)}</b>
                 {completedLessons.includes(course.lessons[clicked]._id) ? (
                   <Button
@@ -195,11 +200,14 @@ const SingleCourse = () => {
                 source={course.lessons[clicked].content}
                 className="single-post"
               />
+
             </>
           ) : (
             <CourseInfo />
           )}
+          {/* <Quiz quiz={quiz} /> */}
         </div>
+        
       </div>
     </StudentRoute>
   );
