@@ -112,7 +112,7 @@ const SingleCourse = () => {
             <Item
               key={-1}
               onClick={() => setClicked(-1)}
-              icon={<Avatar>{0}</Avatar>}
+              icon={<Avatar size={36}>{0}</Avatar>}
             >
               Info
               <InfoCircleFilled
@@ -124,7 +124,7 @@ const SingleCourse = () => {
               <Item
                 onClick={() => setClicked(index)}
                 key={index}
-                icon={<Avatar>{index + 1}</Avatar>}
+                icon={<Avatar size={36}>{index + 1}</Avatar>}
               >
                 {lesson.title.substring(0, 30)}{" "}
                 {completedLessons.includes(lesson._id) ? (

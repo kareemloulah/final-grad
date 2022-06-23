@@ -5,7 +5,7 @@ import CourseCreateForm from "../../../../components/forms/CourseCreateForm";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { List, Avatar, Modal } from "antd";
+import { List, Avatar, Modal, Popover } from "antd";
 import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import UpdateLessonForm from "../../../../components/forms/UpdateLessonForm";
 import Link from "next/link";
@@ -238,38 +238,44 @@ const CourseEdit = () => {
                 onDragStart={(e) => handleDrag(e, index)}
                 onDrop={(e) => handleDrop(e, index)}
               >
+                <Item.Meta
+                  onClick={() => {
+                    setVisible(true);
+                    setCurrent(item);
+                  }}
+                  avatar={<Avatar size={36} >{index + 1}</Avatar>}
+                  title={item.title}
+                ></Item.Meta>
                 <Link
                   href={{
                     pathname: `/instructor/course/edit/quiz/${values.slug}`,
                     query: { lessonId: item._id }
                   }}
                 >
-                  <FileAddOutlined
-                    style={{
-                      fontSize: "30px"
-                    }}
-                    className="text-primary float-right"
-                    onClick={() => {
-                      console.log(item);
-                    }}
-                  />
+                  <Popover content='Add Quiz'>
+                    <FileAddOutlined
+                      style={{
+                        fontSize: "26px",
+                        marginRight: '30px',
+                      }}
+                      className="text-primary float-right"
+                      onClick={() => {
+                        console.log(item);
+                      }}
+                    />
+                  </Popover>
                 </Link>
-                <Item.Meta
-                  onClick={() => {
-                    setVisible(true);
-                    setCurrent(item);
-                  }}
-                  avatar={<Avatar>{index + 1}</Avatar>}
-                  title={item.title}
-                ></Item.Meta>
 
-                <DeleteOutlined
-                  style={{
-                    fontSize: "30px"
-                  }}
-                  onClick={() => handleDelete(index)}
-                  className="text-danger float-right"
-                />
+                <Popover placement="topRight" content='Delete Lesson'>
+                  <DeleteOutlined
+                    style={{
+                      fontSize: "26px",
+                      marginRight:'20px'
+                    }}
+                    onClick={() => handleDelete(index)}
+                    className="text-danger float-right"
+                  />
+                </Popover>
               </Item>
             )}
           ></List>
