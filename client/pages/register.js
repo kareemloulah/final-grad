@@ -176,13 +176,14 @@ const Register = () => {
 
             <TextInput
               mb="20px"
+              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder=" Username"
               required
             />
             <TextInput
-            type="email"
+              type="email"
               mb="20px"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -192,6 +193,7 @@ const Register = () => {
 
             <PasswordInput
               mb="20px"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder=" password"

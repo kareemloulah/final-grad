@@ -24,7 +24,7 @@ const InstructorIndex = () => {
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
       {/* <pre>{JSON.stringify(courses, null, 4)}</pre> */}
 
-      {courses.length == 0 ? 
+      {courses.length === 0 ? 
         <h6 className="text-warning"> No courses Added </h6> 
         : 
         <h6> Number of courses : {courses.length} </h6>
