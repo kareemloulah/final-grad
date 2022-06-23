@@ -194,7 +194,7 @@ const AddLessonForm = ({
         />
 
         {/* Search on ternary operator Vs inline if condition in react */}
-        {showFormQuestion ? <Question /> : <QuestionAdder isFirst={true} />}
+        {/* {showFormQuestion ? <Question /> : <QuestionAdder isFirst={true} />} */}
 
         {/* uploading video */}
         <div className="d-flex justify-content-center">

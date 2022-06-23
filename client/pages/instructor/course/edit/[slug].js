@@ -9,6 +9,7 @@ import { List, Avatar, Modal, Popover } from "antd";
 import { DeleteOutlined, FileAddOutlined } from "@ant-design/icons";
 import UpdateLessonForm from "../../../../components/forms/UpdateLessonForm";
 import Link from "next/link";
+import Router from "next/router";
 
 const { Item } = List;
 
@@ -104,6 +105,7 @@ const CourseEdit = () => {
         image
       });
       toast("Course updated!");
+      Router.back()
       // router.push("/instructor");
     } catch (err) {
       toast(err.response.data);
