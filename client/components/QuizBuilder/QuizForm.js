@@ -4,7 +4,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
 import range from "lodash/range";
 import validate from "./validate";
 import { AiFillCloseCircle } from "react-icons/ai";
-
+// import "./style.css"
 
 class QuizForm extends Component {
   renderInputField = ({ input, label, type, meta: { touched, error } }) => (
@@ -127,21 +127,22 @@ class QuizForm extends Component {
             component={this.renderInputField}
             label="Question Title"
           />
-          <Field
-            className="dropdown-menu"
-            name={`${question}.questionType`}
-            component={this.renderSelectQuestionTypeField}
-            label="Question Type"
-          >
-            <option value="">Please select a question type</option>
-            <option value="text">Text</option>
-            <option value="photo">Photo</option>
-          </Field>
+            <Field
+              className="select"
+              name={`${question}.questionType`}
+              component={this.renderSelectQuestionTypeField}
+              label="Question Type"
+            >
+              <option value=""> Please select a question type </option>
+              <option value="text">Text</option>
+              <option value="photo">Photo</option>
+            </Field>
           <FieldArray
             name={`${question}.answers`}
             component={this.renderTextAnswers}
             question={question}
           />
+          
           <Field
             name={`${question}.messageForCorrectAnswer`}
             type="text"
@@ -182,6 +183,7 @@ class QuizForm extends Component {
       </li>
     </ul>
   );
+  
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;

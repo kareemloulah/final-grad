@@ -8,7 +8,7 @@ import ReactPlayer from "react-player";
 import ReactMarkdown from "react-markdown";
 import { Button } from "react-bootstrap";
 import Quiz from "../../../../client/components/QuizComponent/Quiz";
-import quiz from "../../../../client/utils/dummyData"
+import { quiz }from "../../../../client/utils/dummyData"
 
 import {
   PlayCircleOutlined,
@@ -195,17 +195,19 @@ const SingleCourse = () => {
                     </div>
                   </>
                 )}
-
-              <ReactMarkdown
-                source={course.lessons[clicked].content}
-                className="single-post"
-              />
+              <div className="container" mt-3>
+                <ReactMarkdown
+                  source={course.lessons[clicked].content}
+                  className="single-post"
+                />
+                <Quiz quiz={quiz} />
+              </div>
 
             </>
           ) : (
             <CourseInfo />
           )}
-          {/* <Quiz quiz={quiz} /> */}
+          
         </div>
         
       </div>
