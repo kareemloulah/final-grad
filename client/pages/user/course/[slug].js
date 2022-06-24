@@ -8,7 +8,7 @@ import ReactPlayer from "react-player";
 import ReactMarkdown from "react-markdown";
 import { Button } from "react-bootstrap";
 import Quiz from "../../../../client/components/QuizComponent/Quiz";
-import { quiz }from "../../../../client/utils/dummyData"
+import { quiz } from "../../../../client/utils/dummyData";
 
 import {
   PlayCircleOutlined,
@@ -17,7 +17,7 @@ import {
   CheckCircleFilled,
   MinusCircleFilled,
   InfoCircleOutlined,
-  InfoCircleFilled
+  InfoCircleFilled,
 } from "@ant-design/icons";
 
 const { Item } = Menu;
@@ -50,7 +50,7 @@ const SingleCourse = () => {
 
   const loadCompletedLessons = async () => {
     const { data } = await axios.post(`/api/list-completed`, {
-      courseId: course._id
+      courseId: course._id,
     });
     console.log("COMPLETED LESSONS => ", data);
     setCompletedLessons(data);
@@ -59,7 +59,7 @@ const SingleCourse = () => {
   const markCompleted = async () => {
     const { data } = await axios.post(`/api/mark-completed`, {
       courseId: course._id,
-      lessonId: course.lessons[clicked]._id
+      lessonId: course.lessons[clicked]._id,
     });
     console.log(data);
     setCompletedLessons([...completedLessons, course.lessons[clicked]._id]);
@@ -69,7 +69,7 @@ const SingleCourse = () => {
     try {
       const { data } = await axios.post(`/api/mark-incomplete`, {
         courseId: course._id,
-        lessonId: course.lessons[clicked]._id
+        lessonId: course.lessons[clicked]._id,
       });
       console.log(data);
       const all = completedLessons;
@@ -98,7 +98,7 @@ const SingleCourse = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "5px"
+              gap: "5px",
             }}
           >
             {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}{" "}
@@ -147,10 +147,14 @@ const SingleCourse = () => {
         <div className="col">
           {clicked !== -1 ? (
             <>
-              <div 
-                className="col alert alert-primary square" 
-                style = {{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} 
-                >
+              <div
+                className="col alert alert-primary square"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <b>{course.lessons[clicked].title.substring(0, 30)}</b>
                 {completedLessons.includes(course.lessons[clicked]._id) ? (
                   <Button
@@ -181,7 +185,7 @@ const SingleCourse = () => {
                       style={{
                         display: "flex",
                         maxWidth: "100%",
-                        justifyContent: "center"
+                        justifyContent: "center",
                       }}
                     >
                       <ReactPlayer
@@ -195,26 +199,23 @@ const SingleCourse = () => {
                     </div>
                   </>
                 )}
-              <div className="container" mt-3>
+              <div className="mt-5 container" style={{ width: "70%" }}>
                 <ReactMarkdown
                   source={course.lessons[clicked].content}
                   className="single-post"
                 />
-                <div 
-                  className="container mt-5 mb-2"
-                  style={{display:'flex', justifyContent:'center'}}
+                <div
+                  className=" mt-5 mb-2"
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Quiz  quiz={quiz} />
+                  <Quiz quiz={quiz} />
                 </div>
               </div>
-
             </>
           ) : (
             <CourseInfo />
           )}
-          
         </div>
-        
       </div>
     </StudentRoute>
   );
