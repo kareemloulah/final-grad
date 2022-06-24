@@ -10,7 +10,7 @@ const about = ({ courses }) => {
           marginTop: "100px",
           margin: "auto",
           marginRight: "auto",
-          marginLeft: "-30px",
+          marginLeft: "-10px",
         }}
       >
         <div
@@ -61,6 +61,7 @@ const about = ({ courses }) => {
           hight: "200px",
           marginTop: "100px",
           margin: "auto",
+          marginLeft: "-120px",
           marginRight: "auto",
         }}
       >
@@ -80,7 +81,7 @@ const about = ({ courses }) => {
             className="row"
             style={{
               hight: "70px",
-              margin: "80",
+              margin: "auto",
               padding: "5px",
               marginLeft: "auto",
               marginRight: "auto",
@@ -94,7 +95,7 @@ const about = ({ courses }) => {
             className="row"
             style={{
               hight: "70px",
-              margin: "80",
+              margin: "auto",
               padding: "5px",
               marginLeft: "auto",
               marginRight: "auto",
@@ -107,12 +108,12 @@ const about = ({ courses }) => {
         </div>
 
         <div
-          className="colalign-items-center "
+          className="colalign-items "
           style={{
             hight: "60px",
-            margin: "20",
+            margin: "20px",
             marginTop: "50px",
-            marginLeft: "20px",
+            marginLeft: "-150px",
             marginRight: "auto",
             maxWidth: "15vw",
             columnGap: "10px",
@@ -122,7 +123,7 @@ const about = ({ courses }) => {
             className="row"
             style={{
               hight: "40px",
-              margin: "80",
+              margin: "auto",
               padding: "5px",
               maxWidth: "15vw",
               columnGap: "10px",
@@ -134,11 +135,10 @@ const about = ({ courses }) => {
             className="row"
             style={{
               hight: "40px",
-              margin: "80",
+              margin: "auto",
               padding: "5px",
               maxWidth: "15vw",
               columnGap: "10px",
-              marginRight: "10px",
             }}
           >
             <Image src="../student4.jpg" />
