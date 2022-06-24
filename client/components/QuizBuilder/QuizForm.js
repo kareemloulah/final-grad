@@ -12,7 +12,12 @@ class QuizForm extends Component {
     <div>
       <label className="mt-3">{label}</label>
       <div>
-        <input {...input} type={type} placeholder={label} className="form-control square" />
+        <input
+          {...input}
+          type={type}
+          placeholder={label}
+          className="form-control square"
+        />
         {touched && error && <span className="text-danger">{error}*</span>}
       </div>
     </div>
@@ -23,7 +28,12 @@ class QuizForm extends Component {
     <div>
       <label className="mt-3">{label}</label>
       <div>
-        <textarea className="form-control " {...input} type={type} placeholder={label} />
+        <textarea
+          className="form-control "
+          {...input}
+          type={type}
+          placeholder={label}
+        />
         {touched && error && <span className="text-danger">{error}*</span>}
       </div>
     </div>
@@ -34,7 +44,7 @@ class QuizForm extends Component {
     label,
     type,
     meta: { touched, error },
-    children
+    children,
   }) => (
     <div>
       <label className="mt-3">{label}</label>
@@ -50,7 +60,7 @@ class QuizForm extends Component {
     label,
     type,
     meta: { touched, error },
-    children
+    children,
   }) => (
     <div>
       <label className="mt-3">{label}</label>
@@ -64,11 +74,12 @@ class QuizForm extends Component {
   renderTextAnswers = ({ fields, question, meta: { error } }) => (
     <ul className="list-unstyled mt-3">
       <li className="">
-        <button 
-          className="btn mt-3" 
-          style={{backgroundColor: "#E3EDFF"}}
-          type="button" 
-          onClick={() => fields.push()}>
+        <button
+          className="btn mt-3"
+          style={{ backgroundColor: "#E3EDFF" }}
+          type="button"
+          onClick={() => fields.push()}
+        >
           Add Answer
         </button>
       </li>
@@ -106,7 +117,7 @@ class QuizForm extends Component {
         </Field>
       </li>
 
-      {error && <li className="error">{error}</li>} 
+      {error && <li className="error">{error}</li>}
     </ul>
   );
 
@@ -115,7 +126,7 @@ class QuizForm extends Component {
       {fields.map((question, index) => (
         <li key={index}>
           <button
-          className="btn"
+            className="btn"
             type="button"
             title="Remove Question"
             onClick={() => fields.remove(index)}
@@ -127,22 +138,23 @@ class QuizForm extends Component {
             component={this.renderInputField}
             label="Question Title"
           />
-            <Field
-              className="select"
-              name={`${question}.questionType`}
-              component={this.renderSelectQuestionTypeField}
-              label="Question Type"
-            >
-              <option value=""> Please select a question type </option>
-              <option value="text">Text</option>
-              <option value="photo">Photo</option>
-            </Field>
+          <select
+            className="select mt-3 btn btn-primary dropdown-toggle"
+            name={`${question}.questionType`}
+            component={this.renderSelectQuestionTypeField}
+            label="Question Type"
+            
+          >
+            <option value=""> Please select a question type </option>
+            <option value="text">Text</option>
+            <option value="photo">Photo</option>
+          </select>
           <FieldArray
             name={`${question}.answers`}
             component={this.renderTextAnswers}
             question={question}
           />
-          
+
           <Field
             name={`${question}.messageForCorrectAnswer`}
             type="text"
@@ -168,78 +180,84 @@ class QuizForm extends Component {
             label="Point"
           />
         </li>
-        
       ))}
-      <li >
-        <button 
-          className="btn btn-primary mt-3 mr-2 " 
-          type="button" 
-          onClick={() => fields.push({})} 
-          style={{width:'100%'}}
+      <li>
+        <button
+          className="btn btn-primary mt-3 mr-2 "
+          type="button"
+          onClick={() => fields.push({})}
+          style={{ width: "100%" }}
         >
           Add Question
         </button>
-        {(touched || submitFailed) && error && <span className="text-danger">{error}*</span>}
+        {(touched || submitFailed) && error && (
+          <span className="text-danger">{error}*</span>
+        )}
       </li>
     </ul>
   );
-  
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
 
     return (
       <>
-      <div 
-        style ={{
-          display:'flex',
-          justifyContent:'center',
-          alignItems:'center',
-          height: '120px', 
-          backgroundColor: '#E3EDFF' 
-        }}>
-        <h3>Add Quiz in this section</h3>
-      </div>
-      <div className="container" style={{width:'500px'}}>
-        <div className="QuizForm">
-          <form name="quiz-form" onSubmit={handleSubmit}>
-            <Field
-              name="quizTitle"
-              type="text"
-              component={this.renderInputField}
-              label="Quiz Title"
-            />
-            <Field
-              name="quizSynopsis"
-              type="text"
-              component={this.renderTextareaField}
-              label="Quiz Synopsis"
-            />
-            <FieldArray name="questions" component={this.renderQuestions} />
-            <div>
-              <button 
-                style={{
-                  backgroundColor: '#0f52ba',
-                  width: '80%',
-                  border:'none',
-                }}
-                className="btn btn-primary" 
-                type="submit"  
-                disabled={submitting}>
-                Submit
-              </button>
-              <button
-                className="btn btn-secondary ml-2"
-                style={{width: '18%', backgroundColor: '#d21f3c' , border:'none' }}
-                type="button"
-                disabled={pristine || submitting}
-                onClick={reset}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "120px",
+            backgroundColor: "#E3EDFF",
+          }}
+        >
+          <h3>Add Quiz in this section</h3>
         </div>
+        <div className="container" style={{ width: "500px" }}>
+          <div className="QuizForm">
+            <form name="quiz-form" onSubmit={handleSubmit}>
+              <Field
+                name="quizTitle"
+                type="text"
+                component={this.renderInputField}
+                label="Quiz Title"
+              />
+              <Field
+                name="quizSynopsis"
+                type="text"
+                component={this.renderTextareaField}
+                label="Quiz Synopsis"
+              />
+              <FieldArray name="questions" component={this.renderQuestions} />
+              <div>
+                <button
+                  style={{
+                    backgroundColor: "#0f52ba",
+                    width: "80%",
+                    border: "none",
+                  }}
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  Submit
+                </button>
+                <button
+                  className="btn btn-secondary ml-2"
+                  style={{
+                    width: "18%",
+                    backgroundColor: "#d21f3c",
+                    border: "none",
+                  }}
+                  type="button"
+                  disabled={pristine || submitting}
+                  onClick={reset}
+                >
+                  Clear
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </>
     );
