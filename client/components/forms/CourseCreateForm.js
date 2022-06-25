@@ -1,4 +1,5 @@
 import { Select, Button, Avatar, Badge } from "antd";
+import { cats } from "../../utils/dummyData";
 
 const { Option } = Select;
 
@@ -6,12 +7,13 @@ const CourseCreateForm = ({
   handleSubmit,
   handleImage,
   handleChange,
+  handleCatChange,
   values,
   setValues,
   preview,
   uploadButtonText,
   handleImageRemove = (f) => f,
-  editPage = false,
+  editPage = false
 }) => {
   const children = [];
   for (let i = 9.99; i <= 100.99; i++) {
@@ -21,6 +23,7 @@ const CourseCreateForm = ({
     <>
       {values && (
         <form onSubmit={handleSubmit}>
+          {/* Name Field */}
           <div className="form-group">
             <input
               type="text"
@@ -32,6 +35,7 @@ const CourseCreateForm = ({
             />
           </div>
 
+          {/*Description Field */}
           <div className="form-group">
             <textarea
               name="description"
@@ -43,6 +47,19 @@ const CourseCreateForm = ({
             ></textarea>
           </div>
 
+          {/* Reference Field */}
+          <div className="form-group">
+            <input
+              type="text"
+              name="reference"
+              className="form-control"
+              placeholder="Reference name"
+              value={values.reference}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Price */}
           <div className="form-row">
             <div className="col">
               <div className="form-group">
@@ -73,17 +90,33 @@ const CourseCreateForm = ({
             )}
           </div>
 
+          {/* Category */}
           <div className="form-group">
-            <input
-              type="text"
+            <Select
+              showSearch
+              allowClear
               name="category"
-              className="form-control"
               placeholder="Category"
+              className="form-control"
+              optionFilterProp="children"
+              onChange={handleCatChange}
+              filterOption={(input, option) => option.children.includes(input)}
+              filterSort={(optionA, optionB) =>
+                optionA.children
+                  .toLowerCase()
+                  .localeCompare(optionB.children.toLowerCase())
+              }
               value={values.category}
-              onChange={handleChange}
-            />
+            >
+              {cats?.map((cat, index) => (
+                <Option key={index} value={cat}>
+                  {cat}
+                </Option>
+              ))}
+            </Select>
           </div>
 
+          {/* Image */}
           <div className="form-row">
             <div className="col">
               <div className="form-group">

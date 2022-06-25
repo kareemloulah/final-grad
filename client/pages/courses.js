@@ -1,7 +1,9 @@
 import axios from "axios";
 import CourseCard from "../components/cards/CourseCard";
-import { Menu, Button } from "antd";
-import Dropdown from "react-bootstrap/Dropdown";
+import { Menu, Button, Select } from "antd";
+import { cats } from "../utils/dummyData";
+const { Option } = Select;
+
 const menu = (
   <Menu
     items={[
@@ -48,119 +50,51 @@ const menu = (
 const courses = ({ courses }) => {
   return (
     <>
+      {/* Filters */}
       <div
         style={{
           backgroundColor: "#E3EDFF",
           marginBottom: "50px"
         }}
       >
-        <div className="container-fluid pt-5 pb-5">
+        <div className="container pt-5 pb-5">
           <div className="row">
+            {/* Flitered by text */}
             <div className="col-sm-1">
               <span>Filter By</span>
             </div>
+
+            {/* Fliters dropdown */}
             <div className="col">
               <div className="row">
-                <Dropdown className="col">
-                  <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
-                    variant="light"
-                    id="dropdown-basic"
-                  >
-                    Categories
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="col">
-                  <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
-                    variant="light"
-                    id="dropdown-basic"
-                  >
-                    Categories
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="col">
-                  <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
-                    variant="light"
-                    id="dropdown-basic"
-                  >
-                    Categories
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="col">
-                  <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
-                    variant="light"
-                    id="dropdown-basic"
-                  >
-                    Categories
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="col">
-                  <Dropdown.Toggle
-                    style={{ borderColor: "#2D5EBE", borderRadius: "5px" }}
-                    variant="light"
-                    id="dropdown-basic"
-                  >
-                    Categories
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                      Something else
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Select
+                  showSearch
+                  style={{
+                    width: 200
+                  }}
+                  placeholder="Categories"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.children.includes(input)
+                  }
+                  filterSort={(optionA, optionB) =>
+                    optionA.children
+                      .toLowerCase()
+                      .localeCompare(optionB.children.toLowerCase())
+                  }
+                >
+                  {cats?.map((cat, index) => (
+                    <Option key={index} value={cat}>
+                      {cat}
+                    </Option>
+                  ))}
+                </Select>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/* Courses */}
       <div className="container">
         <div className="row">
           {courses.map((course) => (

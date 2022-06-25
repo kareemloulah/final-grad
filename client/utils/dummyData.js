@@ -215,3 +215,25 @@ export const quiz = {
     }
   ]
 };
+
+export const cats = [
+  "Digital Marketing",
+  "Machine Learning",
+  "Web development",
+  "Embedded System",
+  "Programming",
+  "Engineering",
+  "Photography",
+  "Development",
+  "Front-end",
+  "Back-end",
+  "Software",
+  "Language",
+  "Science",
+  "Physics",
+  "Design",
+  "Videos",
+  "React",
+  "AI",
+  "IT",
+];

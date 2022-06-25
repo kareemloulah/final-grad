@@ -6,7 +6,6 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
-
 const CourseCreate = () => {
   // state
   const [values, setValues] = useState({
@@ -17,6 +16,7 @@ const CourseCreate = () => {
     paid: true,
     category: "",
     loading: false,
+    reference: ""
   });
   const [image, setImage] = useState({});
   const [preview, setPreview] = useState("");
@@ -29,6 +29,10 @@ const CourseCreate = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const handleCatChange = (value) => {
+    setValues({ ...values, category: value });
+  };
+
   const handleImage = (e) => {
     let file = e.target.files[0];
     setPreview(window.URL.createObjectURL(file));
@@ -38,7 +42,7 @@ const CourseCreate = () => {
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       try {
         let { data } = await axios.post("/api/course/upload-image", {
-          image: uri,
+          image: uri
         });
         console.log("IMAGE UPLOADED", data);
         // set image in the state
@@ -74,7 +78,7 @@ const CourseCreate = () => {
       // console.log(values);
       const { data } = await axios.post("/api/course", {
         ...values,
-        image,
+        image
       });
       toast("Great! Now you can start adding lessons");
       router.push("/instructor");
@@ -91,6 +95,7 @@ const CourseCreate = () => {
           handleSubmit={handleSubmit}
           handleImage={handleImage}
           handleChange={handleChange}
+          handleCatChange={handleCatChange}
           values={values}
           setValues={setValues}
           preview={preview}
