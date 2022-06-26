@@ -1,20 +1,28 @@
 import React from "react";
 import { Carousel } from "antd";
 const contentStyle = {
-  height: "300px",
+  height: "50%",
+  width:"80%",
+  margin:"auto", 
   color: "#2d5ebe",
-  lineHeight: "300px",
   textAlign: "center",
+  lineHeight:"60px" , 
+  backgroundColor: "rgba(255, 255, 255, .4)" ,
+  minHeight:"150px" , 
 };
 
 const carousel = () => (
-  <Carousel autoplay style={{background:"url('https://images.unsplash.com/photo-1619852182277-79aa23f82c8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80')" , backgrounSize:"cover", height:"60vh"}}>
-    <div>
+  <Carousel
+   autoplay 
+   style={{background:"url('https://images.unsplash.com/photo-1619852182277-79aa23f82c8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80')" , backgrounSize:"cover", height:"60vh"}}
+   className="d-flex justify-content-center align-items-center"
+   >
+    <div >
       <h3 style={contentStyle}>
       The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!.
       </h3>
     </div>
-    <div>
+    <div >
       <h3 style={contentStyle}>Learn modern HTML5, CSS3 and web design by building a stunning website for your portfolio! Includes flexbox and CSS Grid.</h3>
     </div>
     <div>
