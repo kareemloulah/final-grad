@@ -5,11 +5,10 @@ const contentStyle = {
   color: "#2d5ebe",
   lineHeight: "300px",
   textAlign: "center",
-  background: "#E3EDFF",
 };
 
 const carousel = () => (
-  <Carousel autoplay style={{background:"url(https://unsplash.com/photos/m_HRfLhgABo)"}}>
+  <Carousel autoplay style={{background:"url('https://images.unsplash.com/photo-1619852182277-79aa23f82c8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80')" , backgrounSize:"cover", height:"60vh"}}>
     <div>
       <h3 style={contentStyle}>
       The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!.
