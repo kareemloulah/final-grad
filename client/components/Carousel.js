@@ -1,28 +1,35 @@
 import React from "react";
 import { Carousel } from "antd";
 const contentStyle = {
-  height: "300px",
+  height: "50%",
+  width:"80%",
+  margin:"auto", 
   color: "#2d5ebe",
-  lineHeight: "300px",
   textAlign: "center",
-  background: "#E3EDFF",
+  lineHeight:"60px" , 
+  backgroundColor: "rgba(255, 255, 255, .4)" ,
+  minHeight:"150px" , 
 };
 
 const carousel = () => (
-  <Carousel autoplay>
-    <div>
+  <Carousel
+   autoplay 
+   style={{background:"url('https://images.unsplash.com/photo-1619852182277-79aa23f82c8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80')" , backgrounSize:"cover", height:"60vh"}}
+   className="d-flex justify-content-center align-items-center"
+   >
+    <div >
       <h3 style={contentStyle}>
-        Ant Design is a design language for HTML, CSS, and JS.
+      The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!.
       </h3>
     </div>
-    <div>
-      <h3 style={contentStyle}>2</h3>
+    <div >
+      <h3 style={contentStyle}>Learn modern HTML5, CSS3 and web design by building a stunning website for your portfolio! Includes flexbox and CSS Grid.</h3>
     </div>
     <div>
-      <h3 style={contentStyle}>3</h3>
+      <h3 style={contentStyle}>Learn A-Z everything about Python, from the basics, to advanced topics like Python GUI, Python Data Analysis, and more!.</h3>
     </div>
     <div>
-      <h3 style={contentStyle}>4</h3>
+      <h3 style={contentStyle}>Increase Your Data Analytic Skills – Highly Valued And Sought After By Employers</h3>
     </div>
   </Carousel>
 );
