@@ -11,7 +11,7 @@ const CourseCard = ({ course }) => {
       <a>
         <Card
           className="mb-3"
-          style={{ borderRadius: "10px" }}
+          style={{ borderRadius: "10px", minHeight:"60vh" }}
           hoverable
           cover={
             <img
