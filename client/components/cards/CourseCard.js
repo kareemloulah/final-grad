@@ -5,29 +5,34 @@ import { currencyFormatter } from "../../utils/helpers";
 const { Meta } = Card;
 
 const CourseCard = ({ course }) => {
-  const { name, instructor, price, image, slug, paid, category } = course;
+  const { name, instructor, price, image, slug, paid, category, createdAt } =
+    course;
+  console.log(course);
   return (
     <Link href={`/course/${slug}`}>
       <a>
         <Card
           className="mb-3"
-          style={{ borderRadius: "10px", minHeight:"60vh" }}
+          style={{ borderRadius: "10px", minHeight: "50vh" }}
           hoverable
           cover={
             <img
               src={image?.Location}
               alt={name}
-              style={{ 
-                height: "200px", 
-                objectFit: "cover", 
-                width: "100%", 
-                borderStartStartRadius : "10px", 
-                borderStartEndRadius : "10px" }}
+              style={{
+                height: "200px",
+                objectFit: "cover",
+                width: "100%",
+                borderStartStartRadius: "10px",
+                borderStartEndRadius: "10px",
+              }}
             />
           }
         >
           <h6 className="font-weight-bold">{name}</h6>
           <p>by {instructor.name}</p>
+          <h6 style={{ fontSize: "12px" }}>Created At: {createdAt.substring(0, 10)}</h6>
+
           <Badge
             count={category}
             style={{ backgroundColor: "#03a9f4" }}
