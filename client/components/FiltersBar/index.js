@@ -1,53 +1,86 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
 import { Menu, Button, Select } from "antd";
 import { cats } from "../../utils/dummyData";
 const { Option } = Select;
 
-function FlitersBar({ setAllData }) {
+function FlitersBar({ courses, allData, setAllData }) {
+  const router = useRouter();
+  const paramCat = router?.query?.cat;
+
+  // console.log(paramCat);
+
   const [filters, setFilters] = useState({
-    cat: "",
-    price: "",
-    order: ""
+    cat: paramCat || null,
+    isPaid: "all", // all, paid = true, free = false
+    sortDate: "newest", // newest, oldest,
+    sortPrice: "priceLowToHigh" // priceLowToHigh, priceHighToLow
   });
 
-  const handleChange = (name, value) => {
-    const filteredData = allData.filter((course) => {
-      if (name === "cat") {
-        return course.category === value;
-      } else if (name === "price") {
-        return course.price === value;
-      } else if (name === "order") {
-        return course.order === value;
-      }
-    });
+  useEffect(() => {
+    applyFilters(filters);
+  }, []);
 
-    setFilters({ ...filters, [name]: value });
-    setAllData(filters);
+  const sorterFunc = (dataToSort, sortBy) => {
+    if (sortBy === "newest") {
+      return dataToSort.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+    } else if (sortBy === "oldest") {
+      return dataToSort.sort((a, b) => {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      });
+    } else if (sortBy === "priceLowToHigh") {
+      return dataToSort.sort((a, b) => {
+        return a.price - b.price;
+      });
+    } else if (sortBy === "priceHighToLow") {
+      return dataToSort.sort((a, b) => {
+        return b.price - a.price;
+      });
+    }
   };
 
-  const [cat, setCat] = useState("");
-  const [price, setPrice] = useState("");
-  const [order, setOrder] = useState("");
-
-  const handleCatChange = (value) => {
-    setCat(() => {
-      handleChange("cat", value);
-      return value;
-    });
+  const handleFilterChange = (name, value) => {
+    setFilters(
+      Object.assign({}, filters, {
+        [name]: value
+      })
+    );
   };
 
-  const handlePriceChange = (value) => {
-    setPrice(() => {
-      handleChange("price", value);
-      return value;
-    });
-  };
+  const applyFilters = (filtersX) => {
+    console.log(filtersX);
 
-  const handleOrderChange = (value) => {
-    setOrder(() => {
-      handleChange("order", value);
-      return value;
+    const filteredData = courses.filter((course) => {
+      const isPriceAll =
+        filtersX.isPaid === "all" ? true : course.paid === filtersX.isPaid;
+
+      console.log("🚀 ~ isPriceAll", isPriceAll);
+      console.log(
+        "🚀 ~ course.category === filtersX.cat",
+        course.category === filtersX.cat
+      );
+      console.log(
+        "🚀 ~ filtersX ? course.category === filtersX.cat : true",
+        filtersX.cat ? course.category === filtersX.cat : true
+      );
+      console.log(
+        "🚀 ~ (filtersX ? course.category === filtersX.cat : true) && isPriceAll",
+        (filtersX.cat ? course.category === filtersX.cat : true) && isPriceAll
+      );
+
+      return (
+        (filtersX.cat != undefined ? course.category === filtersX.cat : true) &&
+        isPriceAll
+      );
     });
+
+    const sortedByDate = sorterFunc(filteredData, filtersX.sortDate);
+    const sortedByPrice = sorterFunc(sortedByDate, filtersX.sortPrice);
+
+    setAllData(sortedByPrice);
   };
 
   return (
@@ -72,10 +105,11 @@ function FlitersBar({ setAllData }) {
                 showSearch
                 allowClear
                 name="category"
+                value={filters.cat}
                 placeholder="Category"
                 className="form-control"
                 optionFilterProp="children"
-                onChange={setCat}
+                onChange={(e) => handleFilterChange("cat", e)}
                 style={{
                   width: 200
                 }}
@@ -97,17 +131,18 @@ function FlitersBar({ setAllData }) {
             </div>
           </div>
 
-          {/* Price */}
+          {/* Is Paid */}
           <div className="col">
             <div className="row">
               <Select
                 showSearch
-                allowClear
-                name="price"
-                placeholder="Price"
+                defaultValue="all"
+                value={filters.isPaid}
+                name="Is Paid"
+                placeholder="Is Paid"
                 className="form-control"
                 optionFilterProp="children"
-                onChange={setPrice}
+                onChange={(e) => handleFilterChange("isPaid", e)}
                 style={{
                   width: 200
                 }}
@@ -115,27 +150,31 @@ function FlitersBar({ setAllData }) {
                   option.children.includes(input)
                 }
               >
-                <Option key="paid" value="paid">
+                <Option key="all" value="all">
+                  All
+                </Option>
+                <Option key={true} value={true}>
                   Paid
                 </Option>
-                <Option key="free" value="free">
+                <Option key={false} value={false}>
                   Free
                 </Option>
               </Select>
             </div>
           </div>
 
-          {/* Order */}
+          {/* Sort Date*/}
           <div className="col">
             <div className="row">
               <Select
                 showSearch
-                allowClear
-                name="order"
-                placeholder="Order"
+                defaultValue="newest"
+                name="sortDate"
+                value={filters.sortDate}
+                placeholder="Sort by date"
                 className="form-control"
                 optionFilterProp="children"
-                onChange={setOrder}
+                onChange={(e) => handleFilterChange("sortDate", e)}
                 style={{
                   width: 200
                 }}
@@ -148,21 +187,56 @@ function FlitersBar({ setAllData }) {
                     .localeCompare(optionB.children.toLowerCase())
                 }
               >
-                <Option key="Newest" value="newest">
+                <Option key="newest" value="newest">
                   Newest
                 </Option>
-                <Option key="Oldest" value="oldest">
+                <Option key="oldest" value="oldest">
                   Oldest
                 </Option>
               </Select>
             </div>
           </div>
+
+          {/* Sort Price */}
+          <div className="col">
+            <div className="row">
+              <Select
+                showSearch
+                defaultValue="LTH"
+                value={filters.sortPrice}
+                name="sortPrice"
+                placeholder="Sort by Price"
+                className="form-control"
+                optionFilterProp="children"
+                onChange={(e) => handleFilterChange("sortPrice", e)}
+                style={{
+                  width: 200
+                }}
+                filterOption={(input, option) =>
+                  option.children.includes(input)
+                }
+              >
+                <Option key="priceHighToLow" value="priceHighToLow">
+                  High to low
+                </Option>
+                <Option key="priceLowToHigh" value="priceLowToHigh">
+                  Low to high
+                </Option>
+              </Select>
+            </div>
+          </div>
+
+          <Button
+            type="primary"
+            onClick={() => applyFilters(filters)}
+            style={{
+              marginLeft: "10px"
+            }}
+          >
+            Apply
+          </Button>
         </div>
       </div>
-      {/* Filter button */}
-      <p>{cat}</p>
-      <p>{price}</p>
-      <p>{order}</p>
     </div>
   );
 }

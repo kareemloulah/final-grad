@@ -56,7 +56,7 @@ const courses = ({ courses }) => {
   return (
     <>
       {/* Filters */}
-      <FlitersBar setAllData={setAllData} />
+      <FlitersBar courses={courses} allData={allData} setAllData={setAllData} />
       {/* Courses */}
       <div className="container">
         <div className="row">

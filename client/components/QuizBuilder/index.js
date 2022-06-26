@@ -12,6 +12,7 @@ export default function QuizBuilder(props) {
     setResult(JSON.stringify(values, null, 2));
     setResult(values);
   };
+  console.log("🚀 ~ handleSubmit", handleSubmit)
 
   return (
     <Provider store={store}>
