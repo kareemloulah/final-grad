@@ -9,20 +9,20 @@ const contentStyle = {
 };
 
 const carousel = () => (
-  <Carousel autoplay>
+  <Carousel autoplay style={{background:"url(https://unsplash.com/photos/m_HRfLhgABo)"}}>
     <div>
       <h3 style={contentStyle}>
-        Ant Design is a design language for HTML, CSS, and JS.
+      The modern JavaScript course for everyone! Master JavaScript with projects, challenges and theory. Many courses in one!.
       </h3>
     </div>
     <div>
-      <h3 style={contentStyle}>2</h3>
+      <h3 style={contentStyle}>Learn modern HTML5, CSS3 and web design by building a stunning website for your portfolio! Includes flexbox and CSS Grid.</h3>
     </div>
     <div>
-      <h3 style={contentStyle}>3</h3>
+      <h3 style={contentStyle}>Learn A-Z everything about Python, from the basics, to advanced topics like Python GUI, Python Data Analysis, and more!.</h3>
     </div>
     <div>
-      <h3 style={contentStyle}>4</h3>
+      <h3 style={contentStyle}>Increase Your Data Analytic Skills – Highly Valued And Sought After By Employers</h3>
     </div>
   </Carousel>
 );
