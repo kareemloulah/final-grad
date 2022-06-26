@@ -108,7 +108,7 @@ const about = ({ courses }) => {
         </div>
 
         <div
-          className="colalign-items "
+          className="col align-items "
           style={{
             hight: "60px",
             margin: "20px",
