@@ -1,7 +1,9 @@
 import axios from "axios";
+import { useState } from "react";
 import CourseCard from "../components/cards/CourseCard";
 import { Menu, Button, Select } from "antd";
 import { cats } from "../utils/dummyData";
+import FlitersBar from "../components/FiltersBar";
 const { Option } = Select;
 
 const menu = (
@@ -48,56 +50,17 @@ const menu = (
 );
 
 const courses = ({ courses }) => {
+  const [allData, setAllData] = useState(courses);
+  // const filterOptions
+
   return (
     <>
       {/* Filters */}
-      <div
-        style={{
-          backgroundColor: "#E3EDFF",
-          marginBottom: "50px"
-        }}
-      >
-        <div className="container pt-5 pb-5">
-          <div className="row">
-            {/* Flitered by text */}
-            <div className="col-sm-1">
-              <span>Filter By</span>
-            </div>
-
-            {/* Fliters dropdown */}
-            <div className="col">
-              <div className="row">
-                <Select
-                  showSearch
-                  style={{
-                    width: 200
-                  }}
-                  placeholder="Categories"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.children.includes(input)
-                  }
-                  filterSort={(optionA, optionB) =>
-                    optionA.children
-                      .toLowerCase()
-                      .localeCompare(optionB.children.toLowerCase())
-                  }
-                >
-                  {cats?.map((cat, index) => (
-                    <Option key={index} value={cat}>
-                      {cat}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <FlitersBar setAllData={setAllData} />
       {/* Courses */}
       <div className="container">
         <div className="row">
-          {courses.map((course) => (
+          {allData.map((course) => (
             <div key={course._id} className="col-lg-3 col-md-6 col-sm-12">
               <CourseCard course={course} />
             </div>
