@@ -110,6 +110,7 @@ function RecBooks({ books }) {
       style={{
         display: "flex",
         flexDirection: "row",
+        flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "center",
         margin: "20px 0px"

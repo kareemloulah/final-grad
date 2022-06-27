@@ -11,7 +11,7 @@ const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
-  apiVersion: process.env.AWS_API_VERSION,
+  apiVersion: process.env.AWS_API_VERSION
 };
 
 const S3 = new AWS.S3(awsConfig);
@@ -37,7 +37,7 @@ export const uploadImage = async (req, res) => {
       Body: base64Data,
       ACL: "public-read",
       ContentEncoding: "base64",
-      ContentType: `image/${type}`,
+      ContentType: `image/${type}`
     };
 
     // upload to s3
@@ -60,7 +60,7 @@ export const removeImage = async (req, res) => {
     // image params
     const params = {
       Bucket: image.Bucket,
-      Key: image.Key,
+      Key: image.Key
     };
 
     // send remove request to s3
@@ -81,14 +81,14 @@ export const create = async (req, res) => {
   // return;
   try {
     const alreadyExist = await Course.findOne({
-      slug: slugify(req.body.name.toLowerCase()),
+      slug: slugify(req.body.name.toLowerCase())
     });
     if (alreadyExist) return res.status(400).send("Title is taken");
 
     const course = await new Course({
       slug: slugify(req.body.name),
       instructor: req.user._id,
-      ...req.body,
+      ...req.body
     }).save();
 
     res.json(course);
@@ -127,7 +127,7 @@ export const uploadVideo = async (req, res) => {
       Key: `${nanoid()}.${video.type.split("/")[1]}`,
       Body: readFileSync(video.path),
       ACL: "public-read",
-      ContentType: video.type,
+      ContentType: video.type
     };
 
     // upload to s3
@@ -156,7 +156,7 @@ export const removeVideo = async (req, res) => {
     // video params
     const params = {
       Bucket,
-      Key,
+      Key
     };
 
     // upload to s3
@@ -185,7 +185,7 @@ export const addLesson = async (req, res) => {
     const updated = await Course.findOneAndUpdate(
       { slug },
       {
-        $push: { lessons: { title, content, video, slug: slugify(title) } },
+        $push: { lessons: { title, content, video, slug: slugify(title) } }
       },
       { new: true }
     )
@@ -209,7 +209,7 @@ export const update = async (req, res) => {
     }
 
     const updated = await Course.findOneAndUpdate({ slug }, req.body, {
-      new: true,
+      new: true
     }).exec();
 
     res.json(updated);
@@ -227,7 +227,7 @@ export const removeLesson = async (req, res) => {
   }
 
   const deletedCourse = await Course.findByIdAndUpdate(course._id, {
-    $pull: { lessons: { _id: lessonId } },
+    $pull: { lessons: { _id: lessonId } }
   }).exec();
 
   res.json({ ok: true });
@@ -237,7 +237,7 @@ export const updateLesson = async (req, res) => {
   try {
     // console.log("UPDATE LESSON", req.body);
     const { slug } = req.params;
-    const { _id, title, content, video, free_preview } = req.body;
+    const { _id, title, content, video, free_preview, quiz } = req.body;
     const course = await Course.findOne({ slug }).select("instructor").exec();
 
     if (course.instructor._id != req.user._id) {
@@ -252,7 +252,8 @@ export const updateLesson = async (req, res) => {
           "lessons.$.content": content,
           "lessons.$.video": video,
           "lessons.$.free_preview": free_preview,
-        },
+          "lessons.$.quiz": quiz
+        }
       },
       { new: true }
     ).exec();
@@ -325,7 +326,7 @@ export const checkEnrollment = async (req, res) => {
   }
   res.json({
     status: ids.includes(courseId),
-    course: await Course.findById(courseId).exec(),
+    course: await Course.findById(courseId).exec()
   });
 };
 
@@ -338,14 +339,14 @@ export const freeEnrollment = async (req, res) => {
     const result = await User.findByIdAndUpdate(
       req.user._id,
       {
-        $addToSet: { courses: course._id },
+        $addToSet: { courses: course._id }
       },
       { new: true }
     ).exec();
     console.log(result);
     res.json({
       message: "Congratulations! You have successfully enrolled",
-      course,
+      course
     });
   } catch (err) {
     console.log("free enrollment err", err);
@@ -371,24 +372,24 @@ export const paidEnrollment = async (req, res) => {
           name: course.name,
           amount: Math.round(course.price.toFixed(2) * 100),
           currency: "usd",
-          quantity: 1,
-        },
+          quantity: 1
+        }
       ],
       // charge buyer and transfer remaining balance to seller (after fee)
       payment_intent_data: {
         application_fee_amount: Math.round(fee.toFixed(2) * 100),
         transfer_data: {
-          destination: course.instructor.stripe_account_id,
-        },
+          destination: course.instructor.stripe_account_id
+        }
       },
       // redirect url after successful payment
       success_url: `${process.env.STRIPE_SUCCESS_URL}/${course._id}`,
-      cancel_url: process.env.STRIPE_CANCEL_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL
     });
     console.log("SESSION ID => ", session);
 
     await User.findByIdAndUpdate(req.user._id, {
-      stripeSession: session,
+      stripeSession: session
     }).exec();
     res.send(session.id);
   } catch (err) {
@@ -414,7 +415,7 @@ export const stripeSuccess = async (req, res) => {
     if (session.payment_status === "paid") {
       await User.findByIdAndUpdate(user._id, {
         $addToSet: { courses: course._id },
-        $set: { stripeSession: {} },
+        $set: { stripeSession: {} }
       }).exec();
     }
     res.json({ success: true, course });
@@ -438,7 +439,7 @@ export const markCompleted = async (req, res) => {
   // find if user with that course is already created
   const existing = await Completed.findOne({
     user: req.user._id,
-    course: courseId,
+    course: courseId
   }).exec();
 
   if (existing) {
@@ -446,10 +447,10 @@ export const markCompleted = async (req, res) => {
     const updated = await Completed.findOneAndUpdate(
       {
         user: req.user._id,
-        course: courseId,
+        course: courseId
       },
       {
-        $addToSet: { lessons: lessonId },
+        $addToSet: { lessons: lessonId }
       }
     ).exec();
     res.json({ ok: true });
@@ -458,7 +459,7 @@ export const markCompleted = async (req, res) => {
     const created = await new Completed({
       user: req.user._id,
       course: courseId,
-      lessons: lessonId,
+      lessons: lessonId
     }).save();
     res.json({ ok: true });
   }
@@ -468,7 +469,7 @@ export const listCompleted = async (req, res) => {
   try {
     const list = await Completed.findOne({
       user: req.user._id,
-      course: req.body.courseId,
+      course: req.body.courseId
     }).exec();
     list && res.json(list.lessons);
   } catch (err) {
@@ -483,10 +484,10 @@ export const markIncomplete = async (req, res) => {
     const updated = await Completed.findOneAndUpdate(
       {
         user: req.user._id,
-        course: courseId,
+        course: courseId
       },
       {
-        $pull: { lessons: lessonId },
+        $pull: { lessons: lessonId }
       }
     ).exec();
     res.json({ ok: true });

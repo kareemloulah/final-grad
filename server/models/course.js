@@ -18,46 +18,44 @@ const { ObjectId } = mongoose.Schema;
 //       "point": "34"
 //     }
 //   ]
-// } 
+// }
 
-const questionSchema = new mongoose.Schema(
-  {
-    question: {
-      type: String,
-      required: true
-    },
-    questionType: {
-      type: String,
-      default: "text"
-    },
-    answers: [
-      {
-        type: String,
-        required: true
-      }],
-    correctAnswer: {
-      type: String,
-      required: true
-    },
-    messageForCorrectAnswer: {
-      type: String,
-      default: "Correct Answer"
-    },
-    messageForIncorrectAnswer: {
-      type: String,
-      default: "Incorrect Answer"
-    },
-    explanation: {
-      type: String,
-      default: "No explanation available"
-    },
-    point: {
-      type: Number,
-      default: 1
-    }
+const questionSchema = new mongoose.Schema({
+  question: {
+    type: String,
+    required: true
   },
-);
-
+  questionType: {
+    type: String,
+    default: "text"
+  },
+  answers: [
+    {
+      type: String,
+      required: true
+    }
+  ],
+  correctAnswer: {
+    type: String,
+    required: true
+  },
+  messageForCorrectAnswer: {
+    type: String,
+    default: "Correct Answer"
+  },
+  messageForIncorrectAnswer: {
+    type: String,
+    default: "Incorrect Answer"
+  },
+  explanation: {
+    type: String,
+    default: "No explanation available"
+  },
+  point: {
+    type: Number,
+    default: 1
+  }
+});
 
 const quizSchema = new mongoose.Schema(
   {
@@ -66,7 +64,7 @@ const quizSchema = new mongoose.Schema(
       required: true
     },
     quizSynopsis: {
-      type: String,
+      type: String
     },
     questions: [questionSchema],
     createdBy: {
@@ -77,9 +75,6 @@ const quizSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-
-
 
 const lessonSchema = new mongoose.Schema(
   {
@@ -103,7 +98,10 @@ const lessonSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    questions: [questionSchema]
+    quiz: {
+      type: quizSchema,
+      default: null
+    }
   },
   { timestamps: true }
 );

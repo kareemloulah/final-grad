@@ -17,7 +17,7 @@ import {
   CheckCircleFilled,
   MinusCircleFilled,
   InfoCircleOutlined,
-  InfoCircleFilled,
+  InfoCircleFilled
 } from "@ant-design/icons";
 
 const { Item } = Menu;
@@ -50,7 +50,7 @@ const SingleCourse = () => {
 
   const loadCompletedLessons = async () => {
     const { data } = await axios.post(`/api/list-completed`, {
-      courseId: course._id,
+      courseId: course._id
     });
     console.log("COMPLETED LESSONS => ", data);
     setCompletedLessons(data);
@@ -59,7 +59,7 @@ const SingleCourse = () => {
   const markCompleted = async () => {
     const { data } = await axios.post(`/api/mark-completed`, {
       courseId: course._id,
-      lessonId: course.lessons[clicked]._id,
+      lessonId: course.lessons[clicked]._id
     });
     console.log(data);
     setCompletedLessons([...completedLessons, course.lessons[clicked]._id]);
@@ -69,7 +69,7 @@ const SingleCourse = () => {
     try {
       const { data } = await axios.post(`/api/mark-incomplete`, {
         courseId: course._id,
-        lessonId: course.lessons[clicked]._id,
+        lessonId: course.lessons[clicked]._id
       });
       console.log(data);
       const all = completedLessons;
@@ -98,7 +98,7 @@ const SingleCourse = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "5px",
+              gap: "5px"
             }}
           >
             {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}{" "}
@@ -147,12 +147,13 @@ const SingleCourse = () => {
         <div className="col">
           {clicked !== -1 ? (
             <>
+              {/* Mark as completed bar */}
               <div
                 className="col alert alert-primary square"
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "space-between"
                 }}
               >
                 <b>{course.lessons[clicked].title.substring(0, 30)}</b>
@@ -176,7 +177,7 @@ const SingleCourse = () => {
                   </Button>
                 )}
               </div>
-
+              {/* Course Video */}
               {course.lessons[clicked].video &&
                 course.lessons[clicked].video.Location && (
                   <>
@@ -185,7 +186,7 @@ const SingleCourse = () => {
                       style={{
                         display: "flex",
                         maxWidth: "100%",
-                        justifyContent: "center",
+                        justifyContent: "center"
                       }}
                     >
                       <ReactPlayer
@@ -199,6 +200,8 @@ const SingleCourse = () => {
                     </div>
                   </>
                 )}
+
+              {/* Content & Quiz */}
               <div className="mt-5 container" style={{ width: "70%" }}>
                 <ReactMarkdown
                   source={course.lessons[clicked].content}
@@ -208,7 +211,12 @@ const SingleCourse = () => {
                   className=" mt-5 mb-2"
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Quiz quiz={quiz} />
+                  {/* Quiz */}
+                  {course.lessons[clicked]?.quiz ? (
+                    <Quiz quiz={course.lessons[clicked].quiz} />
+                  ) : (
+                    <p>No Quiz for this lesson</p>
+                  )}
                 </div>
               </div>
             </>
