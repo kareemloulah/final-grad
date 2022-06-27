@@ -32,16 +32,18 @@ class QuizFormResult extends Component {
       }
     };
 
+    const dataa = JSON.stringify(result, null, 2)
+   
     return (
       <div className="QuizFormResult">
-        {result != null ? (
+        {dataa != null ? (
           <div>
             <div style={style.resultBox}>
-              <pre> {result} </pre>
+              <pre> {dataa} </pre>
             </div>
             <div>
               <CopyToClipboard
-                text={result}
+                text={dataa}
                 onCopy={() => this.setState({ copied: true })}
               >
                 <button style={style.button}>Copy to Clipboard</button>

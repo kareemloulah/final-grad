@@ -23,7 +23,52 @@ class QuizForm extends Component {
     </div>
   );
 
-  renderTextareaField = ({ input, label, type, meta: { touched, error } }) => (
+  renderInputFieldWithX = ({
+    fields,
+    input,
+    label,
+    type,
+    index,
+    meta: { touched, error }
+  }) => (
+    //quiz title input
+    <div>
+      <label className="mt-3">{label}</label>
+      <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            flexDirection: "row",
+            flexGrow: 1
+          }}
+        >
+          <input
+            {...input}
+            type={type}
+            placeholder={label}
+            className="form-control square"
+          />
+          <AiFillCloseCircle
+            className="mt-3 text-danger"
+            style={{ cursor: "pointer", fontSize: "2rem" }}
+            type="button"
+            title="Remove Answer"
+            onClick={() => fields.remove(index)}
+          />
+        </div>
+        {touched && error && <span className="text-danger">{error}*</span>}
+      </div>
+    </div>
+  );
+
+  renderTextareaField = ({
+    placeholder,
+    input,
+    label,
+    type,
+    meta: { touched, error }
+  }) => (
     //quiz synopsis input
     <div>
       <label className="mt-3">{label}</label>
@@ -32,7 +77,7 @@ class QuizForm extends Component {
           className="form-control "
           {...input}
           type={type}
-          placeholder={label}
+          placeholder={placeholder || label}
         />
         {touched && error && <span className="text-danger">{error}*</span>}
       </div>
@@ -44,7 +89,7 @@ class QuizForm extends Component {
     label,
     type,
     meta: { touched, error },
-    children,
+    children
   }) => (
     <div>
       <label className="mt-3">{label}</label>
@@ -60,7 +105,7 @@ class QuizForm extends Component {
     label,
     type,
     meta: { touched, error },
-    children,
+    children
   }) => (
     <div>
       <label className="mt-3">{label}</label>
@@ -83,25 +128,22 @@ class QuizForm extends Component {
           Add Answer
         </button>
       </li>
+
       {fields.map((answer, index) => (
         <>
           <div key={index}>
             <Field
               name={answer}
               type="text"
-              component={this.renderInputField}
+              fields={fields}
+              component={this.renderInputFieldWithX}
               label={`Answer #${index + 1}`}
-            />
-            <AiFillCloseCircle
-              className="mt-3 text-danger"
-              style={{ cursor: "pointer", fontSize: "2rem" }}
-              type="button"
-              title="Remove Answer"
-              onClick={() => fields.remove(index)}
+              index={index}
             />
           </div>
         </>
       ))}
+
       <li>
         <Field
           name={`${question}.correctAnswer`}
@@ -143,7 +185,6 @@ class QuizForm extends Component {
             name={`${question}.questionType`}
             component={this.renderSelectQuestionTypeField}
             label="Question Type"
-            
           >
             <option value=""> Please select a question type </option>
             <option value="text">Text</option>
@@ -208,7 +249,7 @@ class QuizForm extends Component {
             justifyContent: "center",
             alignItems: "center",
             height: "120px",
-            backgroundColor: "#E3EDFF",
+            backgroundColor: "#E3EDFF"
           }}
         >
           <h3>Add Quiz in this section</h3>
@@ -227,6 +268,7 @@ class QuizForm extends Component {
                 type="text"
                 component={this.renderTextareaField}
                 label="Quiz Synopsis"
+                placeholder="A synopsis is a brief summary"
               />
               <FieldArray name="questions" component={this.renderQuestions} />
               <div>
@@ -234,7 +276,7 @@ class QuizForm extends Component {
                   style={{
                     backgroundColor: "#0f52ba",
                     width: "80%",
-                    border: "none",
+                    border: "none"
                   }}
                   className="btn btn-primary"
                   type="submit"
@@ -247,7 +289,7 @@ class QuizForm extends Component {
                   style={{
                     width: "18%",
                     backgroundColor: "#d21f3c",
-                    border: "none",
+                    border: "none"
                   }}
                   type="button"
                   disabled={pristine || submitting}
