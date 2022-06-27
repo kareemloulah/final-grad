@@ -253,28 +253,42 @@ const CourseEdit = () => {
                   avatar={<Avatar size={36}>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
-                <Link
-                  href={{
-                    pathname: `/instructor/course/edit/quiz/${values.slug}`,
-                    query: {
-                      lessonId: item._id,
-                      lessonNO: index + 1,
-                    }
-                  }}
-                >
-                  <Popover content="Add Quiz">
+
+                {item.quiz ? (
+                  <Popover content="Quiz Added">
                     <FileAddOutlined
                       style={{
                         fontSize: "26px",
-                        marginRight: "30px"
+                        marginRight: "30px",
+                        cursor: "not-allowed"
                       }}
-                      className="text-primary float-right"
-                      onClick={() => {
-                        console.log(item);
-                      }}
+                      className="text-danger float-right"
                     />
                   </Popover>
-                </Link>
+                ) : (
+                  <Link
+                    href={{
+                      pathname: `/instructor/course/edit/quiz/${values.slug}`,
+                      query: {
+                        lessonId: item._id,
+                        lessonNO: index + 1
+                      }
+                    }}
+                  >
+                    <Popover content="Add Quiz">
+                      <FileAddOutlined
+                        style={{
+                          fontSize: "26px",
+                          marginRight: "30px"
+                        }}
+                        className="text-primary float-right"
+                        onClick={() => {
+                          console.log(item);
+                        }}
+                      />
+                    </Popover>
+                  </Link>
+                )}
 
                 <Popover placement="topRight" content="Delete Lesson">
                   <DeleteOutlined

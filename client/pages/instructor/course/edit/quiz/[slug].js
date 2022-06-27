@@ -85,11 +85,10 @@ export default function AddQuez() {
     // update ui
     if (data.ok) {
       toast("Quiz Added");
+      () => router.back();
     } else {
       toast(data.message);
     }
-    console.log("🚀 ~ e", e);
-    console.log("🚀 ~ data", data);
   };
 
   return (
@@ -114,11 +113,12 @@ export default function AddQuez() {
           lessonTitle={values.lessons[lessonNO - 1]?.title}
           courseName={values.name}
           lessons={values.lessons}
+          courseNavigation={() => router.back()}
         />
       </div>
 
       {/* QuizBuilder Form Here 👇👇 */}
-      <QuizBuilder 
+      <QuizBuilder
         result={result}
         setResult={setResult}
         slug={slug}

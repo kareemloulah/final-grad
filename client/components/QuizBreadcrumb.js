@@ -1,5 +1,5 @@
 import { HomeOutlined } from "@ant-design/icons";
-import { Breadcrumb, Menu } from "antd";
+import { Breadcrumb, Menu, Tooltip } from "antd";
 import { BiHomeHeart } from "react-icons/Bi";
 
 /*
@@ -18,7 +18,7 @@ const QuizBreadcrumb = ({
   courseName = "Course",
   lessonNO = "0",
   lessonTitle = "LessonTitle",
-  courseNavigation = "#",
+  courseNavigation,
   lessons = []
 }) => {
   const menu = (
@@ -53,16 +53,22 @@ const QuizBreadcrumb = ({
   return (
     <Breadcrumb>
       <Breadcrumb.Item href="/">
-        <BiHomeHeart />
-        HOME
+        <Tooltip title="Back HOME">
+          <BiHomeHeart />
+          HOME
+        </Tooltip>
       </Breadcrumb.Item>
       <Breadcrumb.Item>
-        <a href={courseNavigation}>{courseName}</a>
+        <Tooltip title="Back to edit course">
+          <a onClick={courseNavigation}>{courseName}</a>
+        </Tooltip>
       </Breadcrumb.Item>
       <Breadcrumb.Item overlay={menu}>
-        <a href="#">
-          {lessonNO} - {lessonTitle}
-        </a>
+        <Tooltip title="Add Quiz to different lesson">
+          <a href="#">
+            {lessonNO} - {lessonTitle}
+          </a>
+        </Tooltip>
       </Breadcrumb.Item>
       <Breadcrumb.Item>Add Quiz</Breadcrumb.Item>
     </Breadcrumb>
