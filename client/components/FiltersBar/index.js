@@ -21,7 +21,7 @@ function FlitersBar({ courses, allData, setAllData }) {
 
   useEffect(() => {
     applyFilters(filters);
-  }, []);
+  }, []); 
 
   const categoryFiltersBuilder = (dataToBuildFrom) => {
     let filters = tempCat?.length > 0 ? [...tempCat] : [];
