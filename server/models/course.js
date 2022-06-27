@@ -64,6 +64,11 @@ const courseSchema = new mongoose.Schema(
       maxlength: 320,
       required: true
     },
+    reference: {
+      type: String,
+      trim: true,
+      required: true
+    },
     slug: {
       type: String,
       lowercase: true
