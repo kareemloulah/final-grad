@@ -215,7 +215,16 @@ const SingleCourse = () => {
                   {course.lessons[clicked]?.quiz ? (
                     <Quiz quiz={course.lessons[clicked].quiz} />
                   ) : (
-                    <p>No Quiz for this lesson</p>
+                    <p
+                      style={{
+                        textAlign: "center",
+                        fontSize: "1.5rem",
+                        fontWeight: "bold",
+                        color: "red"
+                      }}
+                    >
+                      No Quiz for this lesson
+                    </p>
                   )}
                 </div>
               </div>
