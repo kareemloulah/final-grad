@@ -25,11 +25,15 @@ function FlitersBar({ courses, allData, setAllData }) {
   const sorterFunc = (dataToSort, sortBy) => {
     if (sortBy === "newest") {
       return dataToSort.sort((a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
+        return (
+          new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
+        );
       });
     } else if (sortBy === "oldest") {
       return dataToSort.sort((a, b) => {
-        return new Date(a.createdAt) - new Date(b.createdAt);
+        return (
+          new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf()
+        );
       });
     } else if (sortBy === "priceLowToHigh") {
       return dataToSort.sort((a, b) => {
@@ -51,25 +55,9 @@ function FlitersBar({ courses, allData, setAllData }) {
   };
 
   const applyFilters = (filtersX) => {
-    console.log(filtersX);
-
     const filteredData = courses.filter((course) => {
       const isPriceAll =
         filtersX.isPaid === "all" ? true : course.paid === filtersX.isPaid;
-
-      console.log("🚀 ~ isPriceAll", isPriceAll);
-      console.log(
-        "🚀 ~ course.category === filtersX.cat",
-        course.category === filtersX.cat
-      );
-      console.log(
-        "🚀 ~ filtersX ? course.category === filtersX.cat : true",
-        filtersX.cat ? course.category === filtersX.cat : true
-      );
-      console.log(
-        "🚀 ~ (filtersX ? course.category === filtersX.cat : true) && isPriceAll",
-        (filtersX.cat ? course.category === filtersX.cat : true) && isPriceAll
-      );
 
       return (
         (filtersX.cat != undefined ? course.category === filtersX.cat : true) &&

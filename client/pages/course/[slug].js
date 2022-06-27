@@ -7,6 +7,7 @@ import SingleCourseLessons from "../../components/cards/SingleCourseLessons";
 import { Context } from "../../context";
 import { toast } from "react-toastify";
 import { loadStripe } from "@stripe/stripe-js";
+import RecBooks from "../../components/RecBooks";
 
 const SingleCourse = ({ course }) => {
   // state
@@ -14,15 +15,37 @@ const SingleCourse = ({ course }) => {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [enrolled, setEnrolled] = useState({});
+  const [books, setBooks] = useState([]);
   // context
   const {
-    state: { user },
+    state: { user }
   } = useContext(Context);
 
   useEffect(() => {
     if (user && course) checkEnrollment();
   }, [user, course]);
 
+  // get books recommended for this course from API
+  const getBooks = async () => {
+    const res = await axios.get(
+      `https://courseme-rec.herokuapp.com/rec/${course.name}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
+    console.log("🚀 ~ res.data", res.data);
+    return res.data;
+  };
+
+  useEffect(() => {
+    getBooks().then((books) => {
+      setBooks(books);
+    });
+  }, []);
+
+  // check if user is enrolled in this course
   const checkEnrollment = async () => {
     const { data } = await axios.get(`/api/check-enrollment/${course._id}`);
     // console.log("CHECK ENROLLMENT", data);
@@ -95,6 +118,8 @@ const SingleCourse = ({ course }) => {
         preview={preview}
       />
 
+      <RecBooks books={books} />
+
       {course.lessons && (
         <SingleCourseLessons
           lessons={course.lessons}
@@ -111,8 +136,8 @@ export async function getServerSideProps({ query }) {
   const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
   return {
     props: {
-      course: data,
-    },
+      course: data
+    }
   };
 }
 

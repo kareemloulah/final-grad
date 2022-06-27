@@ -7,7 +7,6 @@ const { Meta } = Card;
 const CourseCard = ({ course }) => {
   const { name, instructor, price, image, slug, paid, category, createdAt } =
     course;
-  console.log(course);
   return (
     <Link href={`/course/${slug}`}>
       <a>
@@ -24,14 +23,16 @@ const CourseCard = ({ course }) => {
                 objectFit: "cover",
                 width: "100%",
                 borderStartStartRadius: "10px",
-                borderStartEndRadius: "10px",
+                borderStartEndRadius: "10px"
               }}
             />
           }
         >
           <h6 className="font-weight-bold">{name}</h6>
           <p>by {instructor.name}</p>
-          <h6 style={{ fontSize: "12px" }}>Created At: {createdAt.substring(0, 10)}</h6>
+          <h6 style={{ fontSize: "12px" }}>
+            Created At: {createdAt.substring(0, 10)}
+          </h6>
 
           <Badge
             count={category}
@@ -42,7 +43,7 @@ const CourseCard = ({ course }) => {
             {paid
               ? currencyFormatter({
                   amount: price,
-                  currency: "usd",
+                  currency: "usd"
                 })
               : "Free"}
           </h6>
