@@ -42,9 +42,9 @@ const BecomeInstructor = () => {
             <div className="pt-4">
               <UserSwitchOutlined className="display-1 pb-3" />
               <br />
-              <h2>Setup payout to publish courses on Edemy</h2>
+              <h2>Setup payout to publish courses on Courseme</h2>
               <p className="lead text-warning">
-                Edemy partners with stripe to transfer earnings to your bank
+                Courseme partners with stripe to transfer earnings to your bank
                 account
               </p>
 

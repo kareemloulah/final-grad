@@ -42,7 +42,7 @@ const Footer = () => {
                   </a>
                 </li>
                 <li className="col navbar">
-                  <a className="text-white" href="#">
+                  <a className="text-white" href="/terms">
                     Terms
                   </a>
                 </li>
