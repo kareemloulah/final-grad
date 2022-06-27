@@ -45,32 +45,8 @@ import { toast } from "react-toastify";
     __v: 0
 */
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
-
 export default function StudentsTable(props) {
-  const { tableData = data, setReFetch } = props;
+  const { tableData, setReFetch } = props;
   const [form] = Form.useForm();
 
   const [coursesLimit, setCoursesLimit] = useState(2);

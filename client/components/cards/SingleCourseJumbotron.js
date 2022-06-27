@@ -31,7 +31,7 @@ const SingleCourseJumbotron = ({
   } = course;
 
   return (
-    <div style={{ backgroundColor:"#E3EDFF", marginBottom:'50px'}}>
+    <div style={{ backgroundColor:"#E3EDFF", marginBottom:'10px'}}>
       <div className="container">
         <div className="row">  
           <div className="col" style={{marginTop:'50px'}}>

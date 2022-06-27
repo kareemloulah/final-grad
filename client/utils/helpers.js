@@ -23,3 +23,7 @@ export const objectToArray = (obj) => {
 export const removeDuplicates = (arr) => {
   return [...new Set(arr)];
 };
+
+export const textTrimer = (text, count) => {
+  return text.slice(0, count) + (text.length > count ? "..." : "");
+};

@@ -23,6 +23,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
+import { textTrimer } from "../../../utils/helpers";
 
 export default function TableComponent(props) {
   const { tableData, setReFetch } = props;
@@ -181,7 +182,8 @@ export default function TableComponent(props) {
     {
       title: "Description",
       dataIndex: "description",
-      key: "description"
+      key: "description",
+      render: (description) => <span>{textTrimer(description, 100)}</span>
     },
     // Joined Date
     {
