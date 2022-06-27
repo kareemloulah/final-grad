@@ -8,6 +8,7 @@ const { Option } = Select;
 function FlitersBar({ courses, allData, setAllData }) {
   const router = useRouter();
   const paramCat = router?.query?.cat;
+  const [tempCat, setTempCat] = useState([]);
 
   // console.log(paramCat);
 
@@ -21,6 +22,21 @@ function FlitersBar({ courses, allData, setAllData }) {
   useEffect(() => {
     applyFilters(filters);
   }, []);
+
+  const categoryFiltersBuilder = (dataToBuildFrom) => {
+    let filters = tempCat?.length > 0 ? [...tempCat] : [];
+    dataToBuildFrom.forEach((course) => {
+      if (
+        course?.category?.length > 0 &&
+        !filters.some((filter) => filter.value === course?.category)
+      ) {
+        filters.unshift(course.category);
+      }
+    });
+
+    const uniqArray = [...new Set(filters)];
+    return uniqArray;
+  };
 
   const sorterFunc = (dataToSort, sortBy) => {
     if (sortBy === "newest") {
@@ -110,7 +126,7 @@ function FlitersBar({ courses, allData, setAllData }) {
                     .localeCompare(optionB.children.toLowerCase())
                 }
               >
-                {cats?.map((cat, index) => (
+                {categoryFiltersBuilder(courses)?.map((cat, index) => (
                   <Option key={index} value={cat}>
                     {cat}
                   </Option>

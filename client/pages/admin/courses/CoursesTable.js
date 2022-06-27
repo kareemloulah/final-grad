@@ -36,7 +36,13 @@ export default function TableComponent(props) {
   const [tempCatInput, setTempCatInput] = useState("");
   const [tempCat, setTempCat] = useState([]);
 
-  const modifiedData = tableData.map((item) => ({
+  // Remove Rec system courses
+  const originalData = tableData.filter(
+    (course) => course.instructor !== undefined
+  );
+
+  // Add key
+  const modifiedData = originalData.map((item) => ({
     ...item,
     key: item._id
   }));
@@ -61,10 +67,16 @@ export default function TableComponent(props) {
   );
 
   function localDay(time) {
-    const minutesOffset = time.getTimezoneOffset();
-    const millisecondsOffset = minutesOffset * 60 * 1000;
-    const local = new Date(time - millisecondsOffset);
-    return local.toISOString().substr(0, 10);
+    console.log(time == "Invalid Date");
+
+    if (time != "Invalid Date") {
+      const minutesOffset = time?.getTimezoneOffset();
+      const millisecondsOffset = minutesOffset * 60 * 1000;
+      const local = new Date(time - millisecondsOffset);
+      return local.toISOString().substr(0, 10);
+    }
+
+    return "";
   }
 
   const handleChange = (pagination, filters, sorter) => {
@@ -102,7 +114,7 @@ export default function TableComponent(props) {
       key: "image",
       render: (text, record) => (
         <Tooltip title="Course Cover">
-          <Avatar size={45} src={text.Location} />
+          <Avatar size={45} src={text?.Location} />
         </Tooltip>
       ),
       sorter: (a, b) => a.name.length - b.name.length
