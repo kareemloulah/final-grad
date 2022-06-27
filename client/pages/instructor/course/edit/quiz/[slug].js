@@ -118,7 +118,7 @@ export default function AddQuez() {
       </div>
 
       {/* QuizBuilder Form Here 👇👇 */}
-      <QuizBuilder
+      <QuizBuilder 
         result={result}
         setResult={setResult}
         slug={slug}
