@@ -58,7 +58,7 @@ const SingleCourseJumbotron = ({
                     amount: price,
                     currency: "usd",
                   })
-                : "Free"}
+                : "Free"} (0 of 5⭐)
             </h4>
           </div>
           <div className="col-md-4" style={{marginTop:'50px'}}>

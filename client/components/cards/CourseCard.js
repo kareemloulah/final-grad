@@ -45,7 +45,7 @@ const CourseCard = ({ course }) => {
                   amount: price,
                   currency: "usd"
                 })
-              : "Free"}
+              : "Free"} (0 of 5⭐)
           </h6>
         </Card>
       </a>

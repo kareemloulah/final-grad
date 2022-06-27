@@ -1,11 +1,5 @@
 import React from "react";
-
-const objectToArray = (obj) => {
-  return Object.values(obj).map((value) => {
-    console.log(value);
-    return value;
-  });
-};
+import { objectToArray, removeDuplicates } from "../utils/helpers";
 
 const bookStyle = {
   backgroundColor: "#E3EDFF",
@@ -18,16 +12,16 @@ const bookStyle = {
   justifyContent: "center"
 };
 
-
 function RecBooks({ books }) {
-
   // Convert JSON to Object
   // const booksObj = JSON.parse(test);
 
   // Convert Object to Array
   const booksArray = objectToArray(books);
+  // Remove deplicated elements
+  const booksArrayUnique = removeDuplicates(booksArray);
   // Select only First 3 books
-  const booksArrayFirst3 = booksArray.slice(0, 3);
+  const booksArrayFirst3 = booksArrayUnique.slice(0, 3);
   // Print out the books
   return (
     <div
