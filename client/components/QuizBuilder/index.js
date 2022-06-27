@@ -23,21 +23,19 @@ const test = {
 };
 
 export default function QuizBuilder(props) {
-  const { result, setResult } = props;
+  const { result, setResult, slug, current, handleSubmitQuiz } = props;
 
   const handleSubmit = (values) => {
     setResult(JSON.stringify(values, null, 2));
     setResult(values);
   };
-  console.log("🚀 ~ handleSubmit", result);
-
+ 
   return (
     <Provider store={store}>
       {/* QuizBuilder Form Here 👇👇 */}
-      <QuizForm onSubmit={handleSubmit} />
+      <QuizForm onSubmit={handleSubmitQuiz} />
 
-      
-      <QuizFormResult result={test} />
+      {/* <QuizFormResult result={test} /> */}
     </Provider>
   );
 }

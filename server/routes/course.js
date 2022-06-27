@@ -29,6 +29,7 @@ import {
   markCompleted,
   listCompleted,
   markIncomplete,
+  addQuiz
 } from "../controllers/course";
 
 router.get("/courses", courses);
@@ -53,8 +54,9 @@ router.put("/course/unpublish/:courseId", requireSignin, unpublishCourse);
 
 // `/api/course/lesson/${slug}/${course.instructor._id}`,
 router.post("/course/lesson/:slug/:instructorId", requireSignin, addLesson);
+router.post("/course/lesson/quiz/:slug/:instructorId", requireSignin, addQuiz);
 router.put("/course/lesson/:slug/:instructorId", requireSignin, updateLesson);
-router.put("/course/:slug/:lessonId", requireSignin, removeLesson);
+router.delete("/course/:slug/:lessonId", requireSignin, removeLesson);
 
 router.get("/check-enrollment/:courseId", requireSignin, checkEnrollment);
 

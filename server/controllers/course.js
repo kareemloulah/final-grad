@@ -237,7 +237,7 @@ export const updateLesson = async (req, res) => {
   try {
     // console.log("UPDATE LESSON", req.body);
     const { slug } = req.params;
-    const { _id, title, content, video, free_preview, quiz } = req.body;
+    const { _id, title, content, video, free_preview } = req.body;
     const course = await Course.findOne({ slug }).select("instructor").exec();
 
     if (course.instructor._id != req.user._id) {
@@ -252,7 +252,6 @@ export const updateLesson = async (req, res) => {
           "lessons.$.content": content,
           "lessons.$.video": video,
           "lessons.$.free_preview": free_preview,
-          "lessons.$.quiz": quiz
         }
       },
       { new: true }
@@ -262,6 +261,34 @@ export const updateLesson = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(400).send("Update lesson failed");
+  }
+};
+
+export const addQuiz = async (req, res) => {
+  try {
+    // console.log("UPDATE LESSON", req.body);
+    const { slug } = req.params;
+    const { lessonId, quiz } = req.body;
+    const course = await Course.findOne({ slug }).select("instructor").exec();
+
+    if (course.instructor._id != req.user._id) {
+      return res.status(400).send("Unauthorized");
+    }
+
+    const updated = await Course.updateOne(
+      { "lessons._id": lessonId },
+      {
+        $set: {
+          "lessons.$.quiz": quiz
+        }
+      },
+      { new: true }
+    ).exec();
+    // console.log("updated", updated);
+    res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Adding quiz failed");
   }
 };
 

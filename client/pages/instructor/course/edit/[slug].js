@@ -14,7 +14,7 @@ import Router from "next/router";
 const { Item } = List;
 
 const CourseEdit = () => {
-  // state
+  // Values = COurse Info from DB
   const [values, setValues] = useState({
     name: "",
     slug: "",
@@ -26,6 +26,7 @@ const CourseEdit = () => {
     loading: false,
     lessons: []
   });
+
   const [image, setImage] = useState({});
   const [preview, setPreview] = useState("");
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
@@ -33,6 +34,7 @@ const CourseEdit = () => {
   // state for lessons update
   const [visible, setVisible] = useState(false);
   const [current, setCurrent] = useState({});
+  console.log("🚀 ~ current", current);
   const [uploadVideoButtonText, setUploadVideoButtonText] =
     useState("Upload Video");
   const [progress, setProgress] = useState(0);
@@ -48,7 +50,7 @@ const CourseEdit = () => {
 
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
-    console.log(data);
+
     if (data) setValues(data);
     if (data && data.image) setImage(data.image);
   };
@@ -105,7 +107,7 @@ const CourseEdit = () => {
         image
       });
       toast("Course updated!");
-      Router.back()
+      Router.back();
       // router.push("/instructor");
     } catch (err) {
       toast(err.response.data);
@@ -146,7 +148,9 @@ const CourseEdit = () => {
     // console.log("removed", removed[0]._id);
     setValues({ ...values, lessons: allLessons });
     // send request to server
-    const { data } = await axios.put(`/api/course/${slug}/${removed[0]._id}`);
+    const { data } = await axios.delete(
+      `/api/course/${slug}/${removed[0]._id}`
+    );
     console.log("LESSON DELETED =>", data);
   };
 
@@ -207,7 +211,8 @@ const CourseEdit = () => {
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Update Course</h1>
-      {/* {JSON.stringify(values)} */}
+
+      {/* Course Edit */}
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}
@@ -221,15 +226,15 @@ const CourseEdit = () => {
           editPage={true}
         />
       </div>
-      {/* <pre>{JSON.stringify(values, null, 4)}</pre>
-      <hr />
-      <pre>{JSON.stringify(image, null, 4)}</pre> */}
 
       <hr />
 
+      {/* Lessons list */}
       <div className="row pb-5">
+        {/* NO Lessons*/}
         <div className="col lesson-list">
           <h4>{values && values.lessons && values.lessons.length} Lessons</h4>
+          {/* Lessons */}
           <List
             onDragOver={(e) => e.preventDefault()}
             itemLayout="horizontal"
@@ -245,20 +250,23 @@ const CourseEdit = () => {
                     setVisible(true);
                     setCurrent(item);
                   }}
-                  avatar={<Avatar size={36} >{index + 1}</Avatar>}
+                  avatar={<Avatar size={36}>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
                 <Link
                   href={{
                     pathname: `/instructor/course/edit/quiz/${values.slug}`,
-                    query: { lessonId: item._id }
+                    query: {
+                      lessonId: item._id,
+                      lessonNO: index + 1,
+                    }
                   }}
                 >
-                  <Popover content='Add Quiz'>
+                  <Popover content="Add Quiz">
                     <FileAddOutlined
                       style={{
                         fontSize: "26px",
-                        marginRight: '30px',
+                        marginRight: "30px"
                       }}
                       className="text-primary float-right"
                       onClick={() => {
@@ -268,11 +276,11 @@ const CourseEdit = () => {
                   </Popover>
                 </Link>
 
-                <Popover placement="topRight" content='Delete Lesson'>
+                <Popover placement="topRight" content="Delete Lesson">
                   <DeleteOutlined
                     style={{
                       fontSize: "26px",
-                      marginRight:'20px'
+                      marginRight: "20px"
                     }}
                     onClick={() => handleDelete(index)}
                     className="text-danger float-right"
@@ -284,6 +292,7 @@ const CourseEdit = () => {
         </div>
       </div>
 
+      {/* Edit modal */}
       <Modal
         title="Update lesson"
         centered

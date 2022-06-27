@@ -243,17 +243,6 @@ class QuizForm extends Component {
 
     return (
       <>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "120px",
-            backgroundColor: "#E3EDFF"
-          }}
-        >
-          <h3>Add Quiz in this section</h3>
-        </div>
         <div className="container" style={{ width: "500px" }}>
           <div className="QuizForm">
             <form name="quiz-form" onSubmit={handleSubmit}>
