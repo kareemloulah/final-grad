@@ -17,8 +17,10 @@ const carousel = () => (
     style={{
       background:
         "url('https://images.unsplash.com/photo-1516542076529-1ea3854896f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80')",
-      backgrounSize: "cover",
-      height: "60vh"
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition:"center",
+      height: "40vh",
     }}
     className="d-flex justify-content-center align-items-center"
   >
