@@ -39,6 +39,7 @@ const Index = ({ courses }) => {
       >
         {/* <PathsSection /> */}
         <div className="container">
+          <h3 className="text-white">Learning Paths</h3>
           <Row gutter={[16, 16]}>
             {Paths.map((path, index) => (
               <div key={path.id} className="col-lg-4 col-md-6 col-sm-12">
