@@ -116,6 +116,7 @@ function RecBooks({ books }) {
         margin: "20px 0px"
       }}
     >
+      Recommended Books :
       {booksArrayFirst3.map((book, i) => (
         <p key={i} style={bookStyle}>
           {book}
